@@ -20,6 +20,9 @@ void printSolution(vector<int> anyVector);
 void candidates();
 bool comp(const CustoIn& a, const CustoIn& b);
 vector<CustoIn> calculaCusto(vector<int> listaCandidatos, vector<int> s);
+vector<int> swap(vector<int> solucao);
+double calculaDeltaSwap(int i, int j, vector<int> s);
+vector<int> reIsertion(vector<int>solucao);
 
 int main(int argc, char** argv) {
 
@@ -27,10 +30,13 @@ int main(int argc, char** argv) {
 
     readData(argc, argv, &dimension, &matrizAdj);
     //printData();
-    cidades = construction(7);
+    vector<int> teste = construction(7);
+    printSolution(teste);
+   // cidades = swap(teste);
+    vector<int>test = reIsertion(teste);
+    printSolution(test);
     
-    //candidates();
-    printSolution(cidades);
+    //printSolution(cidades);
   
     
     return 0;
@@ -119,6 +125,46 @@ vector<CustoIn> calculaCusto(vector<int> listaCandidatos, vector<int> s){
     }
   }
   return custoInsertion;
+
+
+}
+
+vector<int> swap(vector<int> solucao){
+  vector<int> solCopy = solucao;
+  vector<int> melhor;
+  double d;
+  double menor = 10000000; // mudar isso no if
+  for(int i = 1; i < solucao.size() - 2; i++){ // excluir da operação a primeira e a ultima posição do vetor
+    for(int j = solucao.size() -2; j > 1; j--){
+      int aux = solucao[i];
+      solCopy[i] = solucao[j];
+      solCopy[j] = aux;
+      d = calculaDeltaSwap(i,j, solCopy);
+      if(d <= menor){
+        menor = d;
+        melhor = solCopy;
+      }
+        solCopy = solucao;
+    }
+  }
+  return melhor;
+
+}
+
+double calculaDeltaSwap(int i, int j, vector<int> s){
+  double delta = matrizAdj[s[i]][s[j-1]] + matrizAdj[s[i]][s[j+1]] + matrizAdj[s[j]][s[i-1]] + matrizAdj[s[j]][s[i+1]] - matrizAdj[s[i]][s[i-1]] - matrizAdj[s[i]][s[i+1]] - matrizAdj[s[j]][s[j-1]] - matrizAdj[s[j]][s[j+1]];
+  return delta;
+}
+
+vector<int> reIsertion(vector<int>solucao){
+  vector<int> solCopy = solucao;
+  for(int i = 0; i < solucao.size() - 2; i++){
+    for(int j = solucao.size() -2; j > 1; j--){
+      
+    }
+  }
+  //solCopy.insert(solCopy.begin() + 2, 0);
+  return solCopy;
 
 
 }
