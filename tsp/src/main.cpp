@@ -32,11 +32,11 @@ int main(int argc, char** argv) {
     //printData();
     vector<int> teste = construction(7);
     printSolution(teste);
-   // cidades = swap(teste);
-    vector<int>test = reIsertion(teste);
-    printSolution(test);
+    cidades = swap(teste);
+   // vector<int>test = reIsertion(teste);
+    //printSolution(test);
     
-    //printSolution(cidades);
+    printSolution(cidades);
   
     
     return 0;
@@ -133,14 +133,14 @@ vector<int> swap(vector<int> solucao){
   vector<int> solCopy = solucao;
   vector<int> melhor;
   double d;
-  double menor = 10000000; // mudar isso no if
+  double menor; // mudar isso no if
   for(int i = 1; i < solucao.size() - 2; i++){ // excluir da operação a primeira e a ultima posição do vetor
     for(int j = solucao.size() -2; j > 1; j--){
       int aux = solucao[i];
       solCopy[i] = solucao[j];
       solCopy[j] = aux;
       d = calculaDeltaSwap(i,j, solCopy);
-      if(d <= menor){
+      if(d <= menor && i > 1){
         menor = d;
         melhor = solCopy;
       }
@@ -158,11 +158,11 @@ double calculaDeltaSwap(int i, int j, vector<int> s){
 
 vector<int> reIsertion(vector<int>solucao){
   vector<int> solCopy = solucao;
-  for(int i = 0; i < solucao.size() - 2; i++){
+  /*for(int i = 0; i < solucao.size() - 2; i++){
     for(int j = solucao.size() -2; j > 1; j--){
       
     }
-  }
+  }*/
   //solCopy.insert(solCopy.begin() + 2, 0);
   return solCopy;
 
