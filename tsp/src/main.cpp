@@ -23,20 +23,23 @@ vector<CustoIn> calculaCusto(vector<int> listaCandidatos, vector<int> s);
 vector<int> swap(vector<int> solucao);
 double calculaDeltaSwap(int i, int j, vector<int> s);
 vector<int> reIsertion(vector<int>solucao);
+double custoTotal(vector<int>solucao);
 
 int main(int argc, char** argv) {
 
     srand((unsigned)time(0));
 
     readData(argc, argv, &dimension, &matrizAdj);
-    //printData();
+   // printData();
     vector<int> teste = construction(7);
     printSolution(teste);
+    cout << "custo: " << custoTotal(teste) << endl;
     cidades = swap(teste);
    // vector<int>test = reIsertion(teste);
     //printSolution(test);
     
     printSolution(cidades);
+    cout << "custo: " << custoTotal(cidades) << endl;
   
     
     return 0;
@@ -132,15 +135,18 @@ vector<CustoIn> calculaCusto(vector<int> listaCandidatos, vector<int> s){
 vector<int> swap(vector<int> solucao){
   vector<int> solCopy = solucao;
   vector<int> melhor;
-  double d;
-  double menor; // mudar isso no if
+  double d, d2;
+  double menor;
+  double fs = custoTotal(solucao);
   for(int i = 1; i < solucao.size() - 2; i++){ // excluir da operação a primeira e a ultima posição do vetor
-    for(int j = solucao.size() -2; j > 1; j--){
+    for(int j = 1; j < solucao.size() - 2; j++){ 
       int aux = solucao[i];
       solCopy[i] = solucao[j];
       solCopy[j] = aux;
-      d = calculaDeltaSwap(i,j, solCopy);
-      if(d <= menor && i > 1){
+      d2 = calculaDeltaSwap(i,j, solCopy); // falha nos nós adjacentes e sinal invertido
+      d = custoTotal(solCopy) - fs;
+      cout << "delta = " << d << endl;
+      if(d <= menor || i == 1){
         menor = d;
         melhor = solCopy;
       }
@@ -152,8 +158,14 @@ vector<int> swap(vector<int> solucao){
 }
 
 double calculaDeltaSwap(int i, int j, vector<int> s){
-  double delta = matrizAdj[s[i]][s[j-1]] + matrizAdj[s[i]][s[j+1]] + matrizAdj[s[j]][s[i-1]] + matrizAdj[s[j]][s[i+1]] - matrizAdj[s[i]][s[i-1]] - matrizAdj[s[i]][s[i+1]] - matrizAdj[s[j]][s[j-1]] - matrizAdj[s[j]][s[j+1]];
-  return delta;
+  double delta;
+  /*if(i + 1 == j || j + 1 == i){
+    delta = matrizAdj[s[i-1]][s[j-1]] + matrizAdj[s[i]][s[j]] +  matrizAdj[s[j]][s[j+1]] - matrizAdj[s[i-1]][s[j]] - matrizAdj[s[j]][s[i]] - matrizAdj[s[i]][s[j+1]];
+  }
+  else*/
+  delta = matrizAdj[s[i]][s[j-1]] + matrizAdj[s[i]][s[j+1]] + matrizAdj[s[j]][s[i-1]] + matrizAdj[s[j]][s[i+1]] - matrizAdj[s[i]][s[i-1]] - matrizAdj[s[i]][s[i+1]] - matrizAdj[s[j]][s[j-1]] - matrizAdj[s[j]][s[j+1]];
+  cout << "delta swap: " << delta <<endl; 
+  return delta; // delta swap tem sinal invertido, o maior delta  é o melhor candidato
 }
 
 vector<int> reIsertion(vector<int>solucao){
@@ -167,4 +179,12 @@ vector<int> reIsertion(vector<int>solucao){
   return solCopy;
 
 
+}
+
+double custoTotal(vector<int>solucao){
+  double custo = 0;
+  for(int i = 1, j = 2; i < solucao.size(); i++, j++){
+     custo = custo + matrizAdj[solucao[i]][solucao[j]];
+  }
+  return custo;
 }
