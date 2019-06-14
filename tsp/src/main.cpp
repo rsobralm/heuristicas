@@ -24,6 +24,7 @@ vector<int> swap(vector<int> solucao);
 double calculaDeltaSwap(int i, int j, vector<int> s);
 vector<int> reIsertion(vector<int>solucao);
 double custoTotal(vector<int>solucao);
+double calculaDeltaReInsertion(int i, int j, vector<int> s);
 
 int main(int argc, char** argv) {
 
@@ -34,9 +35,9 @@ int main(int argc, char** argv) {
     vector<int> teste = construction(7);
     printSolution(teste);
     cout << "custo: " << custoTotal(teste) << endl;
-    cidades = swap(teste);
-   // vector<int>test = reIsertion(teste);
-    //printSolution(test);
+    //cidades = swap(teste);
+    cidades = reIsertion(teste);
+  
     
     printSolution(cidades);
     cout << "custo: " << custoTotal(cidades) << endl;
@@ -146,7 +147,7 @@ vector<int> swap(vector<int> solucao){
       solCopy[j] = aux;
       d2 = calculaDeltaSwap(i,j, solucao);
       d = custoTotal(solCopy) - fs;
-      cout <<"i:"<< i << "  j:"<< j << "  delta = " << d << endl;
+      //cout <<"i:"<< i << "  j:"<< j << "  delta = " << d << endl;
       if(d <= menor || (i == 1 && j == 1)){
         menor = d;
         melhor = solCopy;
@@ -172,19 +173,46 @@ double calculaDeltaSwap(int i, int j, vector<int> s){
   delta = matrizAdj[s[i]][s[j-1]] + matrizAdj[s[i]][s[j+1]] + matrizAdj[s[j]][s[i-1]] + matrizAdj[s[j]][s[i+1]] - matrizAdj[s[i]][s[i-1]] - matrizAdj[s[i]][s[i+1]] - matrizAdj[s[j]][s[j-1]] - matrizAdj[s[j]][s[j+1]];
       }
   }
-  cout << "delta swap: " << delta <<endl; 
+  //cout << "delta swap: " << delta <<endl; 
   return delta; 
 }
 
 vector<int> reIsertion(vector<int>solucao){
   vector<int> solCopy = solucao;
-  /*for(int i = 0; i < solucao.size() - 2; i++){
-    for(int j = solucao.size() -2; j > 1; j--){
-      
+  //double fs = custoTotal(solucao);
+  double menor = 0;
+  vector<int> melhor;
+  double d, d2; 
+  for(int i = 1; i < solucao.size() - 1; i++){
+    for(int j = 1; j < solucao.size() - 1; j++){
+      if(i != j){
+      solCopy.erase(solCopy.begin() + i);
+      solCopy.insert(solCopy.begin() + j, solucao[i]);
+       //d = custoTotal(solCopy) - fs;
+       d2 = calculaDeltaReInsertion(i,j,solucao);
+       //cout <<"i:"<< i << "  j:"<< j << "  delta = " << d2 << endl;
+      if(d2 <= menor || (i == 1 && j == 1)){
+        menor = d2;
+        melhor = solCopy;
+      }
+      solCopy = solucao;
+      }
     }
-  }*/
-  //solCopy.insert(solCopy.begin() + 2, 0);
-  return solCopy;
+     
+  }
+  return melhor;
+}
+
+double calculaDeltaReInsertion(int i, int j, vector<int> s){
+  double delta;
+  if(i <= j){
+    delta = matrizAdj[s[i]][s[j+1]] + matrizAdj[s[i]][s[j]] + matrizAdj[s[i-1]][s[i+1]] - matrizAdj[s[j]][s[j+1]] - matrizAdj[s[i]][s[i-1]] - matrizAdj[s[i]][s[i+1]];
+            }
+  else{
+  delta = matrizAdj[s[i]][s[j-1]] + matrizAdj[s[i]][s[j]] + matrizAdj[s[i-1]][s[i+1]] - matrizAdj[s[j]][s[j-1]] - matrizAdj[s[i]][s[i-1]] - matrizAdj[s[i]][s[i+1]];
+      }
+  //cout << "Delta Re: "<< delta << endl;
+  return delta;
 
 }
 
