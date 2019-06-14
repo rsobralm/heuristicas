@@ -138,19 +138,21 @@ vector<int> swap(vector<int> solucao){
   double d, d2;
   double menor;
   double fs = custoTotal(solucao);
-  for(int i = 1; i < solucao.size() - 2; i++){ // excluir da operação a primeira e a ultima posição do vetor
-    for(int j = 1; j < solucao.size() - 2; j++){ 
+  for(int i = 1; i < solucao.size() - 1; i++){ // excluir da operação a primeira e a ultima posição do vetor
+    for(int j = 1; j < solucao.size() - 1; j++){ 
+      if(i <= j){ // nao repetir swap
       int aux = solucao[i];
       solCopy[i] = solucao[j];
       solCopy[j] = aux;
-      d2 = calculaDeltaSwap(i,j, solCopy); // falha nos nós adjacentes e sinal invertido
+      d2 = calculaDeltaSwap(i,j, solucao);
       d = custoTotal(solCopy) - fs;
-      cout << "delta = " << d << endl;
-      if(d <= menor || i == 1){
+      cout <<"i:"<< i << "  j:"<< j << "  delta = " << d << endl;
+      if(d <= menor || (i == 1 && j == 1)){
         menor = d;
         melhor = solCopy;
       }
         solCopy = solucao;
+      }
     }
   }
   return melhor;
@@ -159,13 +161,19 @@ vector<int> swap(vector<int> solucao){
 
 double calculaDeltaSwap(int i, int j, vector<int> s){
   double delta;
-  /*if(i + 1 == j || j + 1 == i){
-    delta = matrizAdj[s[i-1]][s[j-1]] + matrizAdj[s[i]][s[j]] +  matrizAdj[s[j]][s[j+1]] - matrizAdj[s[i-1]][s[j]] - matrizAdj[s[j]][s[i]] - matrizAdj[s[i]][s[j+1]];
+  if(i == 1 && j < 4){
+    delta = matrizAdj[s[i-1]][s[j]] + matrizAdj[s[i]][s[j+1]] - matrizAdj[s[i-1]][s[i]] - matrizAdj[s[j]][s[j+1]];
   }
-  else*/
+  else{
+  if(i + 1 == j){
+    delta = matrizAdj[s[i-1]][s[j]] + matrizAdj[s[i]][s[j+1]] - matrizAdj[s[i-1]][s[j-1]] - matrizAdj[s[j]][s[j+1]];
+  }
+  else{
   delta = matrizAdj[s[i]][s[j-1]] + matrizAdj[s[i]][s[j+1]] + matrizAdj[s[j]][s[i-1]] + matrizAdj[s[j]][s[i+1]] - matrizAdj[s[i]][s[i-1]] - matrizAdj[s[i]][s[i+1]] - matrizAdj[s[j]][s[j-1]] - matrizAdj[s[j]][s[j+1]];
+      }
+  }
   cout << "delta swap: " << delta <<endl; 
-  return delta; // delta swap tem sinal invertido, o maior delta  é o melhor candidato
+  return delta; 
 }
 
 vector<int> reIsertion(vector<int>solucao){
@@ -183,7 +191,7 @@ vector<int> reIsertion(vector<int>solucao){
 
 double custoTotal(vector<int>solucao){
   double custo = 0;
-  for(int i = 1, j = 2; i < solucao.size(); i++, j++){
+  for(int i = 0, j = 1; i < solucao.size(); i++, j++){
      custo = custo + matrizAdj[solucao[i]][solucao[j]];
   }
   return custo;
