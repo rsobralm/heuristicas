@@ -186,7 +186,6 @@ vector<int> reIsertion(vector<int>solucao){
   //solCopy.insert(solCopy.begin() + 2, 0);
   return solCopy;
 
-
 }
 
 double custoTotal(vector<int>solucao){
