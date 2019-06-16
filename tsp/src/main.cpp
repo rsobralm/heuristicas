@@ -25,6 +25,9 @@ double calculaDeltaSwap(int i, int j, vector<int> s);
 vector<int> reIsertion(vector<int>solucao);
 double custoTotal(vector<int>solucao);
 double calculaDeltaReInsertion(int i, int j, vector<int> s);
+vector<int> TwoOptN(vector<int> solucao);
+double calculaDeltaTwoOpt(int i, int j, vector<int> s);
+vector<int> orOpt2(vector<int> solucao);
 
 int main(int argc, char** argv) {
 
@@ -34,13 +37,13 @@ int main(int argc, char** argv) {
    // printData();
     vector<int> teste = construction(7);
     printSolution(teste);
-    cout << "custo: " << custoTotal(teste) << endl;
+    //cout << "custo: " << custoTotal(teste) << endl;
     //cidades = swap(teste);
-    cidades = reIsertion(teste);
-  
+    //cidades = reIsertion(teste);
     
+    cidades = TwoOptN(teste);
     printSolution(cidades);
-    cout << "custo: " << custoTotal(cidades) << endl;
+    //cout << "custo: " << custoTotal(cidades) << endl;
   
     
     return 0;
@@ -142,16 +145,16 @@ vector<int> swap(vector<int> solucao){
   for(int i = 1; i < solucao.size() - 1; i++){ // excluir da operação a primeira e a ultima posição do vetor
     for(int j = 1; j < solucao.size() - 1; j++){ 
       if(i <= j){ // nao repetir swap
-      int aux = solucao[i];
-      solCopy[i] = solucao[j];
-      solCopy[j] = aux;
-      d2 = calculaDeltaSwap(i,j, solucao);
-      d = custoTotal(solCopy) - fs;
-      //cout <<"i:"<< i << "  j:"<< j << "  delta = " << d << endl;
-      if(d <= menor || (i == 1 && j == 1)){
-        menor = d;
-        melhor = solCopy;
-      }
+        int aux = solucao[i];
+        solCopy[i] = solucao[j];
+        solCopy[j] = aux;
+        d2 = calculaDeltaSwap(i,j, solucao);
+        d = custoTotal(solCopy) - fs;
+        //cout <<"i:"<< i << "  j:"<< j << "  delta = " << d << endl;
+        if(d <= menor || (i == 1 && j == 1)){
+          menor = d;
+          melhor = solCopy;
+        }
         solCopy = solucao;
       }
     }
@@ -166,12 +169,12 @@ double calculaDeltaSwap(int i, int j, vector<int> s){
     delta = matrizAdj[s[i-1]][s[j]] + matrizAdj[s[i]][s[j+1]] - matrizAdj[s[i-1]][s[i]] - matrizAdj[s[j]][s[j+1]];
   }
   else{
-  if(i + 1 == j){
-    delta = matrizAdj[s[i-1]][s[j]] + matrizAdj[s[i]][s[j+1]] - matrizAdj[s[i-1]][s[j-1]] - matrizAdj[s[j]][s[j+1]];
-  }
-  else{
-  delta = matrizAdj[s[i]][s[j-1]] + matrizAdj[s[i]][s[j+1]] + matrizAdj[s[j]][s[i-1]] + matrizAdj[s[j]][s[i+1]] - matrizAdj[s[i]][s[i-1]] - matrizAdj[s[i]][s[i+1]] - matrizAdj[s[j]][s[j-1]] - matrizAdj[s[j]][s[j+1]];
-      }
+    if(i + 1 == j){
+      delta = matrizAdj[s[i-1]][s[j]] + matrizAdj[s[i]][s[j+1]] - matrizAdj[s[i-1]][s[j-1]] - matrizAdj[s[j]][s[j+1]];
+    }
+    else{
+    delta = matrizAdj[s[i]][s[j-1]] + matrizAdj[s[i]][s[j+1]] + matrizAdj[s[j]][s[i-1]] + matrizAdj[s[j]][s[i+1]] - matrizAdj[s[i]][s[i-1]] - matrizAdj[s[i]][s[i+1]] - matrizAdj[s[j]][s[j-1]] - matrizAdj[s[j]][s[j+1]];
+        }
   }
   //cout << "delta swap: " << delta <<endl; 
   return delta; 
@@ -215,6 +218,49 @@ double calculaDeltaReInsertion(int i, int j, vector<int> s){
   return delta;
 
 }
+
+vector<int> TwoOptN(vector<int> solucao){
+  vector<int> solCopy = solucao;
+  vector<int> solInverted;
+  double delta , d, menor = 0;
+  double fs = custoTotal(solucao);
+    for(int i = 1; i < solucao.size() - 2; i++){
+      for(int j = i + 1; j < solucao.size() - 1; j++){
+        solCopy = solucao;
+        for(int k = i; k <= j; k++){
+          solCopy[k] = solucao[j + i - k];
+        }
+        //d = custoTotal(solCopy) - fs;
+        //cout << "i: "<<i<<"j: "<<j <<"delta = "<<d<<endl;
+        delta = calculaDeltaTwoOpt(i, j, solucao);
+        //cout << "i: "<<i<<"j: "<<j <<"d = "<<delta<<endl;
+        if(delta <= menor){
+          menor = delta;
+          solInverted = solCopy;
+        }
+      }
+    }
+      
+    return solInverted;
+}
+
+double calculaDeltaTwoOpt(int i, int j, vector<int> s){
+  double delta;
+  if(j == (i + 1)){
+    delta = matrizAdj[s[i-1]][s[j]] + matrizAdj[s[i]][s[j+1]] - matrizAdj[s[i-1]][s[j-1]] - matrizAdj[s[j]][s[j+1]];
+  }
+  else{
+  delta = matrizAdj[s[i-1]][s[j]] + matrizAdj[s[i]][s[j+1]] - matrizAdj[s[i-1]][s[i]] - matrizAdj[s[j]][s[j+1]];
+  }
+  return delta;
+}
+
+vector<int> orOpt2(vector<int> solucao){
+  
+
+}
+
+
 
 double custoTotal(vector<int>solucao){
   double custo = 0;
