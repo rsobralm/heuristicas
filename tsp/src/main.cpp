@@ -28,6 +28,7 @@ double calculaDeltaReInsertion(int i, int j, vector<int> s);
 vector<int> TwoOptN(vector<int> solucao);
 double calculaDeltaTwoOpt(int i, int j, vector<int> s);
 vector<int> orOpt2(vector<int> solucao);
+double calculaDeltaOrOpt2(int i, int j, vector<int> s);
 
 int main(int argc, char** argv) {
 
@@ -40,8 +41,9 @@ int main(int argc, char** argv) {
     //cout << "custo: " << custoTotal(teste) << endl;
     //cidades = swap(teste);
     //cidades = reIsertion(teste);
-    
-    cidades = TwoOptN(teste);
+    //vector<int> tora = {1,2,3,4,5,6,7,8,9,1};
+    //printSolution(tora);
+    cidades = orOpt2(teste);
     printSolution(cidades);
     //cout << "custo: " << custoTotal(cidades) << endl;
   
@@ -256,11 +258,45 @@ double calculaDeltaTwoOpt(int i, int j, vector<int> s){
 }
 
 vector<int> orOpt2(vector<int> solucao){
-  
+  vector<int> solCopy = solucao;
+  vector<int> melhor;
+  double menor = 0;
+  double d, delta;
+  double fs = custoTotal(solucao);
+  for(int i = 1; i < solucao.size() - 2; i++){
+    for(int j = 1; j < solucao.size() - 3; j++){
+      if(i != j){
+        solCopy = solucao;
+        solCopy.erase(solCopy.begin() + i, solCopy.begin() + i + 2);
+        solCopy.insert(solCopy.begin() + j, &solucao[i], &solucao[i] + 2);
+        
+        delta = calculaDeltaOrOpt2(i,j,solucao);
+        if(delta <= menor){
+          menor = delta;
+          melhor = solCopy;
+        }
+        
+      }
+      
+    }
+     
+  }
 
+  return melhor;
 }
 
+double calculaDeltaOrOpt2(int i, int j, vector<int> s){
+  double delta;
+  if(i < j){
+    //delta = matrizAdj[s[i-1]][s[j-1]] + matrizAdj[s[i]][s[j+1]] + matrizAdj[s[i+1]][s[j+2]] - matrizAdj[s[i]][s[i-1]] - matrizAdj[s[i+1]][s[i+2]] - matrizAdj[s[j+1]][s[j+2]];
+    delta = matrizAdj[s[i-1]][s[i+2]] + matrizAdj[s[i]][s[j+1]] + matrizAdj[s[i+1]][s[j+2]] - matrizAdj[s[i]][s[i-1]] - matrizAdj[s[i+1]][s[i+2]] - matrizAdj[s[j+1]][s[j+2]];
+  }
+  else { 
+    delta = matrizAdj[s[i]][s[j-1]] + matrizAdj[s[i+1]][s[j]] + matrizAdj[s[i+2]][s[i-1]] - matrizAdj[s[j]][s[j-1]] - matrizAdj[s[i]][s[i-1]] - matrizAdj[s[i+1]][s[i+2]];
+  }
 
+  return delta;
+}
 
 double custoTotal(vector<int>solucao){
   double custo = 0;
