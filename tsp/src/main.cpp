@@ -31,6 +31,7 @@ vector<int> orOpt2(vector<int> solucao);
 double calculaDeltaOrOpt2(int i, int j, vector<int> s);
 vector<int> orOpt3(vector<int> solucao);
 double calculaDeltaOrOpt3(int i, int j, vector<int> s);
+vector<int> rvnd(vector<int> solucao);
 
 int main(int argc, char** argv) {
 
@@ -45,7 +46,7 @@ int main(int argc, char** argv) {
     //cidades = reIsertion(teste);
     //vector<int> tora = {1,2,3,4,5,6,7,8,9,1};
     //printSolution(tora);
-    cidades = orOpt3(teste);
+    cidades = rvnd(teste);
     printSolution(cidades);
     //cout << "custo: " << custoTotal(cidades) << endl;
   
@@ -335,6 +336,95 @@ double calculaDeltaOrOpt3(int i, int j, vector<int> s){
   }
 
   return delta;
+}
+
+
+vector<int> rvnd(vector<int> solucao){ // seg fault  - nao entra no case;
+  vector<int> s = solucao;
+  vector<int> nLista = {0,1,2,3,4};
+  double custo = custoTotal(solucao);
+  int sel, pos , habilita;
+
+  while(!nLista.empty()){ // seg fault
+    printSolution(nLista);
+    sel = -1;
+    int k = rand() % 5;
+    cout << "k = " << k << endl;
+
+    for(int i = 0; i < nLista.size(); i++){
+      if(nLista[i] == k){
+        sel = k;
+        pos = i;
+      }
+    }
+    if(sel != -1){    cout << "sel = " << sel << endl; 
+      switch(sel){
+        case 0:{
+          cout << "swap" << endl;
+          if(custo > custoTotal(swap(s))){
+            s = swap(s);
+            custo = custoTotal(s);
+            
+            nLista.erase(nLista.begin() + pos);
+
+            
+          }
+          break;
+        }
+        
+        case 1:{
+          if(custo > custoTotal(TwoOptN(s))){
+            cout << "2optn" <<endl;
+            s = TwoOptN(s);
+            custo = custoTotal(s);
+            
+            nLista.erase(nLista.begin() + pos);
+
+            
+          }
+          break;
+        }
+
+        case 2:{
+          if(custo > custoTotal(reIsertion(s))){
+              cout << "reinsertion" <<endl;
+              s = reIsertion(s);
+              custo = custoTotal(s);
+              
+              nLista.erase(nLista.begin() + pos);
+
+              
+            }
+            break;
+        }
+
+        case 3:{
+          if(custo > custoTotal(orOpt2(s))){
+            cout << "oropt2" << endl;
+            s = orOpt2(s);
+            custo = custoTotal(s);
+            
+            nLista.erase(nLista.begin() + pos);
+
+            
+          }
+          break;
+        }
+        case 4:{
+          if(custo > custoTotal(orOpt3(s))){
+            cout << "oropt3" << endl;
+            s = orOpt3(s);
+            custo = custoTotal(s);
+            
+            nLista.erase(nLista.begin() + pos);
+
+            
+          }
+        }
+      }
+    }
+  }
+  return s;
 }
 
 
