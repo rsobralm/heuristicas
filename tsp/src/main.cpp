@@ -5,6 +5,7 @@
 #include <vector>
 #include <ctime>
 #include <algorithm>
+#include <cmath>
 
 using namespace std;
 
@@ -22,34 +23,53 @@ bool comp(const CustoIn& a, const CustoIn& b);
 vector<CustoIn> calculaCusto(vector<int> listaCandidatos, vector<int> s);
 vector<int> swap(vector<int> solucao);
 double calculaDeltaSwap(int i, int j, vector<int> s);
-vector<int> reIsertion(vector<int>solucao);
+vector<int> reInsertion(vector<int>solucao);
 double custoTotal(vector<int>solucao);
 double calculaDeltaReInsertion(int i, int j, vector<int> s);
-vector<int> TwoOptN(vector<int> solucao);
+vector<int> twoOptN(vector<int> solucao);
 double calculaDeltaTwoOpt(int i, int j, vector<int> s);
 vector<int> orOpt2(vector<int> solucao);
 double calculaDeltaOrOpt2(int i, int j, vector<int> s);
 vector<int> orOpt3(vector<int> solucao);
 double calculaDeltaOrOpt3(int i, int j, vector<int> s);
 vector<int> rvnd(vector<int> solucao);
+vector<int> perturb(vector<int> solucao);
+vector<int> gils_rvnd(int i_max, int i_ils);
 
 int main(int argc, char** argv) {
 
     srand((unsigned)time(0));
-
+    double valor;
+    int i_max = 50;
+    int i_ils;
     readData(argc, argv, &dimension, &matrizAdj);
-   // printData();
-    vector<int> teste = construction(7);
-    printSolution(teste);
+    
+    if(dimension >= 150){
+      i_ils = dimension/2;
+    }
+    else{
+      i_ils = dimension;
+    }
+
+    cidades = gils_rvnd(i_max, i_ils);
+    printSolution(cidades);
+    valor = custoTotal(cidades);
+    cout << "custo: " << custoTotal(cidades) << endl;
+
+    //printData();
+    //vector<int> teste = construction(7);
+    //printSolution(teste);
     //cout << "custo: " << custoTotal(teste) << endl;
     //cidades = swap(teste);
-    //cidades = reIsertion(teste);
-    //vector<int> tora = {1,2,3,4,5,6,7,8,9,1};
-    //printSolution(tora);
-    cidades = rvnd(teste);
-    printSolution(cidades);
-    //cout << "custo: " << custoTotal(cidades) << endl;
-  
+    //valor = custoTotal(teste);
+    //cidades = reInsertion(teste);
+    //vector<int> tora = {1,2,3,4,5,6,7,8,9,10,1};
+   // printSolution(cidades);
+    //cidades = perturb(teste);
+    //printSolution(cidades);
+    //candidatos = rvnd(teste);
+    //printSolution(candidatos);
+    //cout << "custo: " << custoTotal(candidatos) << endl;
     
     return 0;
 
@@ -95,7 +115,7 @@ vector<int> construction(int tamanhoInicial){
       cout << sel << endl;
     }
     
-    s.insert(s.begin() + custoInsertion[sel].arestaOut + 1, custoInsertion[sel].noIn); // SEG FAULT ERRO QUANDO ALTERA O PENULTIMO ELEMENTO
+    s.insert(s.begin() + custoInsertion[sel].arestaOut + 1, custoInsertion[sel].noIn); 
     
     for(int i = 0; i < listaCandidatos.size(); i++){
       if(listaCandidatos[i]==custoInsertion[sel].noIn)
@@ -146,7 +166,6 @@ vector<int> swap(vector<int> solucao){
   vector<int> melhor;
   double d, d2;
   double menor;
-  double fs = custoTotal(solucao);
   for(int i = 1; i < solucao.size() - 1; i++){ // excluir da operação a primeira e a ultima posição do vetor
     for(int j = 1; j < solucao.size() - 1; j++){ 
       if(i <= j){ // nao repetir swap
@@ -154,7 +173,7 @@ vector<int> swap(vector<int> solucao){
         solCopy[i] = solucao[j];
         solCopy[j] = aux;
         d2 = calculaDeltaSwap(i,j, solucao);
-        d = custoTotal(solCopy) - fs;
+        //d = custoTotal(solCopy) - fs;
         //cout <<"i:"<< i << "  j:"<< j << "  delta = " << d << endl;
         if(d <= menor || (i == 1 && j == 1)){
           menor = d;
@@ -185,11 +204,10 @@ double calculaDeltaSwap(int i, int j, vector<int> s){
   return delta; 
 }
 
-vector<int> reIsertion(vector<int>solucao){
+vector<int> reInsertion(vector<int>solucao){
   vector<int> solCopy = solucao;
-  //double fs = custoTotal(solucao);
   double menor = 0;
-  vector<int> melhor;
+  vector<int> melhor = solucao;
   double d, d2; 
   for(int i = 1; i < solucao.size() - 1; i++){
     for(int j = 1; j < solucao.size() - 1; j++){
@@ -224,11 +242,10 @@ double calculaDeltaReInsertion(int i, int j, vector<int> s){
 
 }
 
-vector<int> TwoOptN(vector<int> solucao){
+vector<int> twoOptN(vector<int> solucao){
   vector<int> solCopy = solucao;
-  vector<int> solInverted;
+  vector<int> solInverted = solucao;
   double delta , d, menor = 0;
-  double fs = custoTotal(solucao);
     for(int i = 1; i < solucao.size() - 2; i++){
       for(int j = i + 1; j < solucao.size() - 1; j++){
         solCopy = solucao;
@@ -262,10 +279,9 @@ double calculaDeltaTwoOpt(int i, int j, vector<int> s){
 
 vector<int> orOpt2(vector<int> solucao){
   vector<int> solCopy = solucao;
-  vector<int> melhor;
+  vector<int> melhor = solucao;
   double menor = 0;
   double d, delta;
-  double fs = custoTotal(solucao);
   for(int i = 1; i < solucao.size() - 2; i++){
     for(int j = 1; j < solucao.size() - 3; j++){
       if(i != j){
@@ -284,7 +300,7 @@ vector<int> orOpt2(vector<int> solucao){
     }
      
   }
-
+  
   return melhor;
 }
 
@@ -302,10 +318,9 @@ double calculaDeltaOrOpt2(int i, int j, vector<int> s){
 
 vector<int> orOpt3(vector<int> solucao){
   vector<int> solCopy = solucao;
-  vector<int> melhor;
+  vector<int> melhor = solucao;
   double menor = 0;
   double d, delta;
-  double fs = custoTotal(solucao);
 
   for(int i = 1; i < solucao.size() - 3; i++){
     for(int j = 1; j < solucao.size() - 4; j++){
@@ -321,7 +336,7 @@ vector<int> orOpt3(vector<int> solucao){
       } 
     }
   }
-
+ // cout << "menor: " << menor << endl;
   return melhor;
 }
 
@@ -339,99 +354,154 @@ double calculaDeltaOrOpt3(int i, int j, vector<int> s){
 }
 
 
-vector<int> rvnd(vector<int> solucao){ // seg fault  - nao entra no case;
+vector<int> rvnd(vector<int> solucao){
   vector<int> s = solucao;
   vector<int> nLista = {0,1,2,3,4};
   double custo = custoTotal(solucao);
-  int sel, pos , habilita;
+  int sel, pos;
 
-  while(!nLista.empty()){ // seg fault
-    printSolution(nLista);
-    sel = -1;
+  while(!nLista.empty()){
     int k = rand() % 5;
-    cout << "k = " << k << endl;
+    //cout << "k = " << k << endl;
 
     for(int i = 0; i < nLista.size(); i++){
       if(nLista[i] == k){
         sel = k;
-        pos = i;
+        pos = i; //erro: pos 1 quando só tem um elemento
+        break;
       }
-    }
-    if(sel != -1){    cout << "sel = " << sel << endl; 
-      switch(sel){
-        case 0:{
-          cout << "swap" << endl;
-          if(custo > custoTotal(swap(s))){
-            s = swap(s);
-            custo = custoTotal(s);
-            
-            nLista.erase(nLista.begin() + pos);
-
-            
-          }
-          break;
-        }
-        
-        case 1:{
-          if(custo > custoTotal(TwoOptN(s))){
-            cout << "2optn" <<endl;
-            s = TwoOptN(s);
-            custo = custoTotal(s);
-            
-            nLista.erase(nLista.begin() + pos);
-
-            
-          }
-          break;
-        }
-
-        case 2:{
-          if(custo > custoTotal(reIsertion(s))){
-              cout << "reinsertion" <<endl;
-              s = reIsertion(s);
-              custo = custoTotal(s);
-              
-              nLista.erase(nLista.begin() + pos);
-
-              
-            }
-            break;
-        }
-
-        case 3:{
-          if(custo > custoTotal(orOpt2(s))){
-            cout << "oropt2" << endl;
-            s = orOpt2(s);
-            custo = custoTotal(s);
-            
-            nLista.erase(nLista.begin() + pos);
-
-            
-          }
-          break;
-        }
-        case 4:{
-          if(custo > custoTotal(orOpt3(s))){
-            cout << "oropt3" << endl;
-            s = orOpt3(s);
-            custo = custoTotal(s);
-            
-            nLista.erase(nLista.begin() + pos);
-
-            
-          }
-        }
+      else
+      {
+        sel = -1;
       }
+      
     }
+    //printSolution(nLista);
+    //cout << "sel = " << sel << endl;
+    //cout << "pos = " << pos << endl;
+
+    if(sel != -1){
+     if(sel == 0){
+       //cout << "entrou swap" << endl;
+       if(custo > custoTotal(swap(s))){
+        //cout << "swap" << endl;
+         s = swap(s);
+         custo = custoTotal(s);
+       }
+       else
+         nLista.erase(nLista.begin() + pos);
+       
+     }
+
+     if(sel == 1){
+       //cout << "entrou 2optn" <<endl;
+       if(custo > custoTotal(twoOptN(s))){
+        // cout << "2optn" <<endl;
+         s = twoOptN(s);
+         custo = custoTotal(s);
+       }
+       else
+         nLista.erase(nLista.begin() + pos);
+     }
+
+     if(sel == 2){
+       //cout << "entrou reinsertion" <<endl;
+       if(custo > custoTotal(reInsertion(s))){
+         //cout << "reinsertion" <<endl;
+         s = reInsertion(s);
+         custo = custoTotal(s);
+       }
+       else
+         nLista.erase(nLista.begin() + pos);
+     }
+
+     if(sel == 3){
+       //cout << "entrou oropt2" <<endl;
+       if(custo > custoTotal(orOpt2(s))){
+        // cout << "oropt2" <<endl;
+         s = orOpt2(s);
+         custo = custoTotal(s);
+       }
+       else
+         nLista.erase(nLista.begin() + pos);
+     }
+
+     if(sel == 4){
+       //cout << "entrou oropt3" <<endl;
+       //printSolution(s);
+       if(custo > custoTotal(orOpt3(s))){
+         //cout << "oropt3" <<endl;
+         s = orOpt3(s);
+         custo = custoTotal(s);
+       }
+       else
+         nLista.erase(nLista.begin() + pos);
+     }
+    }
+  
   }
   return s;
 }
 
 
+vector<int> perturb(vector<int> solucao){ // swap de subsequencias
+  vector<int> s = solucao;
+  int inicio, fim, p, tam;
+
+  do{
+    tam = ceil(((double)dimension)/10);
+    inicio = 1 + rand() % (solucao.size() / 2);
+    fim  =  inicio + rand() % tam; // tamanho maximo n/10;
+    p = rand() % solucao.size() - 2;
+    }while(p + fim - inicio > solucao.size() - 2 || p <= fim || inicio == fim);
+    //cout << "inicio: " << inicio << " fim: " << fim << " p: "<< p << endl;
+
+    for(int i = inicio; i <= fim; i++){
+      s[i] = solucao[p+i-inicio];
+    }
+    for(int j = p; j <= p + (fim - inicio); j++){
+        s[j] = solucao[j-p+inicio];
+    }  
+  
+  
+  
+  return s;
+  
+}
+
+
+vector<int> gils_rvnd(int i_max, int i_ils){
+  vector<int> s, s1, melhor;
+  double fs = 0;
+  for(int i = 1; i < i_max; i++){
+    double alfa = (rand() % 11)*0.1;
+    s = construction(alfa);
+    s1 = s;
+    int iter_ils = 0;
+
+    while(iter_ils < i_ils){
+      s = rvnd(s);
+      if(custoTotal(s) < custoTotal(s1)){
+        s1 = s;
+        iter_ils = 0;
+      }
+      s = perturb(s1);
+      iter_ils++;
+    }
+    if(custoTotal(s1) < fs || fs == 0){
+      melhor = s1;
+      fs = custoTotal(s1);
+    }
+  }
+  return melhor;
+}
+
+
 double custoTotal(vector<int>solucao){
   double custo = 0;
-  for(int i = 0, j = 1; i < solucao.size(); i++, j++){
+  for(int i = 0, j = 1; i < solucao.size() - 1; i++, j++){
      custo = custo + matrizAdj[solucao[i]][solucao[j]];
   }
   return custo;
 }
+
