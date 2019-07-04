@@ -20,20 +20,20 @@ vector<int> construction(double alfa);
 void printSolution(vector<int> anyVector);
 void candidates();
 bool comp(const CustoIn& a, const CustoIn& b);
-vector<CustoIn> calculaCusto(vector<int> listaCandidatos, vector<int> s);
-vector<int> swap(vector<int> solucao);
-double calculaDeltaSwap(int i, int j, vector<int> s);
-vector<int> reInsertion(vector<int>solucao);
-double custoTotal(vector<int>solucao);
-double calculaDeltaReInsertion(int i, int j, vector<int> s);
-vector<int> twoOptN(vector<int> solucao);
-double calculaDeltaTwoOpt(int i, int j, vector<int> s);
-vector<int> orOpt2(vector<int> solucao);
-double calculaDeltaOrOpt2(int i, int j, vector<int> s);
-vector<int> orOpt3(vector<int> solucao);
-double calculaDeltaOrOpt3(int i, int j, vector<int> s);
-vector<int> rvnd(vector<int> solucao);
-vector<int> perturb(vector<int> solucao);
+vector<CustoIn> calculaCusto(vector<int> listaCandidatos, vector<int> &s);
+vector<int> swap(vector<int> &solucao);
+double calculaDeltaSwap(int i, int j, vector<int> &s);
+vector<int> reInsertion(vector<int> &solucao);
+double custoTotal(vector<int> &solucao);
+double calculaDeltaReInsertion(int i, int j, vector<int> &s);
+vector<int> twoOptN(vector<int> &solucao);
+double calculaDeltaTwoOpt(int i, int j, vector<int> &s);
+vector<int> orOpt2(vector<int> &solucao);
+double calculaDeltaOrOpt2(int i, int j, vector<int> &s);
+vector<int> orOpt3(vector<int> &solucao);
+double calculaDeltaOrOpt3(int i, int j, vector<int> &s);
+vector<int> rvnd(vector<int> &solucao);
+vector<int> perturb(vector<int> &solucao);
 vector<int> gils_rvnd(int i_max, int i_ils);
 
 int main(int argc, char** argv) {
@@ -78,7 +78,7 @@ void printData() {
   }
 }
 
-vector<int> construction(double alfa){ // corrigir alpha
+vector<int> construction(double alfa){ 
   vector<int> s = {1,1};// lista de cidades da solução inicial
   vector<int> listaCandidatos;
   for(int i = 2; i <= dimension; i++){
@@ -92,7 +92,7 @@ vector<int> construction(double alfa){ // corrigir alpha
   }
 
   vector<CustoIn> custoInsertion = calculaCusto(listaCandidatos, s);
-  std::sort(custoInsertion.begin(), custoInsertion.end(), comp);
+  std::sort(custoInsertion.begin(), custoInsertion.end(), comp); // ordena de forma crescente de acordo com os custos
 
   int sel;
   while(!listaCandidatos.empty()){
@@ -134,7 +134,7 @@ void printSolution(vector<int> anyVector){ // printa um vetor qualquer
     return a.custo < b.custo;
   }
 
-vector<CustoIn> calculaCusto(vector<int> listaCandidatos, vector<int> s){
+vector<CustoIn> calculaCusto(vector<int> listaCandidatos, vector<int> &s){
   vector<CustoIn> custoInsertion ((s.size() - 1) * listaCandidatos.size());
   for(int i = 0, j = 1, l = 0; i < s.size()-1; i++, j++){
     for(auto k : listaCandidatos){
@@ -149,7 +149,7 @@ vector<CustoIn> calculaCusto(vector<int> listaCandidatos, vector<int> s){
 
 }
 
-vector<int> swap(vector<int> solucao){
+vector<int> swap(vector<int> &solucao){
   vector<int> solCopy = solucao;
   vector<int> melhor;
   double d;
@@ -173,7 +173,7 @@ vector<int> swap(vector<int> solucao){
 
 }
 
-double calculaDeltaSwap(int i, int j, vector<int> s){
+double calculaDeltaSwap(int i, int j, vector<int> &s){
   double delta;
   if(i == 1 && j < 4){
     delta = matrizAdj[s[i-1]][s[j]] + matrizAdj[s[i]][s[j+1]] - matrizAdj[s[i-1]][s[i]] - matrizAdj[s[j]][s[j+1]];
@@ -190,7 +190,7 @@ double calculaDeltaSwap(int i, int j, vector<int> s){
   return delta; 
 }
 
-vector<int> reInsertion(vector<int>solucao){
+vector<int> reInsertion(vector<int> &solucao){
   vector<int> solCopy = solucao;
   double menor = 0;
   vector<int> melhor = solucao;
@@ -215,7 +215,7 @@ vector<int> reInsertion(vector<int>solucao){
   return melhor;
 }
 
-double calculaDeltaReInsertion(int i, int j, vector<int> s){
+double calculaDeltaReInsertion(int i, int j, vector<int> &s){
   double delta;
   if(i <= j){
     delta = matrizAdj[s[i]][s[j+1]] + matrizAdj[s[i]][s[j]] + matrizAdj[s[i-1]][s[i+1]] - matrizAdj[s[j]][s[j+1]] - matrizAdj[s[i]][s[i-1]] - matrizAdj[s[i]][s[i+1]];
@@ -228,7 +228,7 @@ double calculaDeltaReInsertion(int i, int j, vector<int> s){
 
 }
 
-vector<int> twoOptN(vector<int> solucao){
+vector<int> twoOptN(vector<int> &solucao){
   vector<int> solCopy = solucao;
   vector<int> solInverted = solucao;
   double delta , menor = 0;
@@ -252,7 +252,7 @@ vector<int> twoOptN(vector<int> solucao){
     return solInverted;
 }
 
-double calculaDeltaTwoOpt(int i, int j, vector<int> s){
+double calculaDeltaTwoOpt(int i, int j, vector<int> &s){
   double delta;
   if(j == (i + 1)){
     delta = matrizAdj[s[i-1]][s[j]] + matrizAdj[s[i]][s[j+1]] - matrizAdj[s[i-1]][s[j-1]] - matrizAdj[s[j]][s[j+1]];
@@ -263,7 +263,7 @@ double calculaDeltaTwoOpt(int i, int j, vector<int> s){
   return delta;
 }
 
-vector<int> orOpt2(vector<int> solucao){
+vector<int> orOpt2(vector<int> &solucao){
   vector<int> solCopy = solucao;
   vector<int> melhor = solucao;
   double menor = 0;
@@ -290,7 +290,7 @@ vector<int> orOpt2(vector<int> solucao){
   return melhor;
 }
 
-double calculaDeltaOrOpt2(int i, int j, vector<int> s){
+double calculaDeltaOrOpt2(int i, int j, vector<int> &s){
   double delta;
   if(i < j){
     delta = matrizAdj[s[i-1]][s[i+2]] + matrizAdj[s[i]][s[j+1]] + matrizAdj[s[i+1]][s[j+2]] - matrizAdj[s[i]][s[i-1]] - matrizAdj[s[i+1]][s[i+2]] - matrizAdj[s[j+1]][s[j+2]];
@@ -302,7 +302,7 @@ double calculaDeltaOrOpt2(int i, int j, vector<int> s){
   return delta;
 }
 
-vector<int> orOpt3(vector<int> solucao){
+vector<int> orOpt3(vector<int> &solucao){
   vector<int> solCopy = solucao;
   vector<int> melhor = solucao;
   double menor = 0;
@@ -327,7 +327,7 @@ vector<int> orOpt3(vector<int> solucao){
 }
 
 
-double calculaDeltaOrOpt3(int i, int j, vector<int> s){
+double calculaDeltaOrOpt3(int i, int j, vector<int> &s){
   double delta;
   if(i < j){
     delta = matrizAdj[s[i-1]][s[i+3]] + matrizAdj[s[i]][s[j+2]] + matrizAdj[s[i+2]][s[j+3]] - matrizAdj[s[i]][s[i-1]] - matrizAdj[s[i+2]][s[i+3]] - matrizAdj[s[j+2]][s[j+3]];
@@ -340,7 +340,7 @@ double calculaDeltaOrOpt3(int i, int j, vector<int> s){
 }
 
 
-vector<int> rvnd(vector<int> solucao){
+vector<int> rvnd(vector<int> &solucao){
   vector<int> s = solucao;
   vector<int> sMod;
   vector<int> nLista = {0,1,2,3,4};
@@ -360,7 +360,6 @@ vector<int> rvnd(vector<int> solucao){
       {
         sel = -1;
       }
-      
     }
 
     if(sel != -1){
@@ -426,7 +425,7 @@ vector<int> rvnd(vector<int> solucao){
 }
 
 
-vector<int> perturb(vector<int> solucao){ 
+vector<int> perturb(vector<int> &solucao){ 
   vector<int> s = solucao;
   int inicio, fim, p, tam;
 
@@ -477,7 +476,7 @@ vector<int> gils_rvnd(int i_max, int i_ils){
 }
 
 
-double custoTotal(vector<int>solucao){
+double custoTotal(vector<int> &solucao){
   double custo = 0;
   for(int i = 0, j = 1; i < solucao.size() - 1; i++, j++){
      custo = custo + matrizAdj[solucao[i]][solucao[j]];
