@@ -13,7 +13,7 @@ double ** matrizAdj; // matriz de adjacencia
 double ** matrizDist; // matriz reorganizada;
 int dimension; // quantidade total de vertices
 vector<int> cidades;
-vector<int> candidatos;
+vector<int> solucaum;
 
 void printData();
 vector<int> construction(double alfa);
@@ -21,18 +21,18 @@ void printSolution(vector<int> anyVector);
 void candidates();
 bool comp(const CustoIn& a, const CustoIn& b);
 vector<CustoIn> calculaCusto(vector<int> listaCandidatos, vector<int> &s);
-vector<int> swap(vector<int> &solucao);
+void swap(vector<int> &solucao);
 double calculaDeltaSwap(int i, int j, vector<int> &s);
-vector<int> reInsertion(vector<int> &solucao);
+void reInsertion(vector<int> &solucao);
 double custoTotal(vector<int> &solucao);
 double calculaDeltaReInsertion(int i, int j, vector<int> &s);
-vector<int> twoOptN(vector<int> &solucao);
+void twoOptN(vector<int> &solucao);
 double calculaDeltaTwoOpt(int i, int j, vector<int> &s);
-vector<int> orOpt2(vector<int> &solucao);
+void orOpt2(vector<int> &solucao);
 double calculaDeltaOrOpt2(int i, int j, vector<int> &s);
-vector<int> orOpt3(vector<int> &solucao);
+void orOpt3(vector<int> &solucao);
 double calculaDeltaOrOpt3(int i, int j, vector<int> &s);
-vector<int> rvnd(vector<int> &solucao);
+void rvnd(vector<int> &solucao);
 vector<int> perturb(vector<int> &solucao);
 vector<int> gils_rvnd(int i_max, int i_ils);
 
@@ -53,7 +53,10 @@ int main(int argc, char** argv) {
       i_ils = dimension;
     }
 
-    //candidatos = construction(0.5);
+    //cidades = construction(0.5);
+    //printSolution(cidades);
+    //rvnd(cidades);
+    //printSolution(cidades);
    // printSolution(candidatos);
    // cidades = perturb(candidatos);
     cidades = gils_rvnd(i_max, i_ils);
@@ -149,28 +152,27 @@ vector<CustoIn> calculaCusto(vector<int> listaCandidatos, vector<int> &s){
 
 }
 
-vector<int> swap(vector<int> &solucao){
+void swap(vector<int> &solucao){ // yo necessito de apenas dois vectores
   vector<int> solCopy = solucao;
-  vector<int> melhor;
-  double d;
-  double menor;
+  double d , menor;
+  int pos_i = -1, pos_j = -1;
   for(int i = 1; i < solucao.size() - 1; i++){ // excluir da operação a primeira e a ultima posição do vetor
     for(int j = 1; j < solucao.size() - 1; j++){ 
       if(i <= j){ // nao repetir swap
-        int aux = solucao[i];
-        solCopy[i] = solucao[j];
-        solCopy[j] = aux;
-        d = calculaDeltaSwap(i,j, solucao);
-        if(d <= menor || (i == 1 && j == 1)){
+        d = calculaDeltaSwap(i,j, solCopy);
+       if(d <= menor || (i == 1 && j == 1)){
           menor = d;
-          melhor = solCopy;
+          pos_i = i;
+          pos_j = j;
         }
-        solCopy = solucao;
       }
     }
+  } 
+  if(pos_i > 0){
+    int aux = solCopy[pos_i];
+    solucao[pos_i] = solCopy[pos_j];
+    solucao[pos_j] = aux;
   }
-  return melhor;
-
 }
 
 double calculaDeltaSwap(int i, int j, vector<int> &s){
@@ -190,29 +192,28 @@ double calculaDeltaSwap(int i, int j, vector<int> &s){
   return delta; 
 }
 
-vector<int> reInsertion(vector<int> &solucao){
+void reInsertion(vector<int> &solucao){
   vector<int> solCopy = solucao;
   double menor = 0;
-  vector<int> melhor = solucao;
   double d; 
+  int pos_i = -1, pos_j = -1;
   for(int i = 1; i < solucao.size() - 1; i++){
     for(int j = 1; j < solucao.size() - 1; j++){
       if(i != j){
-      solCopy.erase(solCopy.begin() + i);
-      solCopy.insert(solCopy.begin() + j, solucao[i]);
-       //d = custoTotal(solCopy) - fs;
-       d = calculaDeltaReInsertion(i,j,solucao);
-       //cout <<"i:"<< i << "  j:"<< j << "  delta = " << d2 << endl;
-      if(d <= menor || (i == 1 && j == 1)){
-        menor = d;
-        melhor = solCopy;
-      }
-      solCopy = solucao;
+        d = calculaDeltaReInsertion(i,j,solCopy);
+        if(d <= menor){
+          menor = d;
+          pos_i = i;
+          pos_j = j;
+        }
       }
     }
      
   }
-  return melhor;
+  if(pos_i > 0){
+    solucao.erase(solucao.begin() + pos_i);
+    solucao.insert(solucao.begin() + pos_j, solCopy[pos_i]);
+  }  
 }
 
 double calculaDeltaReInsertion(int i, int j, vector<int> &s){
@@ -223,33 +224,30 @@ double calculaDeltaReInsertion(int i, int j, vector<int> &s){
   else{
   delta = matrizAdj[s[i]][s[j-1]] + matrizAdj[s[i]][s[j]] + matrizAdj[s[i-1]][s[i+1]] - matrizAdj[s[j]][s[j-1]] - matrizAdj[s[i]][s[i-1]] - matrizAdj[s[i]][s[i+1]];
       }
-  //cout << "Delta Re: "<< delta << endl;
   return delta;
 
 }
 
-vector<int> twoOptN(vector<int> &solucao){
+void twoOptN(vector<int> &solucao){
   vector<int> solCopy = solucao;
-  vector<int> solInverted = solucao;
   double delta , menor = 0;
+  int pos_i = -1, pos_j;
     for(int i = 1; i < solucao.size() - 2; i++){
       for(int j = i + 1; j < solucao.size() - 1; j++){
-        solCopy = solucao;
-        for(int k = i; k <= j; k++){
-          solCopy[k] = solucao[j + i - k];
-        }
-        //d = custoTotal(solCopy) - fs;
-        //cout << "i: "<<i<<"j: "<<j <<"delta = "<<d<<endl;
-        delta = calculaDeltaTwoOpt(i, j, solucao);
-        //cout << "i: "<<i<<"j: "<<j <<"d = "<<delta<<endl;
+        delta = calculaDeltaTwoOpt(i, j, solCopy);
         if(delta <= menor){
           menor = delta;
-          solInverted = solCopy;
+          pos_i = i;
+          pos_j = j;
+          
         }
       }
     }
-      
-    return solInverted;
+    if(pos_i > 0){
+      for(int k = pos_i; k <= pos_j; k++){
+        solucao[k] = solCopy[pos_j + pos_i - k];
+      }
+    }
 }
 
 double calculaDeltaTwoOpt(int i, int j, vector<int> &s){
@@ -263,31 +261,27 @@ double calculaDeltaTwoOpt(int i, int j, vector<int> &s){
   return delta;
 }
 
-vector<int> orOpt2(vector<int> &solucao){
+void orOpt2(vector<int> &solucao){
   vector<int> solCopy = solucao;
-  vector<int> melhor = solucao;
   double menor = 0;
   double delta;
+  int pos_i = -1, pos_j;
   for(int i = 1; i < solucao.size() - 2; i++){
     for(int j = 1; j < solucao.size() - 3; j++){
       if(i != j){
-        solCopy = solucao;
-        solCopy.erase(solCopy.begin() + i, solCopy.begin() + i + 2);
-        solCopy.insert(solCopy.begin() + j, &solucao[i], &solucao[i] + 2);
-        
-        delta = calculaDeltaOrOpt2(i,j,solucao);
+        delta = calculaDeltaOrOpt2(i,j,solCopy);
         if(delta <= menor){
           menor = delta;
-          melhor = solCopy;
-        }
-        
-      }
-      
-    }
-     
+          pos_i = i;
+          pos_j = j;
+        } 
+      }  
+    }    
   }
-  
-  return melhor;
+  if(pos_i > 0){
+    solucao.erase(solucao.begin() + pos_i, solucao.begin() + pos_i + 2);
+    solucao.insert(solucao.begin() + pos_j, &solCopy[pos_i], &solCopy[pos_i] + 2);
+  }
 }
 
 double calculaDeltaOrOpt2(int i, int j, vector<int> &s){
@@ -302,28 +296,29 @@ double calculaDeltaOrOpt2(int i, int j, vector<int> &s){
   return delta;
 }
 
-vector<int> orOpt3(vector<int> &solucao){
+void orOpt3(vector<int> &solucao){
   vector<int> solCopy = solucao;
-  vector<int> melhor = solucao;
   double menor = 0;
   double delta;
+  int pos_i = -1, pos_j;
 
   for(int i = 1; i < solucao.size() - 3; i++){
     for(int j = 1; j < solucao.size() - 4; j++){
       if(i != j){
-        solCopy = solucao;
-        solCopy.erase(solCopy.begin() + i, solCopy.begin() + i + 3);
-        solCopy.insert(solCopy.begin() + j, &solucao[i], &solucao[i] + 3);
-        delta = calculaDeltaOrOpt3(i, j, solucao);
+        delta = calculaDeltaOrOpt3(i, j, solCopy);
         if(delta <= menor){
           menor = delta;
-          melhor = solCopy;
-        }
+          pos_i = i;
+          pos_j = j;
+          
+        } 
       } 
     }
   }
- // cout << "menor: " << menor << endl;
-  return melhor;
+  if(pos_i > 0){
+    solucao.erase(solucao.begin() + pos_i, solucao.begin() + pos_i + 3);
+    solucao.insert(solucao.begin() + pos_j, &solCopy[pos_i], &solCopy[pos_i] + 3);
+  }
 }
 
 
@@ -340,11 +335,10 @@ double calculaDeltaOrOpt3(int i, int j, vector<int> &s){
 }
 
 
-vector<int> rvnd(vector<int> &solucao){
+void rvnd(vector<int> &solucao){
   vector<int> s = solucao;
-  vector<int> sMod;
   vector<int> nLista = {0,1,2,3,4};
-  double custo = custoTotal(solucao);
+  double custo = custoTotal(s);
   int sel, pos;
 
   while(!nLista.empty()){
@@ -364,64 +358,72 @@ vector<int> rvnd(vector<int> &solucao){
 
     if(sel != -1){
      if(sel == 0){
-       sMod = swap(s);
-       double custoswap = custoTotal(sMod);
+       swap(solucao);
+       double custoswap = custoTotal(solucao);
        if(custo > custoswap){
-         s = sMod;
          custo = custoswap;
+         s = solucao;
        }
-       else
+       else{
+         solucao = s;
          nLista.erase(nLista.begin() + pos);
+       }
        
      }
 
      if(sel == 1){ 
-        sMod = twoOptN(s);
-        double custo2opt = custoTotal(sMod);
+        twoOptN(solucao);
+        double custo2opt = custoTotal(solucao);
        if(custo > custo2opt){
-         s = sMod;
          custo = custo2opt;
+         s = solucao;
        }
-       else
+       else{
+         solucao = s;
          nLista.erase(nLista.begin() + pos);
+       }
      }
 
      if(sel == 2){
-       sMod = reInsertion(s);
-       double custoReinsert = custoTotal(sMod);
+       reInsertion(solucao);
+       double custoReinsert = custoTotal(solucao);
        if(custo > custoReinsert){
-         s = sMod;
          custo = custoReinsert;
+         s = solucao;
        }
-       else
+       else{
+         solucao = s;
          nLista.erase(nLista.begin() + pos);
+       }
      }
 
      if(sel == 3){
-       sMod = orOpt2(s);
-       double custoOrOpt2 = custoTotal(sMod);
+       orOpt2(solucao);
+       double custoOrOpt2 = custoTotal(solucao);
        if(custo > custoOrOpt2){
-         s = sMod;
          custo = custoOrOpt2;
+         s = solucao;
        }
-       else
+       else{
+         solucao = s;
          nLista.erase(nLista.begin() + pos);
+       }
      }
 
      if(sel == 4){
-       sMod = orOpt3(s);
-       double custoOrOpt3 = custoTotal(sMod);
+       orOpt3(s);
+       double custoOrOpt3 = custoTotal(solucao);
        if(custo > custoOrOpt3){
-         s = sMod;
+         s = solucao;
          custo = custoOrOpt3;
        }
-       else
+       else{
+         solucao = s;
          nLista.erase(nLista.begin() + pos);
+       }
      }
     }
-  
   }
-  return s;
 }
 
 
@@ -458,7 +460,7 @@ vector<int> gils_rvnd(int i_max, int i_ils){
     int iter_ils = 0;
 
     while(iter_ils < i_ils){
-      s = rvnd(s);
+      rvnd(s);
       fs1 = custoTotal(s1);
       if(custoTotal(s) < fs1){
         s1 = s;
