@@ -6,6 +6,7 @@
 #include <ctime>
 #include <algorithm>
 #include <cmath>
+#include <limits>
 
 using namespace std;
 
@@ -34,7 +35,7 @@ double calculaDeltaOrOpt2(int i, int j, vector<int> &s);
 void orOpt3(vector<int> &solucao);
 double calculaDeltaOrOpt3(int i, int j, vector<int> &s);
 void rvnd(vector<int> &solucao);
-void perturb(vector<int> &solucao);
+vector<int> perturb(vector<int> solucao);
 vector<int> gils_rvnd(int i_max, int i_ils);
 
 int main(int argc, char** argv) {
@@ -64,12 +65,12 @@ int main(int argc, char** argv) {
     printSolution(cidades);
     valor = custoTotal(cidades);
     cout << "custo: " << custoTotal(cidades) << endl;
-
+    //cidades = construction(0.5);
+    //swap(cidades);
     //printData();
     return 0;
 
     
-
 }
 
 void printData() {
@@ -104,8 +105,11 @@ vector<int> construction(double alfa){
       sel = 0;
     }
     else{
-    sel = rand() % ((int)(custoInsertion.size() * alfa)); // escolhe um nó dentro de uma faixa definida por alfa(varia de 0 até 1)
+      sel = rand() % ((int)std::floor(alfa * (custoInsertion.size() - 1)) + 1); // escolhe um nó dentro de uma faixa definida por alfa
     }
+
+    //cout << "sel: " << sel << endl;
+
     s.insert(s.begin() + custoInsertion[sel].arestaOut + 1, custoInsertion[sel].noIn); // insere o nó na solucao
     
     for(int i = 0; i < listaCandidatos.size(); i++){
@@ -155,30 +159,23 @@ vector<CustoIn> calculaCusto(vector<int> listaCandidatos, vector<int> &s){
 void swap(vector<int> &solucao){ // faz a troca de posição entre dois nós
   vector<int> s = solucao;
   double delta , menor;
+  //double fs = custoTotal(s);
   int pos_i = -1, pos_j = -1; // guarda as posições para realizar a operação
   for(int i = 1; i < solucao.size() - 1; i++){ // exclui da operação a primeira e a ultima posição do vetor
-    for(int j = 1; j < solucao.size() - 1; j++){ 
+    for(int j = 1; j < solucao.size() - 1; j++){
       if(i <= j){ // nao repetir swap
-       if(i == 1 && j < 4){
-        delta = matrizAdj[s[i-1]][s[j]] + matrizAdj[s[i]][s[j+1]] - matrizAdj[s[i-1]][s[i]] - matrizAdj[s[j]][s[j+1]];
-        }
-        else{
-          if(i + 1 == j){
-            delta = matrizAdj[s[i-1]][s[j]] + matrizAdj[s[i]][s[j+1]] - matrizAdj[s[i-1]][s[j-1]] - matrizAdj[s[j]][s[j+1]];
+        delta = calculaDeltaSwap(i,j,s);
+        //d = custoTotal(solucao) - fs;
+        //cout <<"delta real: " << d << " delta calc: " << delta << endl;
+        if(delta <= menor || (i == 1 && j == 1)){
+            menor = delta;
+            pos_i = i;
+            pos_j = j;
           }
-          else{
-            delta = matrizAdj[s[i]][s[j-1]] + matrizAdj[s[i]][s[j+1]] + matrizAdj[s[j]][s[i-1]] + matrizAdj[s[j]][s[i+1]] - matrizAdj[s[i]][s[i-1]] - matrizAdj[s[i]][s[i+1]] - matrizAdj[s[j]][s[j-1]] - matrizAdj[s[j]][s[j+1]];
-          }
-        }
-       if(delta <= menor || (i == 1 && j == 1)){
-          menor = delta;
-          pos_i = i;
-          pos_j = j;
-        }
       }
     }
   } 
-  if(pos_i > 0){ // realiza a operação
+   if(pos_i > 0){ // realiza a operação
     int aux = s[pos_i];
     solucao[pos_i] = s[pos_j];
     solucao[pos_j] = aux;
@@ -187,17 +184,12 @@ void swap(vector<int> &solucao){ // faz a troca de posição entre dois nós
 
  inline double calculaDeltaSwap(int i, int j, vector<int> &s){
   double delta;
-  if(i == 1 && j < 4){
-    delta = matrizAdj[s[i-1]][s[j]] + matrizAdj[s[i]][s[j+1]] - matrizAdj[s[i-1]][s[i]] - matrizAdj[s[j]][s[j+1]];
-  }
-  else{
     if(i + 1 == j){
-      delta = matrizAdj[s[i-1]][s[j]] + matrizAdj[s[i]][s[j+1]] - matrizAdj[s[i-1]][s[j-1]] - matrizAdj[s[j]][s[j+1]];
+      delta = matrizAdj[s[i-1]][s[j]] + matrizAdj[s[i]][s[j+1]] - matrizAdj[s[i-1]][s[j-1]] - matrizAdj[s[i+1]][s[j+1]];
     }
     else{
     delta = matrizAdj[s[i]][s[j-1]] + matrizAdj[s[i]][s[j+1]] + matrizAdj[s[j]][s[i-1]] + matrizAdj[s[j]][s[i+1]] - matrizAdj[s[i]][s[i-1]] - matrizAdj[s[i]][s[i+1]] - matrizAdj[s[j]][s[j-1]] - matrizAdj[s[j]][s[j+1]];
         }
-  }
   //cout << "delta swap: " << delta <<endl; 
   return delta; 
 }
@@ -457,7 +449,7 @@ void rvnd(vector<int> &solucao){
 }
 
 
-void perturb(vector<int> &solucao){ 
+vector<int> perturb(vector<int> solucao){ 
   vector<int> s = solucao;
 
   int tam_max = ceil(((double)dimension)/10); // tamanho maximo das subsequencias                             
@@ -475,48 +467,48 @@ void perturb(vector<int> &solucao){
 
   //cout << "inicio1: " << ini1 << "fim1: " << fim1 << "inicio2: " << ini2 << "fim2: " << fim2 << endl;
 
-  solucao.erase(solucao.begin() + inicio2, solucao.begin() + fim2 + 1); // apaga primeira subsequencia
-  solucao.erase(solucao.begin() + inicio1, solucao.begin() + fim1 + 1); // apaga segunda subsequencia
-  solucao.insert(solucao.begin() + inicio1, &s[inicio2], &s[fim2] + 1);  // inclui a segunda subsequencia na posicao da primeira
-  solucao.insert(solucao.begin() + inicio2 + (-1*(d1 - d2)) , &s[inicio1], &s[fim1] + 1); // inclui a segunda subsequencia na posicao da segunda
+  s.erase(s.begin() + inicio2, s.begin() + fim2 + 1); // apaga primeira subsequencia
+  s.erase(s.begin() + inicio1, s.begin() + fim1 + 1); // apaga segunda subsequencia
+  s.insert(s.begin() + inicio1, &solucao[inicio2], &solucao[fim2] + 1);  // inclui a segunda subsequencia na posicao da primeira
+  s.insert(s.begin() + inicio2 + (-1*(d1 - d2)) , &solucao[inicio1], &solucao[fim1] + 1); // inclui a segunda subsequencia na posicao da segunda
 
     
     
-  //return s;
+  return s;
   
 }
 
 
 vector<int> gils_rvnd(int i_max, int i_ils){
-  vector<int> s, s1, melhor;
-  double fs1; 
-  double fs = 0;
+  vector<int> sl, s, sf; // s', s, s*
+  double ff = std::numeric_limits<double>::infinity(); // custo final
+  double alfa , fs1; 
+  int iter_ils;
   for(int i = 1; i < i_max; i++){
-    double alfa = (rand() % 11)*0.1;
-    s = construction(alfa);
-    s1 = s;
-    int iter_ils = 0;
-
+    alfa = (double)rand() / RAND_MAX; // gera aleatorio entre 0 e 1
+    s = construction(alfa); // constroi solucao inicial
+    sl = s;
+    iter_ils = 0;
     while(iter_ils < i_ils){
-      rvnd(s);
-      fs1 = custoTotal(s1);
+      rvnd(s); // explora as estruturas de vizinhança
+      fs1 = custoTotal(sl);
       if(custoTotal(s) < fs1){
-        s1 = s;
+        sl = s;
         iter_ils = 0;
       }
-      perturb(s);
-      iter_ils++;
+      s = perturb(sl); // perturba a solução evitando resultado ótimo local
+      iter_ils = iter_ils+1;
     }
-    if(fs1 < fs || fs == 0){
-      melhor = s1;
-      fs = fs1;
+    if(fs1 < ff){
+      sf = sl;
+      ff = fs1;
     }
   }
-  return melhor;
+  return sf; // retorna a melhor solucao
 }
 
 
-inline double custoTotal(vector<int> &solucao){
+inline double custoTotal(vector<int> &solucao){ // explora a matriz e retorna o custo de uma solucao
   double custo = 0;
   for(int i = 0, j = 1; i < solucao.size() - 1; i++, j++){
      custo = custo + matrizAdj[solucao[i]][solucao[j]];
