@@ -25,21 +25,20 @@ void printSolution(vector<int> anyVector);
 void candidates();
 bool comp(const CustoIn& a, const CustoIn& b);
 vector<CustoIn> calculaCusto(vector<int> listaCandidatos, vector<int> &s);
-void swap(vector<int> &solucao);
+void swap(vector<int> &solucao, double &custo);
 double calculaDeltaSwap(int i, int j, vector<int> &s);
-void reInsertion(vector<int> &solucao);
+void reInsertion(vector<int> &solucao, double &custo);
 double custoTotal(vector<int> &solucao);
 double calculaDeltaReInsertion(int i, int j, vector<int> &s);
-void twoOptN(vector<int> &solucao);
+void twoOptN(vector<int> &solucao, double &custo);
 double calculaDeltaTwoOpt(int i, int j, vector<int> &s);
-void orOpt2(vector<int> &solucao);
+void orOpt2(vector<int> &solucao, double &custo);
 double calculaDeltaOrOpt2(int i, int j, vector<int> &s);
-void orOpt3(vector<int> &solucao);
+void orOpt3(vector<int> &solucao, double &custo);
 double calculaDeltaOrOpt3(int i, int j, vector<int> &s);
-void rvnd(vector<int> &solucao);
+void rvnd(vector<int> &solucao, double &valor_obj);
 vector<int> perturb(vector<int> &solucao);
 vector<int> gils_rvnd(int i_max, int i_ils);
-
 
 int main(int argc, char** argv) {
 
@@ -86,7 +85,7 @@ void printData() {
   }
 }
 
-vector<int> construction(double alfa){ 
+vector<int> construction(double alfa, double &custo){ 
   vector<int> s = {1,1};// lista de cidades da solução inicial
   vector<int> listaCandidatos;
   for(int i = 2; i <= dimension; i++){
@@ -125,11 +124,9 @@ vector<int> construction(double alfa){
     std::sort(custoInsertion.begin(), custoInsertion.end(), comp); // ordena os custos
 
   }
-
+  custo = custoTotal(s);
   return s;
-
 }
-
 
 void printSolution(vector<int> anyVector){ // printa um vetor qualquer
    vector<int>::iterator v = anyVector.begin(); 
@@ -159,7 +156,7 @@ vector<CustoIn> calculaCusto(vector<int> listaCandidatos, vector<int> &s){
 
 }
 
-void swap(vector<int> &solucao){ // faz a troca de posição entre dois nós
+void swap(vector<int> &solucao, double &custo){ // faz a troca de posição entre dois nós
   vector<int> s = solucao;
   double delta;
   double menor = std::numeric_limits<double>::infinity();
@@ -172,19 +169,19 @@ void swap(vector<int> &solucao){ // faz a troca de posição entre dois nós
         delta = calculaDeltaSwap(i,j,s);
         //d = custoTotal(solucao) - fs;
         //cout <<"delta real: " << d << " delta calc: " << delta << endl;
-        if(delta <= menor){
+      if(delta < 0){
+        if(delta < menor){
             menor = delta;
             pos_i = i;
             pos_j = j;
         }
-      //}
+      }
     }
   } 
    if(pos_i > 0){ // realiza a operação
-    int aux = s[pos_i];
     solucao[pos_i] = s[pos_j];
-    solucao[pos_j] = aux;
-    
+    solucao[pos_j] = s[pos_i];
+    custo = custo + menor;
   }
 }
 
@@ -200,7 +197,7 @@ void swap(vector<int> &solucao){ // faz a troca de posição entre dois nós
   return delta; 
 }
 
-void reInsertion(vector<int> &solucao){ // reinsere um nó em posição diferente
+void reInsertion(vector<int> &solucao, double &custo){ // reinsere um nó em posição diferente
   vector<int> s = solucao;
   double menor = 0;
   double delta; 
@@ -208,24 +205,21 @@ void reInsertion(vector<int> &solucao){ // reinsere um nó em posição diferent
   for(int i = 1; i < solucao.size() - 1; i++){ // varre a solução exceto o 0 e o final
     for(int j = 1; j < solucao.size() - 1; j++){
       if(i != j){ // exclui a posição inicial do nó
-         if(i < j){
-            delta = matrizAdj[s[i]][s[j+1]] + matrizAdj[s[i]][s[j]] + matrizAdj[s[i-1]][s[i+1]] - matrizAdj[s[j]][s[j+1]] - matrizAdj[s[i]][s[i-1]] - matrizAdj[s[i]][s[i+1]];
+         delta = calculaDeltaReInsertion(i,j,s);
+        if(delta < 0){
+          if(delta < menor){
+              menor = delta;
+              pos_i = i;
+              pos_j = j;
           }
-         else{
-            delta = matrizAdj[s[i]][s[j-1]] + matrizAdj[s[i]][s[j]] + matrizAdj[s[i-1]][s[i+1]] - matrizAdj[s[j]][s[j-1]] - matrizAdj[s[i]][s[i-1]] - matrizAdj[s[i]][s[i+1]];
-          }
-        if(delta <= menor){
-          menor = delta;
-          pos_i = i;
-          pos_j = j;
         }
       }
-    }
-     
+    } 
   }
   if(pos_i > 0){
     solucao.erase(solucao.begin() + pos_i);
     solucao.insert(solucao.begin() + pos_j, s[pos_i]);
+    custo = custo + menor;
   }  
 }
 
@@ -241,23 +235,19 @@ inline double calculaDeltaReInsertion(int i, int j, vector<int> &s){
 
 }
 
-void twoOptN(vector<int> &solucao){ // inverte uma subsequencia da solução
+void twoOptN(vector<int> &solucao, double &custo){ // inverte uma subsequencia da solução
   vector<int> s = solucao;
   double delta , menor = 0;
   int pos_i = -1, pos_j;
     for(int i = 1; i < solucao.size() - 2; i++){
       for(int j = i + 1; j < solucao.size() - 1; j++){
-        if(j == (i + 1)){
-          delta = matrizAdj[s[i-1]][s[j]] + matrizAdj[s[i]][s[j+1]] - matrizAdj[s[i-1]][s[j-1]] - matrizAdj[s[j]][s[j+1]];
-        }
-        else{
-          delta = matrizAdj[s[i-1]][s[j]] + matrizAdj[s[i]][s[j+1]] - matrizAdj[s[i-1]][s[i]] - matrizAdj[s[j]][s[j+1]];
-        }
-        if(delta <= menor){
-          menor = delta;
-          pos_i = i;
-          pos_j = j;
-          
+        delta = calculaDeltaTwoOpt(i,j,s);
+        if(delta < 0){
+          if(delta < menor){
+            menor = delta;
+            pos_i = i;
+            pos_j = j;
+          }
         }
       }
     }
@@ -265,6 +255,7 @@ void twoOptN(vector<int> &solucao){ // inverte uma subsequencia da solução
       for(int k = pos_i; k <= pos_j; k++){ // invertendo as posições
         solucao[k] = s[pos_j + pos_i - k];
       }
+      custo = custo + menor;
     }
 }
 
@@ -279,7 +270,7 @@ inline double calculaDeltaTwoOpt(int i, int j, vector<int> &s){
   return delta;
 }
 
-void orOpt2(vector<int> &solucao){ // reinsere subsequencia de dois nós em posição diferente
+void orOpt2(vector<int> &solucao, double &custo){ // reinsere subsequencia de dois nós em posição diferente
   vector<int> s = solucao;
   double menor = 0;
   double delta;
@@ -287,23 +278,21 @@ void orOpt2(vector<int> &solucao){ // reinsere subsequencia de dois nós em posi
   for(int i = 1; i < solucao.size() - 2; i++){
     for(int j = 1; j < solucao.size() - 3; j++){
       if(i != j){
-         if(i < j){
-            delta = matrizAdj[s[i-1]][s[i+2]] + matrizAdj[s[i]][s[j+1]] + matrizAdj[s[i+1]][s[j+2]] - matrizAdj[s[i]][s[i-1]] - matrizAdj[s[i+1]][s[i+2]] - matrizAdj[s[j+1]][s[j+2]];
+        delta = calculaDeltaOrOpt2(i,j,s);
+        if(delta < 0){
+          if(delta < menor){
+            menor = delta;
+            pos_i = i;
+            pos_j = j;
           }
-          else { 
-            delta = matrizAdj[s[i]][s[j-1]] + matrizAdj[s[i+1]][s[j]] + matrizAdj[s[i+2]][s[i-1]] - matrizAdj[s[j]][s[j-1]] - matrizAdj[s[i]][s[i-1]] - matrizAdj[s[i+1]][s[i+2]];
-          }
-        if(delta <= menor){
-          menor = delta;
-          pos_i = i;
-          pos_j = j;
-        } 
+        }
       }  
     }    
   }
   if(pos_i > 0){
     solucao.erase(solucao.begin() + pos_i, solucao.begin() + pos_i + 2);
     solucao.insert(solucao.begin() + pos_j, &s[pos_i], &s[pos_i] + 2);
+    custo = custo + menor;
   }
 }
 
@@ -319,7 +308,7 @@ inline double calculaDeltaOrOpt2(int i, int j, vector<int> &s){
   return delta;
 }
 
-void orOpt3(vector<int> &solucao){ // reinsere subsequencia de tres nós em posição diferente
+void orOpt3(vector<int> &solucao, double &custo){ // reinsere subsequencia de tres nós em posição diferente
   vector<int> s = solucao;
   double menor = 0;
   double delta;
@@ -328,24 +317,21 @@ void orOpt3(vector<int> &solucao){ // reinsere subsequencia de tres nós em posi
   for(int i = 1; i < solucao.size() - 3; i++){
     for(int j = 1; j < solucao.size() - 4; j++){
       if(i != j){
-        if(i < j){
-          delta = matrizAdj[s[i-1]][s[i+3]] + matrizAdj[s[i]][s[j+2]] + matrizAdj[s[i+2]][s[j+3]] - matrizAdj[s[i]][s[i-1]] - matrizAdj[s[i+2]][s[i+3]] - matrizAdj[s[j+2]][s[j+3]];
+       delta = calculaDeltaOrOpt3(i,j,s);
+        if(delta < 0){
+          if(delta < menor){
+            menor = delta;
+            pos_i = i;
+            pos_j = j;
+          }
         }
-        else { 
-          delta = matrizAdj[s[i]][s[j-1]] + matrizAdj[s[i+2]][s[j]] + matrizAdj[s[i-1]][s[i+3]] - matrizAdj[s[j]][s[j-1]] - matrizAdj[s[i]][s[i-1]] - matrizAdj[s[i+2]][s[i+3]];
-        }
-        if(delta <= menor){
-          menor = delta;
-          pos_i = i;
-          pos_j = j;
-          
-        } 
       } 
     }
   }
   if(pos_i > 0){
     solucao.erase(solucao.begin() + pos_i, solucao.begin() + pos_i + 3);
     solucao.insert(solucao.begin() + pos_j, &s[pos_i], &s[pos_i] + 3);
+    custo = custo + menor;
   }
 }
 
@@ -362,11 +348,10 @@ inline double calculaDeltaOrOpt3(int i, int j, vector<int> &s){
   return delta;
 }
 
-void rvnd(vector<int> &solucao){
+void rvnd(vector<int> &solucao, double &custo){
   vector<int> s = solucao;
   vector<int> nLista = {0,1,2,3,4}; // lista de estruturas
-  double custo = custoTotal(s); // custo inicial
-  double custoMod; 
+  double custoMod =  custo; 
   int sel, pos;
 
   while(!nLista.empty()){ // roda enquanto existirem estruturas de vizinhança na lista
@@ -375,27 +360,27 @@ void rvnd(vector<int> &solucao){
     
     switch(nLista[k]){
       case 0:
-        swap(solucao);
+        swap(solucao, custoMod);
         break;
 
       case 1:
-        reInsertion(solucao);
+        reInsertion(solucao, custoMod);
         break;
       
       case 2:
-        twoOptN(solucao);
+        twoOptN(solucao, custoMod);
         break;
 
       case 3:
-        orOpt2(solucao);
+        orOpt2(solucao, custoMod);
         break;
 
       case 4:
-        orOpt3(solucao);
+        orOpt3(solucao, custoMod);
         break;
     }
     
-    custoMod = custoTotal(solucao); // calcula o custo do Movimento
+    //custoMod = custoTotal(solucao); // calcula o custo do Movimento
 
     if(custo > custoMod){ // movimento melhorou o custo
       custo = custoMod; 
@@ -404,11 +389,11 @@ void rvnd(vector<int> &solucao){
     else { // nao melhorou, exclui o movimento da lista
       solucao = s;
       nLista.erase(nLista.begin() + k);
+      custoMod = custo;
     }
 
   }
 }
-
 
 vector<int> perturb(vector<int> &solucao){ 
   vector<int> s = solucao;
@@ -439,36 +424,34 @@ vector<int> perturb(vector<int> &solucao){
   
 }
 
-
-
 vector<int> gils_rvnd(int i_max, int i_ils){
-  vector<int> sl, s, sf; // s', s, s*
-  double ff = std::numeric_limits<double>::infinity(); // custo final
-  double alfa , fs1; 
-  int iter_ils;
-  for(int i = 1; i < i_max; i++){
-    alfa = (double)rand() / RAND_MAX; // gera aleatorio entre 0 e 1
-    s = construction(alfa); // constroi solucao inicial
-    sl = s;
-    iter_ils = 0;
-    while(iter_ils < i_ils){
-      rvnd(s); // explora as estruturas de vizinhança
-      fs1 = custoTotal(sl);
-      if(custoTotal(s) < fs1){
-        sl = s;
-        iter_ils = 0;
+  double ff = numeric_limits<double>::infinity(); // custo final
+  vector<int> s, s1, sf; // s, s', s*
+  double fs, fs1; 
+  for (int i = 0; i < i_max; i++){
+    double alfa = (double)rand() / RAND_MAX; // gera aleatorio entre 0 e 1
+    s = construction(alfa, fs); // constroi solucao inicial
+    s1 = s; 
+    fs1 = fs; 
+    int iter_ILS = 0;
+    while (iter_ILS < i_ils){
+      rvnd(s, fs); // explora as estruturas de vizinhança
+      if (fs < fs1){
+        s1 = s;
+        fs1 = fs;
+        iter_ILS = 0;
       }
-      s = perturb(sl); // perturba a solução evitando resultado ótimo local
-      iter_ils = iter_ils+1;
+      s = perturb(s1); // perturba a solução evitando resultado ótimo local
+      fs = custoTotal(s);
+      iter_ILS++;
     }
-    if(fs1 < ff){
-      sf = sl;
+    if (fs1 < ff){
+      sf = s1;
       ff = fs1;
     }
   }
   return sf; // retorna a melhor solucao
 }
-
 
 inline double custoTotal(vector<int> &solucao){ // explora a matriz e retorna o custo de uma solucao
   double custo = 0;
