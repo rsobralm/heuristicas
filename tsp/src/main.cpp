@@ -8,6 +8,8 @@
 #include <cmath>
 #include <limits>
 #include <random>
+#include <sys/timeb.h>
+#include <sys/resource.h>
 
 
 using namespace std;
@@ -18,6 +20,14 @@ int dimension; // quantidade total de vertices
 vector<int> cidades;
 vector<int> solucaum;
 vector<int> candidatos;
+
+double tempo_construction = 0;
+double tempo_swap = 0;
+double tempo_reinsertion = 0;
+double tempo_2opt = 0;
+double tempo_orOpt2 = 0;
+double tempo_orOpt3 = 0;
+
 
 void printData();
 vector<int> construction(double alfa);
@@ -39,6 +49,8 @@ double calculaDeltaOrOpt3(int i, int j, vector<int> &s);
 void rvnd(vector<int> &solucao, double &valor_obj);
 vector<int> perturb(vector<int> &solucao);
 vector<int> gils_rvnd(int i_max, int i_ils);
+double cpuTime();
+void printTime();
 
 int main(int argc, char** argv) {
 
@@ -57,6 +69,7 @@ int main(int argc, char** argv) {
       i_ils = dimension;
     }
 
+    double before = cpuTime();
     //candidatos = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
     //printSolution(candidatos);
     //rvnd(cidades);
@@ -67,12 +80,17 @@ int main(int argc, char** argv) {
     printSolution(cidades);
     valor = custoTotal(cidades);
     cout << "custo: " << custoTotal(cidades) << endl;
+
+    double after = cpuTime();
     //cidades = construction(0.5);
     //swap(cidades);
     //printData();
-    return 0;
-
+    double tempo_total = after - before;
+    cout << "\nTempo de Execucao: "<< tempo_total << endl; 
     
+    printTime();
+
+    return 0;    
 }
 
 void printData() {
@@ -86,6 +104,9 @@ void printData() {
 }
 
 vector<int> construction(double alfa, double &custo){ 
+
+  double inicioconstruction = cpuTime();
+
   vector<int> s = {1,1};// lista de cidades da solução inicial
   vector<int> listaCandidatos;
   for(int i = 2; i <= dimension; i++){
@@ -124,6 +145,10 @@ vector<int> construction(double alfa, double &custo){
     std::sort(custoInsertion.begin(), custoInsertion.end(), comp); // ordena os custos
 
   }
+
+  double fimConstruction = cpuTime();
+  tempo_construction += (fimConstruction - inicioconstruction);
+
   custo = custoTotal(s);
   return s;
 }
@@ -151,12 +176,15 @@ vector<CustoIn> calculaCusto(vector<int> listaCandidatos, vector<int> &s){
       l++;
     }
   }
-  return custoInsertion;
 
+
+  return custoInsertion;
 
 }
 
 void swap(vector<int> &solucao, double &custo){ // faz a troca de posição entre dois nós
+
+  double inicioSwap = cpuTime();
   vector<int> s = solucao;
   double delta;
   double menor = std::numeric_limits<double>::infinity();
@@ -183,6 +211,9 @@ void swap(vector<int> &solucao, double &custo){ // faz a troca de posição entr
     solucao[pos_j] = s[pos_i];
     custo = custo + menor;
   }
+  double fimSwap = cpuTime();
+  tempo_swap += (fimSwap - inicioSwap);
+
 }
 
  inline double calculaDeltaSwap(int i, int j, vector<int> &s){
@@ -198,6 +229,7 @@ void swap(vector<int> &solucao, double &custo){ // faz a troca de posição entr
 }
 
 void reInsertion(vector<int> &solucao, double &custo){ // reinsere um nó em posição diferente
+  double inicioreinsertion = cpuTime();
   vector<int> s = solucao;
   double menor = 0;
   double delta; 
@@ -220,7 +252,9 @@ void reInsertion(vector<int> &solucao, double &custo){ // reinsere um nó em pos
     solucao.erase(solucao.begin() + pos_i);
     solucao.insert(solucao.begin() + pos_j, s[pos_i]);
     custo = custo + menor;
-  }  
+  }
+  double fimReinsertion =  cpuTime();
+  tempo_reinsertion += (fimReinsertion - inicioreinsertion);
 }
 
 inline double calculaDeltaReInsertion(int i, int j, vector<int> &s){
@@ -236,6 +270,7 @@ inline double calculaDeltaReInsertion(int i, int j, vector<int> &s){
 }
 
 void twoOptN(vector<int> &solucao, double &custo){ // inverte uma subsequencia da solução
+  double inicio2opt = cpuTime();
   vector<int> s = solucao;
   double delta , menor = 0;
   int pos_i = -1, pos_j;
@@ -257,6 +292,8 @@ void twoOptN(vector<int> &solucao, double &custo){ // inverte uma subsequencia d
       }
       custo = custo + menor;
     }
+    double fim2opt = cpuTime();
+    tempo_2opt += (fim2opt - inicio2opt);
 }
 
 inline double calculaDeltaTwoOpt(int i, int j, vector<int> &s){
@@ -271,6 +308,7 @@ inline double calculaDeltaTwoOpt(int i, int j, vector<int> &s){
 }
 
 void orOpt2(vector<int> &solucao, double &custo){ // reinsere subsequencia de dois nós em posição diferente
+  double inicioOropt2 = cpuTime();
   vector<int> s = solucao;
   double menor = 0;
   double delta;
@@ -294,6 +332,8 @@ void orOpt2(vector<int> &solucao, double &custo){ // reinsere subsequencia de do
     solucao.insert(solucao.begin() + pos_j, &s[pos_i], &s[pos_i] + 2);
     custo = custo + menor;
   }
+  double fimOropt2 = cpuTime();
+  tempo_orOpt2 += (fimOropt2 - inicioOropt2);
 }
 
 inline double calculaDeltaOrOpt2(int i, int j, vector<int> &s){
@@ -309,6 +349,7 @@ inline double calculaDeltaOrOpt2(int i, int j, vector<int> &s){
 }
 
 void orOpt3(vector<int> &solucao, double &custo){ // reinsere subsequencia de tres nós em posição diferente
+  double inicioOropt3 = cpuTime();
   vector<int> s = solucao;
   double menor = 0;
   double delta;
@@ -333,6 +374,8 @@ void orOpt3(vector<int> &solucao, double &custo){ // reinsere subsequencia de tr
     solucao.insert(solucao.begin() + pos_j, &s[pos_i], &s[pos_i] + 3);
     custo = custo + menor;
   }
+  double fimOropt3 = cpuTime();
+  tempo_orOpt3 += (fimOropt3 - inicioOropt3);
 }
 
 
@@ -461,3 +504,19 @@ inline double custoTotal(vector<int> &solucao){ // explora a matriz e retorna o 
   return custo;
 }
 
+double cpuTime() {
+	static struct rusage usage;
+	getrusage(RUSAGE_SELF, &usage);
+	return ((double)usage.ru_utime.tv_sec)+(((double)usage.ru_utime.tv_usec)/((double)1000000));
+}
+
+void printTime(){
+  cout << "\n" << "Tempo total de execucao da SI: " << tempo_construction;
+  cout << "\n" << "Tempo total de execucao da troca: " << tempo_swap;
+  cout << "\n" << "Tempo total de execucao do Or-opt: " << tempo_reinsertion;
+  cout << "\n" << "Tempo total de execucao do Or-opt2: " << tempo_orOpt2;
+  cout << "\n" << "Tempo total de execucao do Or-opt3: " << tempo_orOpt3;
+  cout << "\n" << "Tempo total de execucao do 2-opt: " << tempo_2opt;
+
+  cout << "\n\n";	
+}
