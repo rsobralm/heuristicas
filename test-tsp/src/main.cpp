@@ -36,7 +36,7 @@ void printData() {
 
 
 void printBestSolution() {
-  cout << "dimension: " << dimension << endl;
+
   for (int i = 0; i < dimension + 1; i++) {
       cout << OptimalRoute[i] << endl;
     }
