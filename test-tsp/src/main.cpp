@@ -14,12 +14,11 @@ void printData();
 void printBestSolution();
 
 int main(int argc, char** argv) {
+
     readData(argc, argv, &dimension, &matrizAdj);
     readSolution(argc, argv, &dimension, &OptimalRoute);
     printData();
     printBestSolution();
-
-
 
     return 0;
 }
@@ -36,9 +35,10 @@ void printData() {
 
 
 void printBestSolution() {
-
+  cout << "\nOptimal Route:" << endl;
   for (int i = 0; i < dimension + 1; i++) {
       cout << OptimalRoute[i] << endl;
     }
     //cout << endl;
   }
+
