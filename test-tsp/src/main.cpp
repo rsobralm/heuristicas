@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
 }
 
 void printData() {
-  cout << "dimension: " << dimension << endl;
+  cout << "Dimension: " << dimension << endl;
   for (size_t i = 1; i <= dimension; i++) {
     for (size_t j = 1; j <= dimension; j++) {
       cout << matrizAdj[i][j] << " ";
