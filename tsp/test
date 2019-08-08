@@ -1,0 +1,5 @@
+for file in instances300/*
+do
+  ./tsp "$file" >> log-tempos.txt
+done
+

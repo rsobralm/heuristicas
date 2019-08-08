@@ -1,0 +1,14 @@
+OPTIONS = -c -O3
+COMP = g++
+
+all: obj/main.o
+	$(COMP) -o tsp obj/main.o  obj/CustoIn.o
+
+obj/main.o: src/main.cpp obj/CustoIn.o
+	$(COMP) $(OPTIONS) src/main.cpp -o obj/main.o
+
+obj/CustoIn.o: src/CustoIn.h src/CustoIn.cpp
+	$(COMP) $(OPTIONS) src/CustoIn.cpp -o obj/CustoIn.o
+
+clean:
+	rm -f *.o tsp

@@ -1,0 +1,620 @@
+instances300/a280.tsp
+Valor Medio da Solucao: 2579
+Tempo Medio de Execucao: 92.9551 (s)
+Tempo medio de execucao da SI: 9.64159 (s)
+Tempo medio de execucao da troca: 10.9244 (s)
+Tempo medio de execucao do Or-opt: 23.7107 (s)
+Tempo medio de execucao do Or-opt2: 22.6644 (s)
+Tempo medio de execucao do Or-opt3: 17.9681 (s)
+Tempo medio de execucao do 2-opt: 7.72483 (s)
+
+instances300/att48.tsp
+Valor Medio da Solucao: 10628
+Tempo Medio de Execucao: 0.340178 (s)
+Tempo medio de execucao da SI: 0.0382287 (s)
+Tempo medio de execucao da troca: 0.0372761 (s)
+Tempo medio de execucao do Or-opt: 0.0770098 (s)
+Tempo medio de execucao do Or-opt2: 0.0716953 (s)
+Tempo medio de execucao do Or-opt3: 0.0573575 (s)
+Tempo medio de execucao do 2-opt: 0.030087 (s)
+
+instances300/bayg29.tsp
+Valor Medio da Solucao: 1610
+Tempo Medio de Execucao: 0.0603297 (s)
+Tempo medio de execucao da SI: 0.0070862 (s)
+Tempo medio de execucao da troca: 0.0063413 (s)
+Tempo medio de execucao do Or-opt: 0.0123564 (s)
+Tempo medio de execucao do Or-opt2: 0.0103879 (s)
+Tempo medio de execucao do Or-opt3: 0.0083183 (s)
+Tempo medio de execucao do 2-opt: 0.0052071 (s)
+
+instances300/bays29.tsp
+Valor Medio da Solucao: 2020
+Tempo Medio de Execucao: 0.0614557 (s)
+Tempo medio de execucao da SI: 0.0068909 (s)
+Tempo medio de execucao da troca: 0.0065537 (s)
+Tempo medio de execucao do Or-opt: 0.012519 (s)
+Tempo medio de execucao do Or-opt2: 0.0106515 (s)
+Tempo medio de execucao do Or-opt3: 0.0084667 (s)
+Tempo medio de execucao do 2-opt: 0.005475 (s)
+
+instances300/berlin52.tsp
+Valor Medio da Solucao: 7542
+Tempo Medio de Execucao: 0.41738 (s)
+Tempo medio de execucao da SI: 0.0508367 (s)
+Tempo medio de execucao da troca: 0.0449071 (s)
+Tempo medio de execucao do Or-opt: 0.0948586 (s)
+Tempo medio de execucao do Or-opt2: 0.091061 (s)
+Tempo medio de execucao do Or-opt3: 0.0699812 (s)
+Tempo medio de execucao do 2-opt: 0.035643 (s)
+
+instances300/bier127.tsp
+Valor Medio da Solucao: 118282
+Tempo Medio de Execucao: 12.0775 (s)
+Tempo medio de execucao da SI: 0.976915 (s)
+Tempo medio de execucao da troca: 1.42398 (s)
+Tempo medio de execucao do Or-opt: 3.10793 (s)
+Tempo medio de execucao do Or-opt2: 3.01791 (s)
+Tempo medio de execucao do Or-opt3: 2.34453 (s)
+Tempo medio de execucao do 2-opt: 1.02676 (s)
+
+instances300/brazil58.tsp
+Valor Medio da Solucao: 25395
+Tempo Medio de Execucao: 0.520872 (s)
+Tempo medio de execucao da SI: 0.0730243 (s)
+Tempo medio de execucao da troca: 0.0558915 (s)
+Tempo medio de execucao do Or-opt: 0.113824 (s)
+Tempo medio de execucao do Or-opt2: 0.113961 (s)
+Tempo medio de execucao do Or-opt3: 0.0874603 (s)
+Tempo medio de execucao do 2-opt: 0.0460522 (s)
+
+instances300/brg180.tsp
+Valor Medio da Solucao: 1950
+Tempo Medio de Execucao: 10.9602 (s)
+Tempo medio de execucao da SI: 1.65488 (s)
+Tempo medio de execucao da troca: 1.00909 (s)
+Tempo medio de execucao do Or-opt: 2.32343 (s)
+Tempo medio de execucao do Or-opt2: 2.40549 (s)
+Tempo medio de execucao do Or-opt3: 2.19805 (s)
+Tempo medio de execucao do 2-opt: 1.28137 (s)
+
+instances300/burma14.tsp
+Valor Medio da Solucao: 3323
+Tempo Medio de Execucao: 0.0061187 (s)
+Tempo medio de execucao da SI: 0.0004159 (s)
+Tempo medio de execucao da troca: 0.000646 (s)
+Tempo medio de execucao do Or-opt: 0.0009293 (s)
+Tempo medio de execucao do Or-opt2: 0.0007222 (s)
+Tempo medio de execucao do Or-opt3: 0.0005983 (s)
+Tempo medio de execucao do 2-opt: 0.0005775 (s)
+
+instances300/ch130.tsp
+Valor Medio da Solucao: 6110
+Tempo Medio de Execucao: 11.938 (s)
+Tempo medio de execucao da SI: 1.03898 (s)
+Tempo medio de execucao da troca: 1.48991 (s)
+Tempo medio de execucao do Or-opt: 2.99596 (s)
+Tempo medio de execucao do Or-opt2: 2.97207 (s)
+Tempo medio de execucao do Or-opt3: 2.25448 (s)
+Tempo medio de execucao do 2-opt: 1.0188 (s)
+
+instances300/ch150.tsp
+Valor Medio da Solucao: 6528
+Tempo Medio de Execucao: 10.5154 (s)
+Tempo medio de execucao da SI: 1.63894 (s)
+Tempo medio de execucao da troca: 1.19549 (s)
+Tempo medio de execucao do Or-opt: 2.49276 (s)
+Tempo medio de execucao do Or-opt2: 2.40362 (s)
+Tempo medio de execucao do Or-opt3: 1.86133 (s)
+Tempo medio de execucao do 2-opt: 0.819463 (s)
+
+instances300/d198.tsp
+Valor Medio da Solucao: 15780
+Tempo Medio de Execucao: 33.7556 (s)
+Tempo medio de execucao da SI: 3.78927 (s)
+Tempo medio de execucao da troca: 4.02728 (s)
+Tempo medio de execucao do Or-opt: 8.15995 (s)
+Tempo medio de execucao do Or-opt2: 8.22418 (s)
+Tempo medio de execucao do Or-opt3: 6.59334 (s)
+Tempo medio de execucao do 2-opt: 2.74542 (s)
+
+instances300/dantzig42.tsp
+Valor Medio da Solucao: 699
+Tempo Medio de Execucao: 0.185054 (s)
+Tempo medio de execucao da SI: 0.0230299 (s)
+Tempo medio de execucao da troca: 0.0198097 (s)
+Tempo medio de execucao do Or-opt: 0.0385659 (s)
+Tempo medio de execucao do Or-opt2: 0.0386419 (s)
+Tempo medio de execucao do Or-opt3: 0.0300093 (s)
+Tempo medio de execucao do 2-opt: 0.0159802 (s)
+
+instances300/eil101.tsp
+Valor Medio da Solucao: 629
+Tempo Medio de Execucao: 4.67448 (s)
+Tempo medio de execucao da SI: 0.388124 (s)
+Tempo medio de execucao da troca: 0.511261 (s)
+Tempo medio de execucao do Or-opt: 1.20024 (s)
+Tempo medio de execucao do Or-opt2: 1.14418 (s)
+Tempo medio de execucao do Or-opt3: 0.899432 (s)
+Tempo medio de execucao do 2-opt: 0.422973 (s)
+
+instances300/eil51.tsp
+Valor Medio da Solucao: 426
+Tempo Medio de Execucao: 0.425281 (s)
+Tempo medio de execucao da SI: 0.0435749 (s)
+Tempo medio de execucao da troca: 0.0453598 (s)
+Tempo medio de execucao do Or-opt: 0.100237 (s)
+Tempo medio de execucao do Or-opt2: 0.0934102 (s)
+Tempo medio de execucao do Or-opt3: 0.072399 (s)
+Tempo medio de execucao do 2-opt: 0.0376621 (s)
+
+instances300/eil76.tsp
+Valor Medio da Solucao: 538
+Tempo Medio de Execucao: 1.73517 (s)
+Tempo medio de execucao da SI: 0.159102 (s)
+Tempo medio de execucao da troca: 0.187168 (s)
+Tempo medio de execucao do Or-opt: 0.427075 (s)
+Tempo medio de execucao do Or-opt2: 0.415397 (s)
+Tempo medio de execucao do Or-opt3: 0.324927 (s)
+Tempo medio de execucao do 2-opt: 0.154064 (s)
+
+instances300/fl417.tsp
+Valor Medio da Solucao: 11861
+Tempo Medio de Execucao: 405.627 (s)
+Tempo medio de execucao da SI: 36.6789 (s)
+Tempo medio de execucao da troca: 56.6106 (s)
+Tempo medio de execucao do Or-opt: 97.2867 (s)
+Tempo medio de execucao do Or-opt2: 101.355 (s)
+Tempo medio de execucao do Or-opt3: 80.9615 (s)
+Tempo medio de execucao do 2-opt: 32.0841 (s)
+
+instances300/fri26.tsp
+Valor Medio da Solucao: 937
+Tempo Medio de Execucao: 0.0403497 (s)
+Tempo medio de execucao da SI: 0.0044207 (s)
+Tempo medio de execucao da troca: 0.004271 (s)
+Tempo medio de execucao do Or-opt: 0.0073372 (s)
+Tempo medio de execucao do Or-opt2: 0.0068823 (s)
+Tempo medio de execucao do Or-opt3: 0.0054027 (s)
+Tempo medio de execucao do 2-opt: 0.0036821 (s)
+
+instances300/gil262.tsp
+Valor Medio da Solucao: 2378.8
+Tempo Medio de Execucao: 90.0692 (s)
+Tempo medio de execucao da SI: 8.1321 (s)
+Tempo medio de execucao da troca: 13.1516 (s)
+Tempo medio de execucao do Or-opt: 21.9872 (s)
+Tempo medio de execucao do Or-opt2: 21.8338 (s)
+Tempo medio de execucao do Or-opt3: 16.9139 (s)
+Tempo medio de execucao do 2-opt: 7.70789 (s)
+
+instances300/gr120.tsp
+Valor Medio da Solucao: 6942
+Tempo Medio de Execucao: 9.3948 (s)
+Tempo medio de execucao da SI: 0.804806 (s)
+Tempo medio de execucao da troca: 1.11985 (s)
+Tempo medio de execucao do Or-opt: 2.38905 (s)
+Tempo medio de execucao do Or-opt2: 2.29618 (s)
+Tempo medio de execucao do Or-opt3: 1.80328 (s)
+Tempo medio de execucao do 2-opt: 0.826059 (s)
+
+instances300/gr137.tsp
+Valor Medio da Solucao: 69853
+Tempo Medio de Execucao: 12.3548 (s)
+Tempo medio de execucao da SI: 1.19743 (s)
+Tempo medio de execucao da troca: 1.41136 (s)
+Tempo medio de execucao do Or-opt: 3.07485 (s)
+Tempo medio de execucao do Or-opt2: 3.09106 (s)
+Tempo medio de execucao do Or-opt3: 2.4192 (s)
+Tempo medio de execucao do 2-opt: 1.00314 (s)
+
+instances300/gr17.tsp
+Valor Medio da Solucao: 2085
+Tempo Medio de Execucao: 0.0111966 (s)
+Tempo medio de execucao da SI: 0.0008049 (s)
+Tempo medio de execucao da troca: 0.0011538 (s)
+Tempo medio de execucao do Or-opt: 0.001779 (s)
+Tempo medio de execucao do Or-opt2: 0.0015463 (s)
+Tempo medio de execucao do Or-opt3: 0.0011666 (s)
+Tempo medio de execucao do 2-opt: 0.0011679 (s)
+
+instances300/gr202.tsp
+Valor Medio da Solucao: 40163.3
+Tempo Medio de Execucao: 38.6272 (s)
+Tempo medio de execucao da SI: 4.24812 (s)
+Tempo medio de execucao da troca: 4.63743 (s)
+Tempo medio de execucao do Or-opt: 9.89968 (s)
+Tempo medio de execucao do Or-opt2: 9.2481 (s)
+Tempo medio de execucao do Or-opt3: 7.18603 (s)
+Tempo medio de execucao do 2-opt: 3.17094 (s)
+
+instances300/gr21.tsp
+Valor Medio da Solucao: 2707
+Tempo Medio de Execucao: 0.0194395 (s)
+Tempo medio de execucao da SI: 0.0020306 (s)
+Tempo medio de execucao da troca: 0.0019989 (s)
+Tempo medio de execucao do Or-opt: 0.0032274 (s)
+Tempo medio de execucao do Or-opt2: 0.0029903 (s)
+Tempo medio de execucao do Or-opt3: 0.0022745 (s)
+Tempo medio de execucao do 2-opt: 0.0018567 (s)
+
+instances300/gr229.tsp
+Valor Medio da Solucao: 134625
+Tempo Medio de Execucao: 59.8141 (s)
+Tempo medio de execucao da SI: 6.25835 (s)
+Tempo medio de execucao da troca: 7.57739 (s)
+Tempo medio de execucao do Or-opt: 15.2079 (s)
+Tempo medio de execucao do Or-opt2: 14.4311 (s)
+Tempo medio de execucao do Or-opt3: 11.095 (s)
+Tempo medio de execucao do 2-opt: 4.94386 (s)
+
+instances300/gr24.tsp
+Valor Medio da Solucao: 1272
+Tempo Medio de Execucao: 0.0295379 (s)
+Tempo medio de execucao da SI: 0.0031094 (s)
+Tempo medio de execucao da troca: 0.0029906 (s)
+Tempo medio de execucao do Or-opt: 0.0053078 (s)
+Tempo medio de execucao do Or-opt2: 0.0048473 (s)
+Tempo medio de execucao do Or-opt3: 0.0038492 (s)
+Tempo medio de execucao do 2-opt: 0.0027247 (s)
+
+instances300/gr48.tsp
+Valor Medio da Solucao: 5046
+Tempo Medio de Execucao: 0.330975 (s)
+Tempo medio de execucao da SI: 0.0382835 (s)
+Tempo medio de execucao da troca: 0.0348311 (s)
+Tempo medio de execucao do Or-opt: 0.0736485 (s)
+Tempo medio de execucao do Or-opt2: 0.0717248 (s)
+Tempo medio de execucao do Or-opt3: 0.0562234 (s)
+Tempo medio de execucao do 2-opt: 0.0287406 (s)
+
+instances300/gr96.tsp
+Valor Medio da Solucao: 55209
+Tempo Medio de Execucao: 3.66114 (s)
+Tempo medio de execucao da SI: 0.3813 (s)
+Tempo medio de execucao da troca: 0.417704 (s)
+Tempo medio de execucao do Or-opt: 0.890685 (s)
+Tempo medio de execucao do Or-opt2: 0.892313 (s)
+Tempo medio de execucao do Or-opt3: 0.689645 (s)
+Tempo medio de execucao do 2-opt: 0.299485 (s)
+
+instances300/hk48.tsp
+Valor Medio da Solucao: 11461
+Tempo Medio de Execucao: 0.35764 (s)
+Tempo medio de execucao da SI: 0.0385029 (s)
+Tempo medio de execucao da troca: 0.0392156 (s)
+Tempo medio de execucao do Or-opt: 0.081689 (s)
+Tempo medio de execucao do Or-opt2: 0.0767397 (s)
+Tempo medio de execucao do Or-opt3: 0.0618211 (s)
+Tempo medio de execucao do 2-opt: 0.029831 (s)
+
+instances300/kroA100.tsp
+Valor Medio da Solucao: 21282
+Tempo Medio de Execucao: 3.76029 (s)
+Tempo medio de execucao da SI: 0.45236 (s)
+Tempo medio de execucao da troca: 0.436695 (s)
+Tempo medio de execucao do Or-opt: 0.904223 (s)
+Tempo medio de execucao do Or-opt2: 0.888244 (s)
+Tempo medio de execucao do Or-opt3: 0.691612 (s)
+Tempo medio de execucao do 2-opt: 0.303847 (s)
+
+instances300/kroA150.tsp
+Valor Medio da Solucao: 26524
+Tempo Medio de Execucao: 11.8308 (s)
+Tempo medio de execucao da SI: 1.68713 (s)
+Tempo medio de execucao da troca: 1.44704 (s)
+Tempo medio de execucao do Or-opt: 2.7822 (s)
+Tempo medio de execucao do Or-opt2: 2.76653 (s)
+Tempo medio de execucao do Or-opt3: 2.10142 (s)
+Tempo medio de execucao do 2-opt: 0.926089 (s)
+
+instances300/kroA200.tsp
+Valor Medio da Solucao: 29368
+Tempo Medio de Execucao: 34.3328 (s)
+Tempo medio de execucao da SI: 4.25434 (s)
+Tempo medio de execucao da troca: 4.72484 (s)
+Tempo medio de execucao do Or-opt: 8.12593 (s)
+Tempo medio de execucao do Or-opt2: 8.05437 (s)
+Tempo medio de execucao do Or-opt3: 6.22168 (s)
+Tempo medio de execucao do 2-opt: 2.74253 (s)
+
+instances300/kroB100.tsp
+Valor Medio da Solucao: 22141
+Tempo Medio de Execucao: 4.14518 (s)
+Tempo medio de execucao da SI: 0.451195 (s)
+Tempo medio de execucao da troca: 0.48716 (s)
+Tempo medio de execucao do Or-opt: 0.993956 (s)
+Tempo medio de execucao do Or-opt2: 1.00781 (s)
+Tempo medio de execucao do Or-opt3: 0.771315 (s)
+Tempo medio de execucao do 2-opt: 0.340491 (s)
+
+instances300/kroB150.tsp
+Valor Medio da Solucao: 26130.2
+Tempo Medio de Execucao: 11.6395 (s)
+Tempo medio de execucao da SI: 1.68176 (s)
+Tempo medio de execucao da troca: 1.41768 (s)
+Tempo medio de execucao do Or-opt: 2.71945 (s)
+Tempo medio de execucao do Or-opt2: 2.72803 (s)
+Tempo medio de execucao do Or-opt3: 2.0702 (s)
+Tempo medio de execucao do 2-opt: 0.905858 (s)
+
+instances300/kroB200.tsp
+Valor Medio da Solucao: 29437.5
+Tempo Medio de Execucao: 37.7751 (s)
+Tempo medio de execucao da SI: 4.24227 (s)
+Tempo medio de execucao da troca: 5.1822 (s)
+Tempo medio de execucao do Or-opt: 9.11545 (s)
+Tempo medio de execucao do Or-opt2: 8.98935 (s)
+Tempo medio de execucao do Or-opt3: 6.9367 (s)
+Tempo medio de execucao do 2-opt: 3.07218 (s)
+
+instances300/kroC100.tsp
+Valor Medio da Solucao: 20749
+Tempo Medio de Execucao: 3.85469 (s)
+Tempo medio de execucao da SI: 0.451542 (s)
+Tempo medio de execucao da troca: 0.459425 (s)
+Tempo medio de execucao do Or-opt: 0.935974 (s)
+Tempo medio de execucao do Or-opt2: 0.901845 (s)
+Tempo medio de execucao do Or-opt3: 0.706476 (s)
+Tempo medio de execucao do 2-opt: 0.313332 (s)
+
+instances300/kroD100.tsp
+Valor Medio da Solucao: 21294
+Tempo Medio de Execucao: 4.39574 (s)
+Tempo medio de execucao da SI: 0.453177 (s)
+Tempo medio de execucao da troca: 0.517865 (s)
+Tempo medio de execucao do Or-opt: 1.06504 (s)
+Tempo medio de execucao do Or-opt2: 1.08241 (s)
+Tempo medio de execucao do Or-opt3: 0.822663 (s)
+Tempo medio de execucao do 2-opt: 0.355665 (s)
+
+instances300/kroE100.tsp
+Valor Medio da Solucao: 22068
+Tempo Medio de Execucao: 4.25472 (s)
+Tempo medio de execucao da SI: 0.454727 (s)
+Tempo medio de execucao da troca: 0.510467 (s)
+Tempo medio de execucao do Or-opt: 1.02221 (s)
+Tempo medio de execucao do Or-opt2: 1.02763 (s)
+Tempo medio de execucao do Or-opt3: 0.797374 (s)
+Tempo medio de execucao do 2-opt: 0.345966 (s)
+
+instances300/lin105.tsp
+Valor Medio da Solucao: 14379
+Tempo Medio de Execucao: 4.7433 (s)
+Tempo medio de execucao da SI: 0.501436 (s)
+Tempo medio de execucao da troca: 0.549584 (s)
+Tempo medio de execucao do Or-opt: 1.13888 (s)
+Tempo medio de execucao do Or-opt2: 1.15956 (s)
+Tempo medio de execucao do Or-opt3: 0.89793 (s)
+Tempo medio de execucao do 2-opt: 0.398245 (s)
+
+instances300/lin318.tsp
+Valor Medio da Solucao: 42079.4
+Tempo Medio de Execucao: 186.557 (s)
+Tempo medio de execucao da SI: 17.8288 (s)
+Tempo medio de execucao da troca: 25.6392 (s)
+Tempo medio de execucao do Or-opt: 46.1692 (s)
+Tempo medio de execucao do Or-opt2: 45.7186 (s)
+Tempo medio de execucao do Or-opt3: 34.8859 (s)
+Tempo medio de execucao do 2-opt: 15.8213 (s)
+
+instances300/linhp318.tsp
+Valor Medio da Solucao: 42058
+Tempo Medio de Execucao: 181.382 (s)
+Tempo medio de execucao da SI: 17.8062 (s)
+Tempo medio de execucao da troca: 24.8709 (s)
+Tempo medio de execucao do Or-opt: 44.753 (s)
+Tempo medio de execucao do Or-opt2: 44.2942 (s)
+Tempo medio de execucao do Or-opt3: 33.8388 (s)
+Tempo medio de execucao do 2-opt: 15.3378 (s)
+
+instances300/pr107.tsp
+Valor Medio da Solucao: 44303
+Tempo Medio de Execucao: 4.93951 (s)
+Tempo medio de execucao da SI: 0.52715 (s)
+Tempo medio de execucao da troca: 0.561574 (s)
+Tempo medio de execucao do Or-opt: 1.19809 (s)
+Tempo medio de execucao do Or-opt2: 1.19577 (s)
+Tempo medio de execucao do Or-opt3: 0.957931 (s)
+Tempo medio de execucao do 2-opt: 0.400504 (s)
+
+instances300/pr124.tsp
+Valor Medio da Solucao: 59030
+Tempo Medio de Execucao: 7.23694 (s)
+Tempo medio de execucao da SI: 0.861285 (s)
+Tempo medio de execucao da troca: 0.785435 (s)
+Tempo medio de execucao do Or-opt: 1.73299 (s)
+Tempo medio de execucao do Or-opt2: 1.78373 (s)
+Tempo medio de execucao do Or-opt3: 1.38928 (s)
+Tempo medio de execucao do 2-opt: 0.576024 (s)
+
+instances300/pr136.tsp
+Valor Medio da Solucao: 96772
+Tempo Medio de Execucao: 14.9556 (s)
+Tempo medio de execucao da SI: 1.21905 (s)
+Tempo medio de execucao da troca: 1.73834 (s)
+Tempo medio de execucao do Or-opt: 3.84613 (s)
+Tempo medio de execucao do Or-opt2: 3.74763 (s)
+Tempo medio de execucao do Or-opt3: 2.89041 (s)
+Tempo medio de execucao do 2-opt: 1.31683 (s)
+
+instances300/pr144.tsp
+Valor Medio da Solucao: 58537
+Tempo Medio de Execucao: 11.7711 (s)
+Tempo medio de execucao da SI: 1.37681 (s)
+Tempo medio de execucao da troca: 1.26539 (s)
+Tempo medio de execucao do Or-opt: 2.89704 (s)
+Tempo medio de execucao do Or-opt2: 2.82549 (s)
+Tempo medio de execucao do Or-opt3: 2.23084 (s)
+Tempo medio de execucao do 2-opt: 1.04059 (s)
+
+instances300/pr152.tsp
+Valor Medio da Solucao: 73682
+Tempo Medio de Execucao: 9.48764 (s)
+Tempo medio de execucao da SI: 1.66838 (s)
+Tempo medio de execucao da troca: 1.0244 (s)
+Tempo medio de execucao do Or-opt: 2.16221 (s)
+Tempo medio de execucao do Or-opt2: 2.09084 (s)
+Tempo medio de execucao do Or-opt3: 1.72551 (s)
+Tempo medio de execucao do 2-opt: 0.725209 (s)
+
+instances300/pr226.tsp
+Valor Medio da Solucao: 80369
+Tempo Medio de Execucao: 46.7019 (s)
+Tempo medio de execucao da SI: 5.75978 (s)
+Tempo medio de execucao da troca: 5.4946 (s)
+Tempo medio de execucao do Or-opt: 10.8283 (s)
+Tempo medio de execucao do Or-opt2: 11.501 (s)
+Tempo medio de execucao do Or-opt3: 9.34979 (s)
+Tempo medio de execucao do 2-opt: 3.5336 (s)
+
+instances300/pr264.tsp
+Valor Medio da Solucao: 49135
+Tempo Medio de Execucao: 67.0009 (s)
+Tempo medio de execucao da SI: 9.546 (s)
+Tempo medio de execucao da troca: 7.51288 (s)
+Tempo medio de execucao do Or-opt: 16.7485 (s)
+Tempo medio de execucao do Or-opt2: 15.6205 (s)
+Tempo medio de execucao do Or-opt3: 11.8804 (s)
+Tempo medio de execucao do 2-opt: 5.44591 (s)
+
+instances300/pr299.tsp
+Valor Medio da Solucao: 48191.6
+Tempo Medio de Execucao: 132.588 (s)
+Tempo medio de execucao da SI: 14.5555 (s)
+Tempo medio de execucao da troca: 17.423 (s)
+Tempo medio de execucao do Or-opt: 32.5389 (s)
+Tempo medio de execucao do Or-opt2: 32.0059 (s)
+Tempo medio de execucao do Or-opt3: 25.3063 (s)
+Tempo medio de execucao do 2-opt: 10.3633 (s)
+
+instances300/pr76.tsp
+Valor Medio da Solucao: 108159
+Tempo Medio de Execucao: 1.48907 (s)
+Tempo medio de execucao da SI: 0.177424 (s)
+Tempo medio de execucao da troca: 0.157809 (s)
+Tempo medio de execucao do Or-opt: 0.358779 (s)
+Tempo medio de execucao do Or-opt2: 0.350305 (s)
+Tempo medio de execucao do Or-opt3: 0.265516 (s)
+Tempo medio de execucao do 2-opt: 0.123441 (s)
+
+instances300/rat195.tsp
+Valor Medio da Solucao: 2325.8
+Tempo Medio de Execucao: 29.1517 (s)
+Tempo medio de execucao da SI: 3.19729 (s)
+Tempo medio de execucao da troca: 3.22678 (s)
+Tempo medio de execucao do Or-opt: 7.46701 (s)
+Tempo medio de execucao do Or-opt2: 7.06867 (s)
+Tempo medio de execucao do Or-opt3: 5.42057 (s)
+Tempo medio de execucao do 2-opt: 2.57043 (s)
+
+instances300/rat99.tsp
+Valor Medio da Solucao: 1211
+Tempo Medio de Execucao: 4.38641 (s)
+Tempo medio de execucao da SI: 0.388536 (s)
+Tempo medio de execucao da troca: 0.497357 (s)
+Tempo medio de execucao do Or-opt: 1.11852 (s)
+Tempo medio de execucao do Or-opt2: 1.0708 (s)
+Tempo medio de execucao do Or-opt3: 0.822687 (s)
+Tempo medio de execucao do 2-opt: 0.384196 (s)
+
+instances300/rd100.tsp
+Valor Medio da Solucao: 7910
+Tempo Medio de Execucao: 4.33499 (s)
+Tempo medio de execucao da SI: 0.450569 (s)
+Tempo medio de execucao da troca: 0.511987 (s)
+Tempo medio de execucao do Or-opt: 1.06818 (s)
+Tempo medio de execucao do Or-opt2: 1.04278 (s)
+Tempo medio de execucao do Or-opt3: 0.80518 (s)
+Tempo medio de execucao do 2-opt: 0.358323 (s)
+
+instances300/rd400.tsp
+Valor Medio da Solucao: 15305.9
+Tempo Medio de Execucao: 506.759 (s)
+Tempo medio de execucao da SI: 34.2836 (s)
+Tempo medio de execucao da troca: 79.5179 (s)
+Tempo medio de execucao do Or-opt: 129.695 (s)
+Tempo medio de execucao do Or-opt2: 124.394 (s)
+Tempo medio de execucao do Or-opt3: 95.9723 (s)
+Tempo medio de execucao do 2-opt: 42.0081 (s)
+
+instances300/si175.tsp
+Valor Medio da Solucao: 21407
+Tempo Medio de Execucao: 16.3174 (s)
+Tempo medio de execucao da SI: 2.22884 (s)
+Tempo medio de execucao da troca: 1.61271 (s)
+Tempo medio de execucao do Or-opt: 3.81187 (s)
+Tempo medio de execucao do Or-opt2: 3.95753 (s)
+Tempo medio de execucao do Or-opt3: 3.0446 (s)
+Tempo medio de execucao do 2-opt: 1.53042 (s)
+
+instances300/st70.tsp
+Valor Medio da Solucao: 675
+Tempo Medio de Execucao: 1.14981 (s)
+Tempo medio de execucao da SI: 0.129705 (s)
+Tempo medio de execucao da troca: 0.127161 (s)
+Tempo medio de execucao do Or-opt: 0.267835 (s)
+Tempo medio de execucao do Or-opt2: 0.268596 (s)
+Tempo medio de execucao do Or-opt3: 0.209318 (s)
+Tempo medio de execucao do 2-opt: 0.096775 (s)
+
+instances300/swiss42.tsp
+Valor Medio da Solucao: 1273
+Tempo Medio de Execucao: 0.175732 (s)
+Tempo medio de execucao da SI: 0.0229437 (s)
+Tempo medio de execucao da troca: 0.0186705 (s)
+Tempo medio de execucao do Or-opt: 0.0375385 (s)
+Tempo medio de execucao do Or-opt2: 0.0359667 (s)
+Tempo medio de execucao do Or-opt3: 0.0281198 (s)
+Tempo medio de execucao do 2-opt: 0.0147434 (s)
+
+instances300/ts225.tsp
+Valor Medio da Solucao: 126643
+Tempo Medio de Execucao: 30.3456 (s)
+Tempo medio de execucao da SI: 5.98769 (s)
+Tempo medio de execucao da troca: 2.89163 (s)
+Tempo medio de execucao do Or-opt: 6.79183 (s)
+Tempo medio de execucao do Or-opt2: 7.03401 (s)
+Tempo medio de execucao do Or-opt3: 5.28461 (s)
+Tempo medio de execucao do 2-opt: 2.21647 (s)
+
+instances300/tsp225.tsp
+Valor Medio da Solucao: 3916
+Tempo Medio de Execucao: 47.6479 (s)
+Tempo medio de execucao da SI: 5.24101 (s)
+Tempo medio de execucao da troca: 5.89197 (s)
+Tempo medio de execucao do Or-opt: 11.7921 (s)
+Tempo medio de execucao do Or-opt2: 11.5997 (s)
+Tempo medio de execucao do Or-opt3: 8.98782 (s)
+Tempo medio de execucao do 2-opt: 3.89079 (s)
+
+instances300/u159.tsp
+Valor Medio da Solucao: 42080
+Tempo Medio de Execucao: 11.4129 (s)
+Tempo medio de execucao da SI: 1.94213 (s)
+Tempo medio de execucao da troca: 1.20993 (s)
+Tempo medio de execucao do Or-opt: 2.55311 (s)
+Tempo medio de execucao do Or-opt2: 2.67169 (s)
+Tempo medio de execucao do Or-opt3: 2.08153 (s)
+Tempo medio de execucao do 2-opt: 0.852311 (s)
+
+instances300/ulysses16.tsp
+Valor Medio da Solucao: 6859
+Tempo Medio de Execucao: 0.0117571 (s)
+Tempo medio de execucao da SI: 0.0008163 (s)
+Tempo medio de execucao da troca: 0.0011536 (s)
+Tempo medio de execucao do Or-opt: 0.0018131 (s)
+Tempo medio de execucao do Or-opt2: 0.001572 (s)
+Tempo medio de execucao do Or-opt3: 0.0011986 (s)
+Tempo medio de execucao do 2-opt: 0.0012476 (s)
+
+instances300/ulysses22.tsp
+Valor Medio da Solucao: 7013
+Tempo Medio de Execucao: 0.0227079 (s)
+Tempo medio de execucao da SI: 0.0022588 (s)
+Tempo medio de execucao da troca: 0.0023703 (s)
+Tempo medio de execucao do Or-opt: 0.0040089 (s)
+Tempo medio de execucao do Or-opt2: 0.0034914 (s)
+Tempo medio de execucao do Or-opt3: 0.0027302 (s)
+Tempo medio de execucao do 2-opt: 0.0022026 (s)
+

@@ -1,0 +1,31 @@
+arquivo nao pode ser aberto
+arquivo nao pode ser aberto
+1
+2
+14
+3
+4
+5
+6
+12
+7
+13
+8
+11
+9
+10
+1
+custo: 3323
+
+Tempo de Execucao: 0.013494
+
+Tempo total de execucao da SI: 0.00089
+Tempo total de execucao da troca: 0.001382
+Tempo total de execucao do Or-opt: 0.002102
+Tempo total de execucao do Or-opt2: 0.001586
+Tempo total de execucao do Or-opt3: 0.001354
+Tempo total de execucao do 2-opt: 0.001279
+
+instances/burma14.tsp
+Valor Medio da Solucao: 3323
+Tempo Medio de Execucao: 0.0082441 (s)

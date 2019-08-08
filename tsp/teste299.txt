@@ -1,0 +1,10 @@
+instances/pr299.tsp
+Valor Medio da Solucao: 48191
+Tempo Medio de Execucao: 134.289 (s)
+Tempo medio de execucao da SI: 14.6626 (s)
+Tempo medio de execucao da troca: 17.5544 (s)
+Tempo medio de execucao do Or-opt: 32.967 (s)
+Tempo medio de execucao do Or-opt2: 32.5427 (s)
+Tempo medio de execucao do Or-opt3: 25.6491 (s)
+Tempo medio de execucao do 2-opt: 10.5068 (s)
+
