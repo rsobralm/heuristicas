@@ -77,7 +77,24 @@ void printBestSolution() {
   }
 
 void verificaMatriz(vector< vector<int> > inception){
-  for(int i = 1; i <= dimension; i++){
-    cout << "Cliente: " << i << " Mais Proximo Disponivel: " << inception[i-1][1] << " Selecionado:"  << OptimalRoute[i] <<endl;   
+  int pos, pos2;
+  int somapos = 0;
+  int cont = 1;
+  for(int i = 0; i < dimension; i++){
+    for(int j = 0; j < dimension; j++){
+      if(OptimalRoute[j] == inception[i][0]){
+        pos = j;
+      }
+    }
+    //cout << OptimalRoute[pos] << endl;
+    for(int k = 0; k < dimension; k++){
+      if(OptimalRoute[pos+1] == inception[i][k]){
+        pos2 = k;
+        somapos += pos2;
+      }
+    }
+  cout << "Cliente: " << i+1 << " Mais Proximo: " << inception[i][1] << " Selecionado:"  << OptimalRoute[pos+1]<< " Classificacao: " << pos2 <<endl;
   }
+  cout << "Valor Medio = " << (somapos/dimension) << endl;
 }
+  
