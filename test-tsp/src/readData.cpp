@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <cmath>
+#include <vector>
 
 using namespace std;
 
@@ -409,7 +410,7 @@ double CalcDistGeo ( double *latit, double *longit, int I, int J )
 
 
 
-void readSolution( int argc, char** argv, int* Dimension, int** optimal_route)
+void readSolution( int argc, char** argv, int* Dimension, vector<int>&optimal_route)
 {
   if (argc < 3) {
       cout << "\nFaltando parametros\n";
@@ -452,7 +453,8 @@ void readSolution( int argc, char** argv, int* Dimension, int** optimal_route)
     *Dimension = N;
     //*Mdist = dist;
     int solution[N];
-    int *solucao = new int[N];
+    //int *solucao = new int[N];
+    std::vector<int> solucao;
 
   while(arquivo.compare("TOUR_SECTION") != 0){
     in >> arquivo;
@@ -462,9 +464,10 @@ void readSolution( int argc, char** argv, int* Dimension, int** optimal_route)
     if(solution[j] == -1){
         solution[j] = 1;
     }
-    solucao[j] = solution[j];
+    optimal_route.insert(optimal_route.begin() + j, solution[j]);
+    //solucao[j] = solution[j];
     //cout << solucao[j] << endl;
   }
-  *optimal_route = solucao;
-
+  //optimal_route = solucao;
+  //cout << sizeof(solucao)/sizeof(solucao[0]) << "\n\n";
 }

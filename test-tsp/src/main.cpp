@@ -6,7 +6,7 @@
 
 using namespace std;
 
-int *OptimalRoute; // vetor de solucão
+vector<int> OptimalRoute; // vetor de solucão
 int dimension; // quantidade total de vertices
 double ** matrizAdj; // matriz de adjacencia
 double ** matrizDist; // matriz reorganizada;
@@ -15,30 +15,31 @@ vector<int> optimal;
 
 void printData();
 void printBestSolution();
-void test(vector<int> &eoq);
+void verificaMatriz(vector< vector<int> > inception);
 bool comp(const int &a, const int &b);
 
 int main(int argc, char** argv) {
 
     readData(argc, argv, &dimension, &matrizAdj);
-    readSolution(argc, argv, &dimension, &OptimalRoute);
+    readSolution(argc, argv, &dimension, OptimalRoute);
 
-    printData();
+    //printData();
     printBestSolution();
 
-    vector<vector<int>> inception;
+    vector< vector<int> > inception;
 
     for(int i = 0; i < dimension; i++){
+      
       optimal.push_back(OptimalRoute[i]);
     }
-
+    
    
     for(int i = 0; i < dimension; i++){
-      inception.push_back(optimal);
+      inception.push_back(optimal); // deu ruim
       sort(inception[i].begin(), inception[i].end(),comp);
       contador++;
     }
-  
+
   
 
     for (int i = 0; i < dimension; i++) {
@@ -47,6 +48,7 @@ int main(int argc, char** argv) {
       } 
       cout << endl;
     }
+    verificaMatriz(inception);
 }
 
 void printData() {
@@ -63,12 +65,19 @@ void printData() {
 void printBestSolution() {
   cout << "\nOptimal Route:" << endl;
   for (int i = 0; i < dimension + 1; i++) {
-      cout << OptimalRoute[i] << endl;
+      cout << OptimalRoute[i] << " ";
     }
-    //cout << endl;
+  cout << endl;
+  cout << endl;
   }
 
  bool comp( const int &a, const int &b) // comparação dos custos utilizada para ordenar os objetos
   {
     return matrizAdj[contador][a] < matrizAdj[contador][b];
   }
+
+void verificaMatriz(vector< vector<int> > inception){
+  for(int i = 1; i <= dimension; i++){
+    cout << "Cliente: " << i << " Mais Proximo Disponivel: " << inception[i-1][1] << " Selecionado:"  << OptimalRoute[i] <<endl;   
+  }
+}
