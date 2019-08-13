@@ -83,14 +83,16 @@ void verificaMatriz(vector< vector<int> > inception){
   for(int i = 0; i < dimension; i++){
     for(int j = 0; j < dimension; j++){
       if(OptimalRoute[j] == inception[i][0]){
-        pos = j;
+        pos = j;        
+        break;        
       }
-    }
+    }    
     //cout << OptimalRoute[pos] << endl;
     for(int k = 0; k < dimension; k++){
       if(OptimalRoute[pos+1] == inception[i][k]){
         pos2 = k;
         somapos += pos2;
+        break;
       }
     }
   cout << "Cliente: " << i+1 << " Mais Proximo: " << inception[i][1] << " Selecionado:"  << OptimalRoute[pos+1]<< " Classificacao: " << pos2 <<endl;
