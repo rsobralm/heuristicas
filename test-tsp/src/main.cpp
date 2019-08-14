@@ -80,23 +80,34 @@ void verificaMatriz(vector< vector<int> > inception){
   int pos, pos2;
   int somapos = 0;
   int cont = 1;
-  for(int i = 0; i < dimension; i++){
-    for(int j = 0; j < dimension; j++){
-      if(OptimalRoute[j] == inception[i][0]){
-        pos = j;        
-        break;        
+  vector<int> classificacao;
+
+  for(int e = 0; e < 2; e++){
+    for(int i = 0; i < dimension; i++){
+      for(int j = 0; j < dimension; j++){
+        if(OptimalRoute[j] == inception[i][0]){
+          pos = j;        
+          break;        
+        }
+      }    
+      //cout << OptimalRoute[pos] << endl;
+      for(int k = 0; k < dimension; k++){
+        if(OptimalRoute[pos+1] == inception[i][k]){
+          classificacao.push_back(k);
+          //pos2 = k;
+          somapos += k;
+          break;
+        }
       }
-    }    
-    //cout << OptimalRoute[pos] << endl;
-    for(int k = 0; k < dimension; k++){
-      if(OptimalRoute[pos+1] == inception[i][k]){
-        pos2 = k;
-        somapos += pos2;
-        break;
-      }
+    cout << "Cliente: " << i+1 << " Mais Proximo: " << inception[i][1] << " Selecionado:"  << OptimalRoute[pos+1]<< " Classificacao: " << classificacao[classificacao.size() - 1] <<endl;
     }
-  cout << "Cliente: " << i+1 << " Mais Proximo: " << inception[i][1] << " Selecionado:"  << OptimalRoute[pos+1]<< " Classificacao: " << pos2 <<endl;
+    
+    sort(classificacao.begin(), classificacao.end());
+    cout << "Media = " << (somapos/dimension) << " Mediana = " << classificacao[dimension/2] << "\n\n";
+
+    reverse(OptimalRoute.begin(), OptimalRoute.end());
+    classificacao.erase(classificacao.begin(), classificacao.end());
   }
-  cout << "Valor Medio = " << (somapos/dimension) << endl;
 }
+
   
