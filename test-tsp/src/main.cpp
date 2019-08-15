@@ -29,7 +29,6 @@ int main(int argc, char** argv) {
     vector< vector<int> > inception;
 
     for(int i = 0; i < dimension; i++){
-      
       optimal.push_back(OptimalRoute[i]);
     }
     
@@ -80,6 +79,7 @@ void verificaMatriz(vector< vector<int> > inception){
   int pos, pos2;
   int somapos = 0;
   int cont = 1;
+  double mediana;
   vector<int> classificacao;
 
   for(int e = 0; e < 2; e++){
@@ -103,7 +103,8 @@ void verificaMatriz(vector< vector<int> > inception){
     }
     
     sort(classificacao.begin(), classificacao.end());
-    cout << "Media = " << (somapos/dimension) << " Mediana = " << classificacao[dimension/2] << "\n\n";
+    (dimension % 2 != 0) ? mediana = classificacao[dimension/2] : mediana = classificacao[(dimension/2) + 1];
+    cout << "Media = " << (somapos/dimension) << " Mediana = " << mediana << "\n\n";
 
     reverse(OptimalRoute.begin(), OptimalRoute.end());
     classificacao.erase(classificacao.begin(), classificacao.end());

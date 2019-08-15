@@ -1,0 +1,6 @@
+for file1 in instancias/* and file2 in optimal-routes/*
+do
+  ./tsp "$file1" "$file2" >> log-teste.txt
+done
+
+
