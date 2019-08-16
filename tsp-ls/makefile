@@ -3,13 +3,6 @@ CPLEX_VERSION = 12.4
 #detecta se o sistema é de 32 ou 64 bits
 BITS_OPTION = -m64
 
-####diretorios com as libs do cplex
-CPLEXDIR  = /opt/ibm/ILOG/CPLEX_Studio127/cplex
-CONCERTDIR = /opt/ibm/ILOG/CPLEX_Studio127/concert
-   
-CPLEXLIBDIR   = $(CPLEXDIR)/lib/x86-64_linux/static_pic
-CONCERTLIBDIR = $(CONCERTDIR)/lib/x86-64_linux/static_pic
-
 #### define o compilador
 CPPC = g++
 #############################
@@ -21,8 +14,6 @@ CPLEXINCDIR   = $(CPLEXDIR)/include
 CCFLAGS = $(CCOPT) -I$(CPLEXINCDIR) -I$(CONCERTINCDIR)
 #############################
 
-#### flags do linker
-CCLNFLAGS = -L$(CPLEXLIBDIR) -lilocplex -lcplex -L$(CONCERTLIBDIR) -lconcert -lm -lpthread 
 #############################
 
 #### diretorios com os source files e com os objs files

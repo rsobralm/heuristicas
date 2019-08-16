@@ -8,6 +8,7 @@
 #include <cmath>
 #include <limits>
 #include <random>
+#include <chrono>
 #include <sys/timeb.h>
 #include <sys/resource.h>
 
@@ -24,6 +25,9 @@ vector< vector<int> > matrizOrg;
 vector<int> solucaoInvertida;
 
 int contador = 1;
+
+std::chrono::time_point<std::chrono::system_clock> temp1, temp2;
+double totalTempo = 0;
 
 double tempo_construction = 0;
 double tempo_swap = 0;
@@ -82,22 +86,28 @@ int main(int argc, char** argv) {
     double before = cpuTime();
 
     organizaMatriz();
+
     for (int i = 0; i < dimension; i++) {
       for (int j = 0; j < dimension; j++) {
         cout << matrizOrg[i][j] << " ";
       } 
       cout << endl;
     }
+
     //candidatos = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
     //printSolution(candidatos);
     //rvnd(cidades);
     //printSolution(cidades);
     //printSolution(candidatos);
     //perturb(candidatos);
+
     cidades = gils_rvnd(i_max, i_ils);
+
     //printSolution(cidades);
+
     valor = custoTotal(cidades);
-    cout << "custo: " << custoTotal(cidades) << endl;
+    cout << "\ncusto: " << custoTotal(cidades) << endl;
+    printTime();
 
     double after = cpuTime();
     //cidades = construction(0.5);
@@ -171,6 +181,16 @@ vector<int> construction(double alfa, double &custo){
     solucaoInvertida[s[i]] = i; 
   }
 
+  /* cout << "\nNormal: ";
+  for(int i = 0; i < s.size(); i++){
+    cout << s[i] << " "; 
+  }
+
+  cout << "\nInvertida: ";
+  for(int i = 0; i < solucaoInvertida.size(); i++){
+    cout << solucaoInvertida[i] << " "; 
+  } */
+
   double fimConstruction = cpuTime();
   tempo_construction += (fimConstruction - inicioconstruction);
 
@@ -180,8 +200,9 @@ vector<int> construction(double alfa, double &custo){
 
 void printSolution(vector<int> anyVector){ // printa um vetor qualquer
    vector<int>::iterator v = anyVector.begin();
+   cout << "\n";
    while( v != anyVector.end()) {
-      cout << *v << endl;
+      cout << *v << " ";
       v++;
    }
 }
@@ -235,10 +256,12 @@ void swap(vector<int> &solucao, double &custo){ // faz a troca de posição entr
     solucao[pos_i] = s[pos_j];
     solucao[pos_j] = s[pos_i];
     custo = custo + menor;
-  }
-  for(int i = 0; i < solucaoInvertida.size(); i++){
+
+    for(int i = 0; i < solucaoInvertida.size(); i++){
     solucaoInvertida[solucao[i]] = i; 
+    }
   }
+
   double fimSwap = cpuTime();
   tempo_swap += (fimSwap - inicioSwap);
 
@@ -264,30 +287,30 @@ void reInsertion(vector<int> &solucao, double &custo){ // reinsere um nó em pos
   int pos_i = -1, pos_j = -1;
   for(int i = 1; i < solucao.size() - 1; i++){ // varre a solução exceto o 0 e o final
     for(int j = 1; j < 5; j++){
-         int no = matrizOrg[i-1][j];
-         int muda = solucaoInvertida[no];
-         if(no != 1){ // IGNORANDO O NÓ 1
-         //cout << "no: " << no <<"\n";
-         //cout << "muda: " << muda <<"\n";
-         delta = calculaDeltaReInsertion(i,muda,s);
-         //cout << delta <<"\n";
+        int no = matrizOrg[i][j];
+        int muda = solucaoInvertida[no];
+        if(no != 1 && i!=muda){      
+        delta = calculaDeltaReInsertion(i,muda,s);
+         
         if(delta < 0){
-          if(delta < menor){
+          if(delta < menor){              
               menor = delta;
               pos_i = i;
-              pos_j = j;
+              pos_j = muda;
           }
         }
       }
+
     }
   }
   if(pos_i > 0){
     solucao.erase(solucao.begin() + pos_i);
     solucao.insert(solucao.begin() + pos_j, s[pos_i]);
     custo = custo + menor;
-  }
-  for(int i = 0; i < solucaoInvertida.size(); i++){
-    solucaoInvertida[solucao[i]] = i; 
+    
+    for(int i = 0; i < solucaoInvertida.size(); i++){
+    solucaoInvertida[s[i]] = i; 
+    }
   }
   double fimReinsertion =  cpuTime();
   tempo_reinsertion += (fimReinsertion - inicioreinsertion);
@@ -328,10 +351,11 @@ void twoOptN(vector<int> &solucao, double &custo){ // inverte uma subsequencia d
         solucao[k] = s[pos_j + pos_i - k];
       }
       custo = custo + menor;
+      for(int i = 0; i < solucaoInvertida.size(); i++){
+      solucaoInvertida[solucao[i]] = i; 
+      }
     }
-    for(int i = 0; i < solucaoInvertida.size(); i++){
-    solucaoInvertida[solucao[i]] = i; 
-    }
+    
     double fim2opt = cpuTime();
     tempo_2opt += (fim2opt - inicio2opt);
 }
@@ -371,10 +395,12 @@ void orOpt2(vector<int> &solucao, double &custo){ // reinsere subsequencia de do
     solucao.erase(solucao.begin() + pos_i, solucao.begin() + pos_i + 2);
     solucao.insert(solucao.begin() + pos_j, &s[pos_i], &s[pos_i] + 2);
     custo = custo + menor;
+
+    for(int i = 0; i < solucaoInvertida.size(); i++){
+    solucaoInvertida[solucao[i]] = i; 
+    }
   }
-      for(int i = 0; i < solucaoInvertida.size(); i++){
-        solucaoInvertida[solucao[i]] = i; 
-      }
+
   double fimOropt2 = cpuTime();
   tempo_orOpt2 += (fimOropt2 - inicioOropt2);
 }
@@ -416,10 +442,12 @@ void orOpt3(vector<int> &solucao, double &custo){ // reinsere subsequencia de tr
     solucao.erase(solucao.begin() + pos_i, solucao.begin() + pos_i + 3);
     solucao.insert(solucao.begin() + pos_j, &s[pos_i], &s[pos_i] + 3);
     custo = custo + menor;
-  }
-      for(int i = 0; i < solucaoInvertida.size(); i++){
+
+    for(int i = 0; i < solucaoInvertida.size(); i++){
     solucaoInvertida[solucao[i]] = i; 
     }
+  }
+
   double fimOropt3 = cpuTime();
   tempo_orOpt3 += (fimOropt3 - inicioOropt3);
 }
@@ -443,6 +471,7 @@ void rvnd(vector<int> &solucao, double &custo){
   double custoMod =  custo;
   int sel, pos;
 
+  
   while(!nLista.empty()){ // roda enquanto existirem estruturas de vizinhança na lista
 
     int k = rand() % nLista.size();
@@ -453,7 +482,12 @@ void rvnd(vector<int> &solucao, double &custo){
         break;
 
       case 1:
+      {
+        temp1 = std::chrono::system_clock::now();
         reInsertion(solucao, custoMod);
+        temp2 = std::chrono::system_clock::now();
+        totalTempo = totalTempo + std::chrono::duration_cast<std::chrono::microseconds>(temp2 - temp1).count();
+      }
         break;
 
       case 2:
@@ -507,6 +541,9 @@ vector<int> perturb(vector<int> &solucao){
   s.insert(s.begin() + inicio1, &solucao[inicio2], &solucao[fim2] + 1);  // inclui a segunda subsequencia na posicao da primeira
   s.insert(s.begin() + inicio2 + (-1*(d1 - d2)) , &solucao[inicio1], &solucao[fim1] + 1); // inclui a segunda subsequencia na posicao da segunda
 
+  for(int i = 0; i < solucaoInvertida.size(); i++){
+    solucaoInvertida[s[i]] = i; 
+  }
 
 
   return s;
@@ -514,16 +551,19 @@ vector<int> perturb(vector<int> &solucao){
 }
 
 vector<int> gils_rvnd(int i_max, int i_ils){
+
   double ff = numeric_limits<double>::infinity(); // custo final
   vector<int> s, s1, sf; // s, s', s*
   double fs, fs1;
   for (int i = 0; i < i_max; i++){
+
     double alfa = (double)rand() / RAND_MAX; // gera aleatorio entre 0 e 1
     s = construction(alfa, fs); // constroi solucao inicial
     s1 = s;
     fs1 = fs;
     int iter_ILS = 0;
     while (iter_ILS < i_ils){
+
       rvnd(s, fs); // explora as estruturas de vizinhança
       if (fs < fs1){
         s1 = s;
@@ -535,6 +575,7 @@ vector<int> gils_rvnd(int i_max, int i_ils){
       iter_ILS++;
     }
     if (fs1 < ff){
+
       sf = s1;
       ff = fs1;
     }
@@ -557,12 +598,12 @@ double cpuTime() {
 }
 
 void printTime(){
-  cout << "Tempo medio de execucao da SI: " << (tempo_construction/10) << " (s)";
-  cout << "\n" << "Tempo medio de execucao da troca: " << (tempo_swap/10)<< " (s)";
-  cout << "\n" << "Tempo medio de execucao do Or-opt: " << (tempo_reinsertion/10)<< " (s)";
-  cout << "\n" << "Tempo medio de execucao do Or-opt2: " << (tempo_orOpt2/10)<< " (s)";
-  cout << "\n" << "Tempo medio de execucao do Or-opt3: " << (tempo_orOpt3/10)<< " (s)";
-  cout << "\n" << "Tempo medio de execucao do 2-opt: " << (tempo_2opt/10)<< " (s)";
+  cout << "Tempo medio de execucao da SI: " << (tempo_construction) << " (s)";
+  cout << "\n" << "Tempo medio de execucao da troca: " << (tempo_swap)<< " (s)";
+  cout << "\n" << "Tempo medio de execucao do Or-opt: " << (tempo_reinsertion)<< " (s)";
+  cout << "\n" << "Tempo medio de execucao do Or-opt2: " << (tempo_orOpt2)<< " (s)";
+  cout << "\n" << "Tempo medio de execucao do Or-opt3: " << (tempo_orOpt3)<< " (s)";
+  cout << "\n" << "Tempo medio de execucao do 2-opt: " << (tempo_2opt)<< " (s)";
 
   cout << "\n\n";
 }
@@ -587,3 +628,4 @@ bool compMatriz( const int &a, const int &b) // comparação dos custos utilizad
   {
     return matrizAdj[contador][a] < matrizAdj[contador][b];
   }
+
