@@ -61,6 +61,7 @@ double cpuTime();
 void printTime();
 void organizaMatriz();
 bool compMatriz( const int &a, const int &b);
+vector<int> testeswap(vector<int> solucao);
 
 int main(int argc, char** argv) {
 
@@ -94,13 +95,16 @@ int main(int argc, char** argv) {
       cout << endl;
     }
 
-    //candidatos = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
-    //printSolution(candidatos);
+    /*candidatos = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,1};
+    printSolution(candidatos);
+    solucaum = testeswap(candidatos);
+    printSolution(solucaum);*/
+    
     //rvnd(cidades);
     //printSolution(cidades);
     //printSolution(candidatos);
     //perturb(candidatos);
-
+ 
     cidades = gils_rvnd(i_max, i_ils);
 
     //printSolution(cidades);
@@ -236,21 +240,26 @@ void swap(vector<int> &solucao, double &custo){ // faz a troca de posição entr
   double menor = std::numeric_limits<double>::infinity();
   //double fs = custoTotal(s);
   int pos_i = -1, pos_j = -1; // guarda as posições para realizar a operação
-  for(int i = 1; i < solucao.size() - 1; i++){ // exclui da operação a primeira e a ultima posição do vetor
-    for(int j = i + 1; j < solucao.size() - 1; j++){
+  for(int i = 0; i < solucao.size() - 2; i++){ // exclui da operação a ultima e penultima posição do vetor
+    //for(int j = i + 1; j < solucao.size() - 1; j++){
+      for(int j = 1; j <= 10; j++){ // pega os 5 vizinhos mais proximos
+        int no = matrizOrg[solucao[i] - 1][j];
+        int muda = solucaoInvertida[no];
+       if(no != 1){
       //if(i <= j){ // nao repetir swap
         //cout << "i:" << i << "j:" << j << endl;
-        delta = calculaDeltaSwap(i,j,s);
+        delta = calculaDeltaSwap(i+1,muda,s);
         //d = custoTotal(solucao) - fs;
         //cout <<"delta real: " << d << " delta calc: " << delta << endl;
       if(delta < 0){
         if(delta < menor){
             menor = delta;
-            pos_i = i;
-            pos_j = j;
+            pos_i = i + 1;
+            pos_j = muda;
         }
       }
     }
+  }
   }
    if(pos_i > 0){ // realiza a operação
     solucao[pos_i] = s[pos_j];
@@ -286,7 +295,7 @@ void reInsertion(vector<int> &solucao, double &custo){ // reinsere um nó em pos
   double delta;
   int pos_i = -1, pos_j = -1;
   for(int i = 1; i < solucao.size() - 1; i++){ // varre a solução exceto o 0 e o final
-    for(int j = 1; j < 5; j++){
+    for(int j = 1; j < 10; j++){
         int no = matrizOrg[i][j];
         int muda = solucaoInvertida[no];
         if(no != 1 && i!=muda){      
@@ -629,3 +638,44 @@ bool compMatriz( const int &a, const int &b) // comparação dos custos utilizad
     return matrizAdj[contador][a] < matrizAdj[contador][b];
   }
 
+
+vector<int> testeswap(vector<int> solucao){
+  vector<int> solCopy = solucao;
+  vector<int> melhor;
+  double d, d2;
+  double menor = std::numeric_limits<double>::infinity();
+  double fs = custoTotal(solucao);
+
+  for(int i = 0; i < solucaoInvertida.size(); i++){
+    solucaoInvertida[solucao[i]] = i; 
+  }
+
+
+  //for(int i = 1; i < solucao.size() - 1; i++){ // excluir da operação a primeira e a ultima posição do vetor
+    //for(int j = 1; j <= 5; j++){ 
+     // if(i <= j){ // nao repetir swap
+     int i = 1;
+     int j = 1;
+     cout << "sol: "<< solucao[i] << endl;
+     int no = matrizOrg[solucao[i] - 1][j];
+      cout << "no: "<< no << endl;
+      int muda = solucaoInvertida[no];
+      cout << "muda: "<< muda << endl;
+      if((no != 1 && i!=muda && i+1 < dimension) || i == 0){ // entrar quando i == 0
+        int aux = solucao[i + 1];
+        solCopy[i + 1] = solucao[muda];
+        solCopy[muda] = aux;
+        d2 = calculaDeltaSwap(i+1,muda, solucao);
+        d = custoTotal(solCopy) - fs;
+        //d = custoTotal(solCopy) - fs;
+        //cout <<"i:"<< i << "  j:"<< j << "  delta = " << d << endl;
+        if(d <= menor){
+          menor = d;
+          melhor = solCopy;
+        }
+        //solCopy = solucao;
+      }
+    //}
+  //}
+  return solCopy;
+}
