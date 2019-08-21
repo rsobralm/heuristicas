@@ -94,11 +94,11 @@ int main(int argc, char** argv) {
       } 
       cout << endl;
     }
-
-    /*candidatos = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,1};
+    /*double custo = 0;
+    candidatos = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,1};
     printSolution(candidatos);
-    solucaum = testeswap(candidatos);
-    printSolution(solucaum);*/
+    reInsertion(candidatos, custo);
+    printSolution(candidatos);*/
     
     //rvnd(cidades);
     //printSolution(cidades);
@@ -234,6 +234,40 @@ vector<CustoIn> calculaCusto(vector<int> listaCandidatos, vector<int> &s){
 
 void swap(vector<int> &solucao, double &custo){ // faz a troca de posição entre dois nós
 
+ /*double inicioSwap = cpuTime();
+  vector<int> s = solucao;
+  double delta;
+  double menor = std::numeric_limits<double>::infinity();
+  //double fs = custoTotal(s);
+  int pos_i = -1, pos_j = -1; // guarda as posições para realizar a operação
+  for(int i = 1; i < solucao.size() - 1; i++){ // exclui da operação a primeira e a ultima posição do vetor
+    for(int j = i + 1; j < solucao.size() - 1; j++){
+      //if(i <= j){ // nao repetir swap
+        //cout << "i:" << i << "j:" << j << endl;
+        delta = calculaDeltaSwap(i,j,s);
+        //d = custoTotal(solucao) - fs;
+        //cout <<"delta real: " << d << " delta calc: " << delta << endl;
+      if(delta < 0){
+        if(delta < menor){
+            menor = delta;
+            pos_i = i;
+            pos_j = j;
+        }
+      }
+    }
+  }
+   if(pos_i > 0){ // realiza a operação
+    solucao[pos_i] = s[pos_j];
+    solucao[pos_j] = s[pos_i];
+    custo = custo + menor;
+  }
+  double fimSwap = cpuTime();
+  tempo_swap += (fimSwap - inicioSwap);
+*/
+
+
+
+
   double inicioSwap = cpuTime();
   vector<int> s = solucao;
   double delta;
@@ -242,7 +276,7 @@ void swap(vector<int> &solucao, double &custo){ // faz a troca de posição entr
   int pos_i = -1, pos_j = -1; // guarda as posições para realizar a operação
   for(int i = 0; i < solucao.size() - 2; i++){ // exclui da operação a ultima e penultima posição do vetor
     //for(int j = i + 1; j < solucao.size() - 1; j++){
-      for(int j = 1; j <= 10; j++){ // pega os 5 vizinhos mais proximos
+      for(int j = 1; j <= 5; j++){ // pega os 5 vizinhos mais proximos
         int no = matrizOrg[solucao[i] - 1][j];
         int muda = solucaoInvertida[no];
        if(no != 1){
@@ -274,6 +308,7 @@ void swap(vector<int> &solucao, double &custo){ // faz a troca de posição entr
   double fimSwap = cpuTime();
   tempo_swap += (fimSwap - inicioSwap);
 
+
 }
 
  inline double calculaDeltaSwap(int i, int j, vector<int> &s){
@@ -294,22 +329,27 @@ void reInsertion(vector<int> &solucao, double &custo){ // reinsere um nó em pos
   double menor = 0;
   double delta;
   int pos_i = -1, pos_j = -1;
+
+
   for(int i = 1; i < solucao.size() - 1; i++){ // varre a solução exceto o 0 e o final
-    for(int j = 1; j < 10; j++){
-        int no = matrizOrg[i][j];
-        int muda = solucaoInvertida[no];
-        if(no != 1 && i!=muda){      
+    for(int j = 1; j <= 5; j++){
+      int no = matrizOrg[solucao[i]-1][j];
+      //cout << "no:" << no << endl;
+      int muda = solucaoInvertida[no] - 1; // coloca o nó da posicão atras do vizinho mais proximo
+      if(muda < i){
+        muda++;
+      }
+      //cout << "muda:" << muda << endl;
+      if(no != 1 && i!=muda && muda < dimension - 1 && muda > 0){      
         delta = calculaDeltaReInsertion(i,muda,s);
-         
-        if(delta < 0){
-          if(delta < menor){              
-              menor = delta;
-              pos_i = i;
-              pos_j = muda;
+      if(delta < 0){
+        if(delta < menor){              
+            menor = delta;
+            pos_i = i;
+            pos_j = muda;
           }
         }
       }
-
     }
   }
   if(pos_i > 0){
@@ -318,7 +358,7 @@ void reInsertion(vector<int> &solucao, double &custo){ // reinsere um nó em pos
     custo = custo + menor;
     
     for(int i = 0; i < solucaoInvertida.size(); i++){
-    solucaoInvertida[s[i]] = i; 
+    solucaoInvertida[solucao[i]] = i; 
     }
   }
   double fimReinsertion =  cpuTime();
