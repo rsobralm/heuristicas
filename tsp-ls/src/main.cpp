@@ -286,36 +286,70 @@ void swap(vector<int> &solucao, double &custo)
   vector<int> s = solucao;
   double delta;
   double menor = std::numeric_limits<double>::infinity();
-  double fs = custoTotal(s);
+  //double fs = custoTotal(s);
   int pos_i = -1, pos_j = -1; // guarda as posições para realizar a operação
-  for (int i = 2; i < solucao.size() - 2; i++)
-  { // exclui da operação a ultima e penultima posição do vetor
+  for (int i = 2; i < solucao.size() - 2; i++){ // exclui da operação a ultima e penultima posição do vetor
     //for(int j = i + 1; j < solucao.size() - 1; j++){
-    for (int j = 1; j <= 5; j++)
-    { // pega os 5 vizinhos mais proximos
+    for (int j = 1; j <= 5; j++){ // pega os 5 vizinhos mais proximos
       int no = matrizOrg[solucao[i] - 1][j];
       int muda = solucaoInvertida[no];
 
-
-
-      if (no != 1 && i != muda)
-      {
+      if (no != 1 && i != muda){
         //if(i <= j){ // nao repetir swap
         //cout << "i:" << i << "j:" << j << endl;
+        for(int k = -1; k <= 1; k++){
+          if(i+k < muda) delta = calculaDeltaSwap(i+k, muda, s);
+          else delta = calculaDeltaSwap(muda, i+k, s);
 
-        if(i < muda) delta = calculaDeltaSwap(i, muda, s);
-        else delta = calculaDeltaSwap(muda, i, s);
-
-        if (delta < 0)
-        {
-          if (delta < menor)
-          {
-            menor = delta;
-            pos_i = i;
-            pos_j = muda;
+          if (delta < 0){
+            if (delta < menor){
+              menor = delta;
+              pos_i = i+k;
+              pos_j = muda;
+            }
+          }   
+        }
+      }
+    }
+  }
+  //////// REINSERINDO NAS PONTAS DA SOLUCAO;
+ for(int l = 1; l <= 2; l++){
+   int i = 1;
+   if(l == 2){
+    i = dimension-1;
+   }
+   for(int j = 1; j <= 5; j++){ // pega os 5 vizinhos mais proximos
+      int no = matrizOrg[solucao[i] - 1][j];
+      int muda = solucaoInvertida[no];
+      if(no != 1 && i != muda){
+        //if(i <= j){ // nao repetir swap
+        //cout << "i:" << i << "j:" << j << endl;
+        if(i == 1){
+          for(int k = 0; k <= 1; k++){
+            if(i+k < muda) delta = calculaDeltaSwap(i+k, muda, s);
+            else delta = calculaDeltaSwap(muda, i+k, s);
+            if(delta < 0){
+              if(delta < menor){
+                menor = delta;
+                pos_i = i+k;
+                pos_j = muda;
+              }
+            } 
           }
         }
-        
+        else{
+          for(int k = -1; k <= 0; k++){
+            if(i+k < muda) delta = calculaDeltaSwap(i+k, muda, s);
+            else delta = calculaDeltaSwap(muda, i+k, s);
+            if(delta < 0){
+              if(delta < menor){
+                menor = delta;
+                pos_i = i+k;
+                pos_j = muda;
+              }
+            } 
+          }
+        }         
       }
     }
   }
