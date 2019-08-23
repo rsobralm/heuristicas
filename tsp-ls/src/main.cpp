@@ -288,68 +288,92 @@ void swap(vector<int> &solucao, double &custo)
   double menor = std::numeric_limits<double>::infinity();
   //double fs = custoTotal(s);
   int pos_i = -1, pos_j = -1; // guarda as posições para realizar a operação
-  for (int i = 2; i < solucao.size() - 2; i++){ // exclui da operação a ultima e penultima posição do vetor
+  for (int i = 2; i < solucao.size() - 2; i++)
+  { // exclui da operação a ultima e penultima posição do vetor
     //for(int j = i + 1; j < solucao.size() - 1; j++){
-    for (int j = 1; j <= 5; j++){ // pega os 5 vizinhos mais proximos
+    for (int j = 1; j <= 5; j++)
+    { // pega os 5 vizinhos mais proximos
       int no = matrizOrg[solucao[i] - 1][j];
       int muda = solucaoInvertida[no];
 
-      if (no != 1 && i != muda){
+      if (no != 1 && i != muda)
+      {
         //if(i <= j){ // nao repetir swap
         //cout << "i:" << i << "j:" << j << endl;
-        for(int k = -1; k <= 1; k++){
-          if(i+k < muda) delta = calculaDeltaSwap(i+k, muda, s);
-          else delta = calculaDeltaSwap(muda, i+k, s);
+        for (int k = -1; k <= 1; k++)
+        {
+          if (i + k < muda)
+            delta = calculaDeltaSwap(i + k, muda, s);
+          else
+            delta = calculaDeltaSwap(muda, i + k, s);
 
-          if (delta < 0){
-            if (delta < menor){
+          if (delta < 0)
+          {
+            if (delta < menor)
+            {
               menor = delta;
-              pos_i = i+k;
+              pos_i = i + k;
               pos_j = muda;
             }
-          }   
+          }
         }
       }
     }
   }
   //////// REINSERINDO NAS PONTAS DA SOLUCAO;
- for(int l = 1; l <= 2; l++){
-   int i = 1;
-   if(l == 2){
-    i = dimension-1;
-   }
-   for(int j = 1; j <= 5; j++){ // pega os 5 vizinhos mais proximos
+  for (int l = 1; l <= 2; l++)
+  {
+    int i = 1;
+    if (l == 2)
+    {
+      i = dimension - 1;
+    }
+    for (int j = 1; j <= 5; j++)
+    { // pega os 5 vizinhos mais proximos
       int no = matrizOrg[solucao[i] - 1][j];
       int muda = solucaoInvertida[no];
-      if(no != 1 && i != muda){
+      if (no != 1 && i != muda)
+      {
         //if(i <= j){ // nao repetir swap
         //cout << "i:" << i << "j:" << j << endl;
-        if(i == 1){
-          for(int k = 0; k <= 1; k++){
-            if(i+k < muda) delta = calculaDeltaSwap(i+k, muda, s);
-            else delta = calculaDeltaSwap(muda, i+k, s);
-            if(delta < 0){
-              if(delta < menor){
+        if (i == 1)
+        {
+          for (int k = 0; k <= 1; k++)
+          {
+            if (i + k < muda)
+              delta = calculaDeltaSwap(i + k, muda, s);
+            else
+              delta = calculaDeltaSwap(muda, i + k, s);
+            if (delta < 0)
+            {
+              if (delta < menor)
+              {
                 menor = delta;
-                pos_i = i+k;
+                pos_i = i + k;
                 pos_j = muda;
               }
-            } 
+            }
           }
         }
-        else{
-          for(int k = -1; k <= 0; k++){
-            if(i+k < muda) delta = calculaDeltaSwap(i+k, muda, s);
-            else delta = calculaDeltaSwap(muda, i+k, s);
-            if(delta < 0){
-              if(delta < menor){
+        else
+        {
+          for (int k = -1; k <= 0; k++)
+          {
+            if (i + k < muda)
+              delta = calculaDeltaSwap(i + k, muda, s);
+            else
+              delta = calculaDeltaSwap(muda, i + k, s);
+            if (delta < 0)
+            {
+              if (delta < menor)
+              {
                 menor = delta;
-                pos_i = i+k;
+                pos_i = i + k;
                 pos_j = muda;
               }
-            } 
+            }
           }
-        }         
+        }
       }
     }
   }
@@ -404,11 +428,15 @@ void reInsertion(vector<int> &solucao, double &custo)
         muda++;
       }
       //cout << "muda:" << muda << endl;
-      if (no != 1 && i != muda && muda < dimension - 1 && muda > 0)
+      if (no != 1 && i != muda)
       {
+
+        //Delta para reinserção de 'i' após 'muda'
         delta = calculaDeltaReInsertion(i, muda, s);
+        //cout << "Delta1: " << delta << "\n";
         if (delta < 0)
         {
+
           if (delta < menor)
           {
             menor = delta;
@@ -416,11 +444,59 @@ void reInsertion(vector<int> &solucao, double &custo)
             pos_j = muda;
           }
         }
+
+        //Delta para reinserção de 'muda' após 'i'
+        delta = calculaDeltaReInsertion(muda, i, s);
+        //cout << "Delta1: " << delta << "\n";
+        if (delta < 0)
+        {
+          if (delta < menor)
+          {
+            menor = delta;
+            pos_i = muda;
+            pos_j = i;
+          }
+        }
+
+        //Delta para reinserção de 'i' antes de 'muda'
+
+        if ((muda - 1) != i && muda != 1)
+        {
+          delta = calculaDeltaReInsertion(i, muda - 1, s);
+          //cout << "Delta1: " << delta << "\n";
+
+          if (delta < 0)
+          {
+            if (delta < menor)
+            {
+              menor = delta;
+              pos_i = i;
+              pos_j = muda - 1;
+            }
+          }
+        }
+
+        if ((muda + 1) != i && muda != dimension - 1 )
+        {
+          delta = calculaDeltaReInsertion(i, muda + 1, s);
+          //cout << "Delta1: " << delta << "\n";
+
+          if (delta < 0)
+          {
+            if (delta < menor)
+            {
+              menor = delta;
+              pos_i = i;
+              pos_j = muda + 1;
+            }
+          }
+        }
       }
     }
   }
   if (pos_i > 0)
   {
+    //cout << "Delta final: " << delta << endl;
     solucao.erase(solucao.begin() + pos_i);
     solucao.insert(solucao.begin() + pos_j, s[pos_i]);
     custo = custo + menor;
@@ -430,7 +506,7 @@ void reInsertion(vector<int> &solucao, double &custo)
       solucaoInvertida[solucao[i]] = i;
     }
   }
-  
+
   double fimReinsertion = cpuTime();
   tempo_reinsertion += (fimReinsertion - inicioreinsertion);
 }
@@ -719,7 +795,7 @@ vector<int> gils_rvnd(int i_max, int i_ils)
     int iter_ILS = 0;
     while (iter_ILS < i_ils)
     {
-
+      cout << "RVND " << i << endl;
       rvnd(s, fs); // explora as estruturas de vizinhança
       if (fs < fs1)
       {
