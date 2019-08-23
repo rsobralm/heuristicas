@@ -328,7 +328,7 @@ void swap(vector<int> &solucao, double &custo)
     {
       i = dimension - 1;
     }
-    for (int j = 1; j <= 5; j++)
+    for (int j = 1; j <= 10; j++)
     { // pega os 5 vizinhos mais proximos
       int no = matrizOrg[solucao[i] - 1][j];
       int muda = solucaoInvertida[no];
@@ -418,7 +418,7 @@ void reInsertion(vector<int> &solucao, double &custo)
 
   for (int i = 1; i < solucao.size() - 1; i++)
   { // varre a solução exceto o 0 e o final
-    for (int j = 1; j <= 5; j++)
+    for (int j = 1; j <= 10; j++)
     {
       int no = matrizOrg[solucao[i] - 1][j];
       //cout << "no:" << no << endl;
@@ -560,27 +560,27 @@ void twoOptN(vector<int> &solucao, double &custo)
   double delta, menor = 0;
   int pos_i = -1, pos_j;
   for(int i = 1; i < solucao.size() - 1; i++){ // varre do primeiro ao ultimo elemento da solucao
-    for(int j = 1; j <= 5; j++){
+    for(int j = 1; j <= 10; j++){
       int no = matrizOrg[solucao[i]-1][j];
       int muda = solucaoInvertida[no];
       if(i != muda && no != 1){
         if(muda > i){
-          delta = calculaDeltaTwoOpt(i,muda,s);
+          delta = calculaDeltaTwoOpt(i + 1,muda,s);
           //cout << "delta1:" << delta << endl;
           if (delta < 0){
             if (delta < menor){
               menor = delta;
-              pos_i = i;
+              pos_i = i + 1;
               pos_j = muda;
             }
           }
         }
         if(muda < i){ 
-          delta = calculaDeltaTwoOpt(muda,i,s);
+          delta = calculaDeltaTwoOpt(muda + 1,i,s);
           //cout << "delta2:" << delta << endl;
           if(delta < menor){
             menor = delta;
-            pos_i = muda;
+            pos_i = muda + 1;
             pos_j = i;
           }
         }
@@ -832,7 +832,7 @@ vector<int> gils_rvnd(int i_max, int i_ils)
     int iter_ILS = 0;
     while (iter_ILS < i_ils)
     {
-      cout << "RVND " << i << endl;
+      //cout << "RVND " << i << endl;
       rvnd(s, fs); // explora as estruturas de vizinhança
       if (fs < fs1)
       {
