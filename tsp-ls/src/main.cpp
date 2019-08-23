@@ -89,14 +89,14 @@ int main(int argc, char **argv)
 
   organizaMatriz();
 
-  for (int i = 0; i < dimension; i++)
+  /*for (int i = 0; i < dimension; i++)
   {
     for (int j = 0; j < dimension; j++)
     {
       cout << matrizOrg[i][j] << " ";
     }
     cout << endl;
-  }
+  }*/
   /*double custo = 0;
     candidatos = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,1};
     printSolution(candidatos);
@@ -451,19 +451,15 @@ inline double calculaDeltaReInsertion(int i, int j, vector<int> &s)
 
 void twoOptN(vector<int> &solucao, double &custo)
 { // inverte uma subsequencia da solução
-  double inicio2opt = cpuTime();
+  /*double inicio2opt = cpuTime();
   vector<int> s = solucao;
   double delta, menor = 0;
   int pos_i = -1, pos_j;
-  for (int i = 1; i < solucao.size() - 2; i++)
-  {
-    for (int j = i + 1; j < solucao.size() - 1; j++)
-    {
+  for (int i = 1; i < solucao.size() - 2; i++){
+    for (int j = i + 1; j < solucao.size() - 1; j++){
       delta = calculaDeltaTwoOpt(i, j, s);
-      if (delta < 0)
-      {
-        if (delta < menor)
-        {
+      if (delta < 0){
+        if (delta < menor){
           menor = delta;
           pos_i = i;
           pos_j = j;
@@ -471,19 +467,60 @@ void twoOptN(vector<int> &solucao, double &custo)
       }
     }
   }
-  if (pos_i > 0)
-  {
-    for (int k = pos_i; k <= pos_j; k++)
-    { // invertendo as posições
+  if (pos_i > 0){
+    for (int k = pos_i; k <= pos_j; k++){ // invertendo as posições
       solucao[k] = s[pos_j + pos_i - k];
     }
     custo = custo + menor;
-    for (int i = 0; i < solucaoInvertida.size(); i++)
-    {
+    for (int i = 0; i < solucaoInvertida.size(); i++){
       solucaoInvertida[solucao[i]] = i;
     }
   }
 
+  double fim2opt = cpuTime();
+  tempo_2opt += (fim2opt - inicio2opt);*/
+  double inicio2opt = cpuTime();
+  vector<int> s = solucao;
+  double delta, menor = 0;
+  int pos_i = -1, pos_j;
+  for(int i = 1; i < solucao.size() - 1; i++){ // varre do primeiro ao ultimo elemento da solucao
+    for(int j = 1; j <= 5; j++){
+      int no = matrizOrg[solucao[i]-1][j];
+      int muda = solucaoInvertida[no];
+      if(i != muda && no != 1){
+        if(muda > i){
+          delta = calculaDeltaTwoOpt(i,muda,s);
+          //cout << "delta1:" << delta << endl;
+          if (delta < 0){
+            if (delta < menor){
+              menor = delta;
+              pos_i = i;
+              pos_j = muda;
+            }
+          }
+        }
+        if(muda < i){ 
+          delta = calculaDeltaTwoOpt(muda,i,s);
+          //cout << "delta2:" << delta << endl;
+          if(delta < menor){
+            menor = delta;
+            pos_i = muda;
+            pos_j = i;
+          }
+        }
+      }
+    }
+  }
+  if (pos_i > 0){
+    //cout << "i:" << pos_i << "j:" << pos_j << endl;
+    for(int k = pos_i; k <= pos_j; k++){ // invertendo as posições
+      solucao[k] = s[pos_j + pos_i - k];
+    }
+    custo = custo + menor;
+    for (int i = 0; i < solucaoInvertida.size(); i++){
+      solucaoInvertida[solucao[i]] = i;
+    }
+  } 
   double fim2opt = cpuTime();
   tempo_2opt += (fim2opt - inicio2opt);
 }
