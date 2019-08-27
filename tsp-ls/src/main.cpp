@@ -291,7 +291,7 @@ void swap(vector<int> &solucao, double &custo)
   for (int i = 2; i < solucao.size() - 2; i++)
   { // exclui da operação a ultima e penultima posição do vetor
     //for(int j = i + 1; j < solucao.size() - 1; j++){
-    for (int j = 1; j <= 5; j++)
+    for (int j = 1; j <= 20; j++)
     { // pega os 5 vizinhos mais proximos
       int no = matrizOrg[solucao[i] - 1][j];
       int muda = solucaoInvertida[no];
@@ -617,12 +617,12 @@ void orOpt2(vector<int> &v, double &custo, int quantidade)
   double inicioOropt2 = cpuTime();
   vector<int> s = v;
   double menor = 0;
-  double delta;
+  double delta, deltaRemove;
 
   int pos_i = -1, pos_j;
   for (int i = 1; i < v.size() - quantidade; i++)
   { // or-2-op/or-3-opt precisa comecar no maximo no penultimo antes do size
-    delta = m[v[i]][v[i - 1]] - m[v[i + (quantidade - 1)]][v[i + quantidade]];
+    deltaRemove = m[v[i]][v[i - 1]] + m[v[i + (quantidade - 1)]][v[i + quantidade]];
     for (int j = 1; j <= 20; j++)
     { //E terminar no maximo qnt antes de size
       int no = matrizOrg[v[i] - 1][j];
@@ -634,13 +634,20 @@ void orOpt2(vector<int> &v, double &custo, int quantidade)
         { //reinsercao em um indice maior do vetor
           //delta = (m[v[i]][v[j]] + m[v[i]][v[j + 1]] + m[v[i - 1]][v[i + 1]]) -
           //        (m[v[i]][v[i + 1]] + m[v[i]][v[i - 1]] + m[v[j]][v[j + 1]]);
-          delta = (m[v[i]][v[muda]] + m[v[i + (quantidade - 1)]][v[muda + 1]] + m[v[i - 1]][v[i + quantidade]]); 
+          delta = m[v[i - 1]][v[i + quantidade]] + m[v[i]][v[muda + (quantidade - 1)]] + m[v[i + (quantidade - 1)]][v[muda + quantidade]] -
+                  m[v[muda + (quantidade - 1)]][v[muda + quantidade]] - deltaRemove;
         }
         else
         { //reinsercao em um indice menor
           //delta = (m[v[i]][v[muda]] + m[v[i]][v[muda - 1]] + m[v[i - 1]][v[i + 1]]) -
           //        (m[v[i]][v[i - 1]] + m[v[i]][v[i + 1]] + m[v[muda]][v[muda - 1]]);
-          delta = (m[v[i]][v[muda]] + m[v[i - (quantidade - 1)]][v[muda - 1]] + m[v[i - quantidade]][v[i + 1]]); 
+
+
+                   
+
+          delta = (m[v[i]][v[muda]] + m[v[i - (quantidade - 1)]][v[muda - 1]] + m[v[i - quantidade]][v[i + 1]]) -
+                (m[v[i - (quantidade - 1)]][v[i - quantidade]] + m[v[i]][v[i + 1]] + m[v[muda]][v[muda - 1]]);
+
         }
         if (delta <= menor && abs((i - muda)) > quantidade)
         {
