@@ -18,10 +18,9 @@
 #include "Construcao.h"
 #include "Perturbacao.h"
 
-
 using namespace std;
 
-  /*struct Compara
+/*struct Compara
   {
     int contador;
     double **matrizAdj;
@@ -35,23 +34,19 @@ using namespace std;
     }
   }comparacao;*/
 
-
-  struct istorado
+struct istorado
 {
-    int contador;
-    double **matrizAdj;
-    bool operator()(const int& a, const int& b) const
-    {
-        return matrizAdj[contador][a] <  matrizAdj[contador][b]; 
-    }
-}tora;
+  int contador;
+  double **matrizAdj;
+  bool operator()(const int &a, const int &b) const
+  {
+    return matrizAdj[contador][a] < matrizAdj[contador][b];
+  }
+} tora;
 
-
-bool compMatriz(const int &a, const int &b, double **matrizAdj, int contador);
 
 int main(int argc, char **argv)
 {
-
 
   double **matrizAdj;  // matriz de adjacencia
   double **matrizDist; // matriz reorganizada;
@@ -73,7 +68,6 @@ int main(int argc, char **argv)
   double tempo_2opt = 0;
   double tempo_orOpt2 = 0;
   double tempo_orOpt3 = 0;
-
 
   double somaTempos;
   double somaValores;
@@ -113,7 +107,7 @@ int main(int argc, char **argv)
   for (int i = 0; i < dimension; i++)
   {
     matrizOrg.push_back(optimal);
-    sort(matrizOrg[i].begin(), matrizOrg[i].end(),tora);
+    sort(matrizOrg[i].begin(), matrizOrg[i].end(), tora);
     //comparacao.azar(i, matrizOrg);
     tora.contador++;
   }
@@ -126,13 +120,13 @@ int main(int argc, char **argv)
     }
     cout << endl;
   }*/
-    /*double custo = 0;
+  /*double custo = 0;
     candidatos = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,1};
     cout << matrizOrg[7][13] <<"\n";
     printSolution(candidatos);
     twoOptN(candidatos, custo);
     printSolution(candidatos);*/
- 
+
   //rvnd(cidades);
   //printSolution(cidades);
   //printSolution(candidatos);
@@ -143,7 +137,7 @@ int main(int argc, char **argv)
   printSolution(cidades);
 
   valor = custoTotal(cidades, matrizAdj);
-  cout << "\n\ncusto: " << custoTotal(cidades, matrizAdj) <<"\n\n";
+  cout << "\n\ncusto: " << custoTotal(cidades, matrizAdj) << "\n\n";
   printTime(tempo_construction, tempo_swap, tempo_reinsertion, tempo_2opt, tempo_orOpt2, tempo_orOpt3);
 
   double after = cpuTime();
@@ -161,10 +155,7 @@ int main(int argc, char **argv)
   return 0;
 }
 
-
 /*bool compMatriz(const int &a, const int &b) // comparação dos custos utilizada para ordenar os objetos
 {
   return matrizAdj[contador][a] < matrizAdj[contador][b];
 }*/
-
-

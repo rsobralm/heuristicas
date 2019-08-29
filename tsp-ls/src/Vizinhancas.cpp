@@ -85,7 +85,7 @@ void swap(vector<int> &solucao, double &custo, int dimension, double &tempo_swap
       i = dimension - 1;
     }
     for (int j = 1; j <= 20; j++)
-    { // pega os 5 vizinhos mais proximos
+    { // pega os 20 vizinhos mais proximos
       int no = matrizOrg[solucao[i] - 1][j];
       int muda = solucaoInvertida[no];
       if (no != 1 && i != muda)
@@ -139,10 +139,8 @@ void swap(vector<int> &solucao, double &custo, int dimension, double &tempo_swap
     solucao[pos_j] = s[pos_i];
     custo = custo + menor;
 
-    for (int i = 0; i < solucaoInvertida.size(); i++)
-    {
-      solucaoInvertida[solucao[i]] = i;
-    }
+    solucaoInvertida[solucao[pos_i]] = solucaoInvertida[s[pos_i]];
+    solucaoInvertida[solucao[pos_j]] = solucaoInvertida[s[pos_j]];
   }
   //cout << custo << "\n";
   double fimSwap = cpuTime();
