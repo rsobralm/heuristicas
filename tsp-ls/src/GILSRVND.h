@@ -10,7 +10,7 @@
 
 using namespace std;
 
-vector<int> gils_rvnd(int i_max, int i_ils,  int dimension, double &tempo_construction , double &tempo_swap, double &tempo_reinsertion, double &tempo_2opt, double &tempo_orOpt2, double &tempo_orOpt3,
-vector<int> &solucaoInvertida, double** matrizAdj, vector<vector<int>> &matrizOrg);
+vector<int> gils_rvnd(int iMax, int iIls,  int n, double &constructionTime , double &swapTime, double &reinsertionTime, double &twoOptTime, double &orOpt2Time, double &orOpt3Time,
+vector<int> &positionList, double** adjList, vector<vector<int>> &organizedMatrix);
 
 #endif

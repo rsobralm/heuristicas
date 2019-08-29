@@ -2,6 +2,7 @@
 #include "Funcoes.h"
 #include "CustoIn.h"
 
+
 void printData(int dimension, double**matrizAdj)
 {
   cout << "dimension: " << dimension << endl;
@@ -63,8 +64,20 @@ void printTime(double &tempo_construction, double &tempo_swap, double &tempo_rei
   cout << "\n\n";
 }
 
-/*void organizaMatriz(int dimension, int &contador, int** matrizAdj ,vector<vector<int>> &matrizOrg)
+void organizaMatriz(int dimension, double** matrizAdj ,vector<vector<int>> &matrizOrg)
 {
+      struct istorado
+    {
+        int contador;
+        double **matrizAdj;
+        bool operator()(const int& a, const int& b) const
+        {
+            return matrizAdj[contador][a] <  matrizAdj[contador][b]; 
+        }
+    }tora;
+
+    tora.contador = 1;
+    tora.matrizAdj = matrizAdj;
 
   vector<int> optimal;
 
@@ -76,12 +89,7 @@ void printTime(double &tempo_construction, double &tempo_swap, double &tempo_rei
   for (int i = 0; i < dimension; i++)
   {
     matrizOrg.push_back(optimal);
-    sort(matrizOrg[i].begin(), matrizOrg[i].end(), compMatriz);
-    contador++;
+    sort(matrizOrg[i].begin(), matrizOrg[i].end(), tora);
+    tora.contador++;
   }
 }
-
-bool compMatriz(const int &a, const int &b, int contador, double**matrizAdj) // comparação dos custos utilizada para ordenar os objetos
-{
-  return matrizAdj[contador][a] < matrizAdj[contador][b];
-}*/

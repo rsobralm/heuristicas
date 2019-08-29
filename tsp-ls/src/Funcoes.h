@@ -16,7 +16,7 @@ void printSolution(vector<int> anyVector);
 double custoTotal(vector<int> &solucao, double **matrizAdj);
 double cpuTime();
 void printTime(double &tempo_construction, double &tempo_swap, double &tempo_reinsertion, double &tempo_2opt, double &tempo_orOpt2, double &tempo_orOpt3 );
-void organizaMatriz(int dimension, int &contador , double ** matrizAdj, vector<vector<int>> &matrizOrg);
+void organizaMatriz(int dimension, double ** matrizAdj, vector<vector<int>> &matrizOrg);
 bool compMatriz(const int &a, const int &b, int &contador, double ** matrizAdj);
 
 
