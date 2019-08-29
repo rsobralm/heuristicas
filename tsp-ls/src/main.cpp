@@ -68,14 +68,14 @@ int main(int argc, char **argv)
 
   double before = cpuTime();
 
-  organizaMatriz(dimension, matrizAdj, matrizOrg);
+  arrangeMatrix(dimension, matrizAdj, matrizOrg);
 
   cidades = gils_rvnd(i_max, i_ils, dimension, tempo_construction, tempo_swap, tempo_reinsertion, tempo_2opt, tempo_orOpt2, tempo_orOpt3, solucaoInvertida, matrizAdj, matrizOrg);
 
   printSolution(cidades);
 
-  valor = custoTotal(cidades, matrizAdj);
-  cout << "\n\ncusto: " << custoTotal(cidades, matrizAdj) <<"\n\n";
+  valor = totalCost(cidades, matrizAdj);
+  cout << "\n\ncusto: " << totalCost(cidades, matrizAdj) <<"\n\n";
   printTime(tempo_construction, tempo_swap, tempo_reinsertion, tempo_2opt, tempo_orOpt2, tempo_orOpt3);
 
   double after = cpuTime();

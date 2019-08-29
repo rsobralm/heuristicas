@@ -1,7 +1,7 @@
 #include "GILSRVND.h"
 
 vector<int> gils_rvnd(int iMax, int iIls,  int n, double &constructionTime, double &swapTime, double &reinsertionT, double &twoOptTime, double &orOpt2Time, double &orOpt3Time,
-vector<int> &positionList, double** adjMatrix, vector<vector<int>> &organizedMatrix)
+vector<int> &positionList, double** adjMatrix, vector<vector<int>> &arrangedMatrix)
 {
 
   double finalCost = numeric_limits<double>::infinity(); // custo final
@@ -17,8 +17,8 @@ vector<int> &positionList, double** adjMatrix, vector<vector<int>> &organizedMat
     int iter_ILS = 0;
     while (iter_ILS < iIls)
     {
-      //cout << "RVND " << i << endl;
-      rvnd(solution, firstCost, n, swapTime, reinsertionT, twoOptTime, orOpt2Time, orOpt3Time, positionList, adjMatrix, organizedMatrix); // explora as estruturas de vizinhança
+
+      rvnd(solution, firstCost, n, swapTime, reinsertionT, twoOptTime, orOpt2Time, orOpt3Time, positionList, adjMatrix, arrangedMatrix); // explora as estruturas de vizinhança
       if (firstCost < auxCost)
       {
         auxSolution = solution;
@@ -26,7 +26,7 @@ vector<int> &positionList, double** adjMatrix, vector<vector<int>> &organizedMat
         iter_ILS = 0;
       }
       solution = perturb(auxSolution, n, positionList); // perturba a solução evitando resultado ótimo local
-      firstCost = custoTotal(solution, adjMatrix);
+      firstCost = totalCost(solution, adjMatrix);
       iter_ILS++;
     }
     if (auxCost < finalCost)

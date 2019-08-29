@@ -4,27 +4,27 @@
 
 using namespace std;
 
-void swap(vector<int> &solution, double &cost, int n, double &swapTime, vector<int> &positionList ,double**adjMatrix, vector<vector<int>> &orgMatrix)
-{ // faz a troca de posição entre dois nós
+//Faz a troca de posição entre dois nós.
+void swap(vector<int> &solution, double &cost, int n, double &swapTime, vector<int> &positionList, double **adjMatrix, vector<vector<int>> &arrangedMatrix)
+{
 
   double swapBegin = cpuTime();
   vector<int> s = solution;
   double delta;
   double betterDelta = std::numeric_limits<double>::infinity();
-  //double fs = costTotal(s);
-  int pos_i = -1, pos_j = -1; // guarda as posições para realizar a operação
-  for (int i = 2; i < solution.size() - 2; i++)
-  { // exclui da operação a ultima e penultima posição do vetor
-    //for(int j = i + 1; j < solution.size() - 1; j++){
-    for (int j = 1; j <= 20; j++)
-    { // pega os 5 vizinhos mais proximos
-      int node = orgMatrix[solution[i] - 1][j];
+
+  int posI = -1, posJ = -1;                             // guarda as posições para realizar a operação
+  for (int i = 2; i < solution.size() - 2; i++)           // exclui da operação a ultima e penultima posição do vetor
+  {  
+    for (int j = 1; j <= 20; j++)                           // pega os 20 vizinhos mais proximos
+    {
+      
+      int node = arrangedMatrix[solution[i] - 1][j];
       int nodePos = positionList[node];
 
-      if (node!= 1 && i != nodePos)
+      if (node != 1 && i != nodePos)
       {
-        //if(i <= j){ // nao repetir swap
-        //cout << "i:" << i << "j:" << j << endl;
+
         for (int k = -1; k <= 1; k++)
         {
           if (i + k < nodePos)
@@ -37,8 +37,8 @@ void swap(vector<int> &solution, double &cost, int n, double &swapTime, vector<i
             if (delta < betterDelta)
             {
               betterDelta = delta;
-              pos_i = i + k;
-              pos_j = nodePos;
+              posI = i + k;
+              posJ = nodePos;
             }
           }
         }
@@ -48,21 +48,20 @@ void swap(vector<int> &solution, double &cost, int n, double &swapTime, vector<i
   //////// REINSERINDO NAS PONTAS DA solution;
   for (int l = 1; l <= 2; l++)
   {
-    int i = 1;
-    if (l == 2)
+    int i = 1;                                          //Extremidade inicial da solução
+    if (l == 2)                                         //Extremidade final da solucção
     {
       i = n - 1;
     }
-    for (int j = 1; j <= 20; j++)
-    { // pega os 5 vizinhos mais proximos
-      int node = orgMatrix[solution[i] - 1][j];
+    for (int j = 1; j <= 20; j++)                       // pega os 20 vizinhos mais proximos
+    { 
+      
+      int node = arrangedMatrix[solution[i] - 1][j];
       int nodePos = positionList[node];
       if (node != 1 && i != nodePos)
       {
-        //if(i <= j){ // nao repetir swap
-        //cout << "i:" << i << "j:" << j << endl;
-        if (i == 1)
-        {
+        if (i == 1)                                     //Extremidade inicial da solução
+        { 
           for (int k = 0; k <= 1; k++)
           {
             if (i + k < nodePos)
@@ -74,13 +73,13 @@ void swap(vector<int> &solution, double &cost, int n, double &swapTime, vector<i
               if (delta < betterDelta)
               {
                 betterDelta = delta;
-                pos_i = i + k;
-                pos_j = nodePos;
+                posI = i + k;
+                posJ = nodePos;
               }
             }
           }
         }
-        else
+        else                                            //Extremidade final da solucção
         {
           for (int k = -1; k <= 0; k++)
           {
@@ -93,8 +92,8 @@ void swap(vector<int> &solution, double &cost, int n, double &swapTime, vector<i
               if (delta < betterDelta)
               {
                 betterDelta = delta;
-                pos_i = i + k;
-                pos_j = nodePos;
+                posI = i + k;
+                posJ = nodePos;
               }
             }
           }
@@ -102,10 +101,10 @@ void swap(vector<int> &solution, double &cost, int n, double &swapTime, vector<i
       }
     }
   }
-  if (pos_i > 0)
+  if (posI > 0)
   { // realiza a operação
-    solution[pos_i] = s[pos_j];
-    solution[pos_j] = s[pos_i];
+    solution[posI] = s[posJ];
+    solution[posJ] = s[posI];
     cost = cost + betterDelta;
 
     for (int i = 0; i < positionList.size(); i++)
@@ -118,7 +117,7 @@ void swap(vector<int> &solution, double &cost, int n, double &swapTime, vector<i
   swapTime += (swapEnd - swapBegin);
 }
 
-inline double calculaDeltaSwap(int i, int j, vector<int> &s, double** adjMatrix)
+inline double calculaDeltaSwap(int i, int j, vector<int> &s, double **adjMatrix)
 {
   double delta;
   if (i + 1 == j)
@@ -133,82 +132,66 @@ inline double calculaDeltaSwap(int i, int j, vector<int> &s, double** adjMatrix)
   return delta;
 }
 
-void reInsertion(vector<int> &solution, double &cost,int n, double &reinsertionTime, vector<int> &positionList ,double**adjMatrix, vector<vector<int>> &orgMatrix)
-{  // reinsere um nó em posição diferente
+// reinsere um nó em posição diferente
+void reInsertion(vector<int> &solution, double &cost, int n, double &reinsertionTime, vector<int> &positionList, double **adjMatrix, vector<vector<int>> &arrangedMatrix)
+{ 
   double reinsertionBegin = cpuTime();
   vector<int> s = solution;
   double betterDelta = 0;
   double delta;
-  int pos_i = -1, pos_j = -1;
+  int posI = -1, posJ = -1;
 
-  for (int i = 1; i < solution.size() - 1; i++)
-  { // varre a solução exceto o 0 e o final
+  for (int i = 1; i < solution.size() - 1; i++)   // varre a solução exceto o 0 e o final
+  { 
     for (int j = 1; j <= 20; j++)
     {
-      int node = orgMatrix[solution[i] - 1][j];
-      //cout << "no:" << no << endl;
+      int node = arrangedMatrix[solution[i] - 1][j]; //cout << "no:" << no << endl;
+      
       int nodePos = positionList[node] - 1; // coloca o nó da posicão atras do vizinho mais proximo
       if (nodePos < i)
       {
         nodePos++;
       }
-      //cout << "nodePos:" << nodePos << endl;
+
       if (node != 1 && i != nodePos)
       {
 
         //Delta para reinserção de 'i' após 'nodePos'
         delta = calculaDeltaReInsertion(i, nodePos, s, adjMatrix);
-        //cout << "Delta1: " << delta << "\n";
+
         if (delta < 0)
         {
 
           if (delta < betterDelta)
           {
             betterDelta = delta;
-            pos_i = i;
-            pos_j = nodePos;
+            posI = i;
+            posJ = nodePos;
           }
         }
 
         //Delta para reinserção de 'nodePos' após 'i'
         delta = calculaDeltaReInsertion(nodePos, i, s, adjMatrix);
-        //cout << "Delta1: " << delta << "\n";
+
         if (delta < 0)
         {
           if (delta < betterDelta)
           {
             betterDelta = delta;
-            pos_i = nodePos;
-            pos_j = i;
+            posI = nodePos;
+            posJ = i;
           }
         }
 
-        //Delta para reinserção de 'i' antes de 'nodePos'
-
-        // if ((nodePos - 1) != i && nodePos != 1)
-        // {
-        //   delta = calculaDeltaReInsertion(i, nodePos - 1, s);
-        //   //cout << "Delta1: " << delta << "\n";
-
-        //   if (delta < 0)
-        //   {
-        //     if (delta < betterDelta)
-        //     {
-        //       betterDelta = delta;
-        //       pos_i = i;
-        //       pos_j = nodePos - 1;
-        //     }
-        //   }
-        // }
       }
     }
   }
 
-  if (pos_i > 0)
+  if (posI > 0)
   {
-    //cout << "Delta final: " << delta << endl;
-    solution.erase(solution.begin() + pos_i);
-    solution.insert(solution.begin() + pos_j, s[pos_i]);
+
+    solution.erase(solution.begin() + posI);
+    solution.insert(solution.begin() + posJ, s[posI]);
     cost = cost + betterDelta;
 
     for (int i = 0; i < positionList.size(); i++)
@@ -221,7 +204,7 @@ void reInsertion(vector<int> &solution, double &cost,int n, double &reinsertionT
   reinsertionTime += (reinsertionEnd - reinsertionBegin);
 }
 
-inline double calculaDeltaReInsertion(int i, int j, vector<int> &s, double**adjMatrix)
+inline double calculaDeltaReInsertion(int i, int j, vector<int> &s, double **adjMatrix)
 {
   double delta;
   if (i <= j)
@@ -235,18 +218,18 @@ inline double calculaDeltaReInsertion(int i, int j, vector<int> &s, double**adjM
   return delta;
 }
 
-void twoOptN(vector<int> &solution, double &cost,int n, double &twoOptTime, vector<int> &positionList, double**adjMatrix, vector<vector<int>> &orgMatrix)
+void twoOptN(vector<int> &solution, double &cost, int n, double &twoOptTime, vector<int> &positionList, double **adjMatrix, vector<vector<int>> &arrangedMatrix)
 { // inverte uma subsequencia da solução
 
   double twoOptBegin = cpuTime();
   vector<int> s = solution;
   double delta, betterDelta = 0;
-  int pos_i = -1, pos_j;
+  int posI = -1, posJ;
   for (int i = 1; i < solution.size() - 1; i++)
   { // varre do primeiro ao ultimo elemento da solution
     for (int j = 1; j <= 20; j++)
     {
-      int node = orgMatrix[solution[i] - 1][j];
+      int node = arrangedMatrix[solution[i] - 1][j];
       int nodePos = positionList[node];
       if (i != nodePos && node != 1)
       {
@@ -259,8 +242,8 @@ void twoOptN(vector<int> &solution, double &cost,int n, double &twoOptTime, vect
             if (delta < betterDelta)
             {
               betterDelta = delta;
-              pos_i = i + 1;
-              pos_j = nodePos;
+              posI = i + 1;
+              posJ = nodePos;
             }
           }
         }
@@ -271,19 +254,19 @@ void twoOptN(vector<int> &solution, double &cost,int n, double &twoOptTime, vect
           if (delta < betterDelta)
           {
             betterDelta = delta;
-            pos_i = nodePos + 1;
-            pos_j = i;
+            posI = nodePos + 1;
+            posJ = i;
           }
         }
       }
     }
   }
-  if (pos_i > 0)
+  if (posI > 0)
   {
-    //cout << "i:" << pos_i << "j:" << pos_j << endl;
-    for (int k = pos_i; k <= pos_j; k++)
+    //cout << "i:" << posI << "j:" << posJ << endl;
+    for (int k = posI; k <= posJ; k++)
     { // invertendo as posições
-      solution[k] = s[pos_j + pos_i - k];
+      solution[k] = s[posJ + posI - k];
     }
     cost = cost + betterDelta;
     for (int i = 0; i < positionList.size(); i++)
@@ -295,7 +278,7 @@ void twoOptN(vector<int> &solution, double &cost,int n, double &twoOptTime, vect
   twoOptTime += (twoOptEnd - twoOptBegin);
 }
 
-inline double calculaDeltaTwoOpt(int i, int j, vector<int> &s, double**adjMatrix)
+inline double calculaDeltaTwoOpt(int i, int j, vector<int> &s, double **adjMatrix)
 {
   double delta;
   if (j == (i + 1))
@@ -309,13 +292,13 @@ inline double calculaDeltaTwoOpt(int i, int j, vector<int> &s, double**adjMatrix
   return delta;
 }
 
-void orOpt2(vector<int> &solution, double &cost,int n, double &orOpt2Time, vector<int> &positionList, double**adjMatrix, vector<vector<int>> &orgMatrix)
+void orOpt2(vector<int> &solution, double &cost, int n, double &orOpt2Time, vector<int> &positionList, double **adjMatrix, vector<vector<int>> &arrangedMatrix)
 { // reinsere subsequencia de dois nós em posição diferente
   double orOpt2Begin = cpuTime();
   vector<int> s = solution;
   double betterDelta = 0;
   double delta;
-  int pos_i = -1, pos_j;
+  int posI = -1, posJ;
   for (int i = 1; i < solution.size() - 2; i++)
   {
     for (int j = 1; j < solution.size() - 3; j++)
@@ -328,17 +311,17 @@ void orOpt2(vector<int> &solution, double &cost,int n, double &orOpt2Time, vecto
           if (delta < betterDelta)
           {
             betterDelta = delta;
-            pos_i = i;
-            pos_j = j;
+            posI = i;
+            posJ = j;
           }
         }
       }
     }
   }
-  if (pos_i > 0)
+  if (posI > 0)
   {
-    solution.erase(solution.begin() + pos_i, solution.begin() + pos_i + 2);
-    solution.insert(solution.begin() + pos_j, &s[pos_i], &s[pos_i] + 2);
+    solution.erase(solution.begin() + posI, solution.begin() + posI + 2);
+    solution.insert(solution.begin() + posJ, &s[posI], &s[posI] + 2);
     cost = cost + betterDelta;
 
     for (int i = 0; i < positionList.size(); i++)
@@ -351,7 +334,7 @@ void orOpt2(vector<int> &solution, double &cost,int n, double &orOpt2Time, vecto
   orOpt2Time += (fimOropt2 - orOpt2Begin);
 }
 
-inline double calculaDeltaOrOpt2(int i, int j, vector<int> &s, double**adjMatrix)
+inline double calculaDeltaOrOpt2(int i, int j, vector<int> &s, double **adjMatrix)
 {
   double delta;
   if (i < j)
@@ -366,13 +349,13 @@ inline double calculaDeltaOrOpt2(int i, int j, vector<int> &s, double**adjMatrix
   return delta;
 }
 
-void orOpt3(vector<int> &solution, double &cost,int n, double &orOpt3Time, vector<int> &positionList, double**adjMatrix, vector<vector<int>> &orgMatrix)
+void orOpt3(vector<int> &solution, double &cost, int n, double &orOpt3Time, vector<int> &positionList, double **adjMatrix, vector<vector<int>> &arrangedMatrix)
 { // reinsere subsequencia de tres nós em posição diferente
   double orOpt3Begin = cpuTime();
   vector<int> s = solution;
   double betterDelta = 0;
   double delta;
-  int pos_i = -1, pos_j;
+  int posI = -1, posJ;
 
   for (int i = 1; i < solution.size() - 3; i++)
   {
@@ -386,17 +369,17 @@ void orOpt3(vector<int> &solution, double &cost,int n, double &orOpt3Time, vecto
           if (delta < betterDelta)
           {
             betterDelta = delta;
-            pos_i = i;
-            pos_j = j;
+            posI = i;
+            posJ = j;
           }
         }
       }
     }
   }
-  if (pos_i > 0)
+  if (posI > 0)
   {
-    solution.erase(solution.begin() + pos_i, solution.begin() + pos_i + 3);
-    solution.insert(solution.begin() + pos_j, &s[pos_i], &s[pos_i] + 3);
+    solution.erase(solution.begin() + posI, solution.begin() + posI + 3);
+    solution.insert(solution.begin() + posJ, &s[posI], &s[posI] + 3);
     cost = cost + betterDelta;
 
     for (int i = 0; i < positionList.size(); i++)
@@ -409,7 +392,7 @@ void orOpt3(vector<int> &solution, double &cost,int n, double &orOpt3Time, vecto
   orOpt3Time += (fimOropt3 - orOpt3Begin);
 }
 
-inline double calculaDeltaOrOpt3(int i, int j, vector<int> &s, double**adjMatrix)
+inline double calculaDeltaOrOpt3(int i, int j, vector<int> &s, double **adjMatrix)
 {
   double delta;
   if (i < j)
@@ -424,7 +407,7 @@ inline double calculaDeltaOrOpt3(int i, int j, vector<int> &s, double**adjMatrix
   return delta;
 }
 
-void orOptN(vector<int> &v, double &cost, int quantidade, int n, double &orOpt2Time, vector<int> &positionList, double**adjMatrix, vector<vector<int>> &orgMatrix)
+void orOptN(vector<int> &v, double &cost, int quantidade, int n, double &orOpt2Time, vector<int> &positionList, double **adjMatrix, vector<vector<int>> &arrangedMatrix)
 {                         // reinsere subsequencia de dois nós em posição diferente
   double **m = adjMatrix; //diminui o tamanho da declaraçao ali embaixo
   double orOpt2Begin = cpuTime();
@@ -432,21 +415,19 @@ void orOptN(vector<int> &v, double &cost, int quantidade, int n, double &orOpt2T
   double betterDelta = 0;
   double delta, deltaRemove;
 
-  int pos_i = -1, pos_j;
+  int posI = -1, posJ;
   for (int i = 1; i < v.size() - quantidade; i++)
   { // or-2-op/or-3-opt precisa comecar no maximo no penultimo antes do size
     deltaRemove = m[v[i]][v[i - 1]] + m[v[i + (quantidade - 1)]][v[i + quantidade]];
     for (int j = 1; j <= 20; j++)
     { //E terminar no maximo qnt antes de size
-      int node = orgMatrix[v[i] - 1][j];
+      int node = arrangedMatrix[v[i] - 1][j];
       int nodePos = positionList[node];
       if (i != nodePos && nodePos < (v.size() - (quantidade + 1)))
       {
 
         if (i < nodePos)
-        { //reinsercao em um indice maior do vetor
-          //delta = (m[v[i]][v[j]] + m[v[i]][v[j + 1]] + m[v[i - 1]][v[i + 1]]) -
-          //        (m[v[i]][v[i + 1]] + m[v[i]][v[i - 1]] + m[v[j]][v[j + 1]]);
+        {
           delta = m[v[i - 1]][v[i + quantidade]] + m[v[i]][v[nodePos + (quantidade - 1)]] + m[v[i + (quantidade - 1)]][v[nodePos + quantidade]] -
                   m[v[nodePos + (quantidade - 1)]][v[nodePos + quantidade]] - deltaRemove;
         }
@@ -455,29 +436,28 @@ void orOptN(vector<int> &v, double &cost, int quantidade, int n, double &orOpt2T
           //delta = (m[v[i]][v[nodePos]] + m[v[i]][v[nodePos - 1]] + m[v[i - 1]][v[i + 1]]) -
           //        (m[v[i]][v[i - 1]] + m[v[i]][v[i + 1]] + m[v[nodePos]][v[nodePos - 1]]);
 
-          if(quantidade == 2)
-            delta = calculaDeltaOrOpt2(i,nodePos,v,adjMatrix); 
+          if (quantidade == 2)
+            delta = calculaDeltaOrOpt2(i, nodePos, v, adjMatrix);
 
-          if(quantidade == 3)
-            delta = calculaDeltaOrOpt3(i,nodePos,v,adjMatrix);      
+          if (quantidade == 3)
+            delta = calculaDeltaOrOpt3(i, nodePos, v, adjMatrix);
 
           //delta = (m[v[i]][v[nodePos]] + m[v[i - (quantidade - 1)]][v[nodePos - 1]] + m[v[i - quantidade]][v[i + 1]]) -
           //      (m[v[i - (quantidade - 1)]][v[i - quantidade]] + m[v[i]][v[i + 1]] + m[v[nodePos]][v[nodePos - 1]]);
-
         }
         if (delta <= betterDelta && abs((i - nodePos)) > quantidade)
         {
           betterDelta = delta;
-          pos_i = i;
-          pos_j = nodePos;
+          posI = i;
+          posJ = nodePos;
         }
       }
     }
   }
-  if (pos_i > 0)
+  if (posI > 0)
   {
-    v.erase(v.begin() + pos_i, v.begin() + pos_i + quantidade);
-    v.insert(v.begin() + pos_j, &s[pos_i], &s[pos_i] + quantidade);
+    v.erase(v.begin() + posI, v.begin() + posI + quantidade);
+    v.insert(v.begin() + posJ, &s[posI], &s[posI] + quantidade);
     cost = cost + betterDelta;
 
     for (int i = 0; i < positionList.size(); i++)

@@ -6,16 +6,21 @@
 
 using namespace std;
 
-void swap(vector<int> &solucao, double &custo,int dimension, double &tempo_swap, vector<int> &solucaoInvertida, double**matrizAdj, vector<vector<int>> &matrizOrg);
-double calculaDeltaSwap(int i, int j, vector<int> &s, double**matrizAdj);
-void reInsertion(vector<int> &solucao, double &custo,int dimension, double &tempo_reinsertion, vector<int> &solucaoInvertida, double**matrizAdj, vector<vector<int>> &matrizOrg);
-double calculaDeltaReInsertion(int i, int j, vector<int> &s, double**matrizAdj);
-void twoOptN(vector<int> &solucao, double &custo,int dimension, double &tempo_2opt, vector<int> &solucaoInvertida, double**matrizAdj, vector<vector<int>> &matrizOrg);
-double calculaDeltaTwoOpt(int i, int j, vector<int> &s, double**matrizAdj);
-void orOpt2(vector<int> &solucao, double &custo, int quantidade, int dimension, double &tempo_orOpt2, vector<int> &solucaoInvertida, double**matrizAdj, vector<vector<int>> &matrizOrg);
-double calculaDeltaOrOpt2(int i, int j, vector<int> &s, double**matrizAdj);
-void orOpt3(vector<int> &solucao, double &custo,int dimension, double &tempo_orOpt3, vector<int> &solucaoInvertida, double**matrizAdj, vector<vector<int>> &matrizOrg);
-double calculaDeltaOrOpt3(int i, int j, vector<int> &s, double**matrizAdj);
-void orOptN(vector<int> &solucao, double &custo, int quantidade, int dimension, double &tempo_orOpt2, vector<int> &solucaoInvertida, double**matrizAdj, vector<vector<int>> &matrizOrg);
+void swap(vector<int> &solution, double &cost, int n, double &swapTime, vector<int> &positionList ,double**adjMatrix, vector<vector<int>> &arrangedMatrix);
+inline double calculaDeltaSwap(int i, int j, vector<int> &s, double** adjMatrix);
+
+void reInsertion(vector<int> &solution, double &cost,int n, double &reinsertionTime, vector<int> &positionList ,double**adjMatrix, vector<vector<int>> &arrangedMatrix);
+inline double calculaDeltaReInsertion(int i, int j, vector<int> &s, double**adjMatrix);
+
+void twoOptN(vector<int> &solution, double &cost,int n, double &twoOptTime, vector<int> &positionList, double**adjMatrix, vector<vector<int>> &arrangedMatrix);
+inline double calculaDeltaTwoOpt(int i, int j, vector<int> &s, double**adjMatrix);
+
+void orOpt2(vector<int> &solution, double &cost,int n, double &orOpt2Time, vector<int> &positionList, double**adjMatrix, vector<vector<int>> &arrangedMatrix);
+inline double calculaDeltaOrOpt2(int i, int j, vector<int> &s, double**adjMatrix);
+
+void orOpt3(vector<int> &solution, double &cost,int n, double &orOpt3Time, vector<int> &positionList, double**adjMatrix, vector<vector<int>> &arrangedMatrix);
+inline double calculaDeltaOrOpt3(int i, int j, vector<int> &s, double**adjMatrix);
+
+void orOptN(vector<int> &v, double &cost, int quantidade, int n, double &orOpt2Time, vector<int> &positionList, double**adjMatrix, vector<vector<int>> &arrangedMatrix);
 
 #endif
