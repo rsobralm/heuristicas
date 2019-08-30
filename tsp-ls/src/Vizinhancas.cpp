@@ -7,7 +7,6 @@ using namespace std;
 //Faz a troca de posição entre dois nós.
 void swap(vector<int> &solution, double &cost, int n, double &swapTime, vector<int> &positionList, double **adjMatrix, vector<vector<int>> &arrangedMatrix)
 {
-
   double swapBegin = cpuTime();
   vector<int> s = solution;
   double delta;
