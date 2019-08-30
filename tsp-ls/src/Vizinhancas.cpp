@@ -2,6 +2,9 @@
 #include "Vizinhancas.h"
 #include "Funcoes.h"
 
+
+vector<int> melhoras(20, 0);
+
 using namespace std;
 
 //Faz a troca de posição entre dois nós.
@@ -35,6 +38,7 @@ void swap(vector<int> &solution, double &cost, int n, double &swapTime, vector<i
           {
             if (delta < betterDelta)
             {
+              melhoras[j]++;
               betterDelta = delta;
               posI = i + k;
               posJ = nodePos;
@@ -71,6 +75,7 @@ void swap(vector<int> &solution, double &cost, int n, double &swapTime, vector<i
             {
               if (delta < betterDelta)
               {
+                melhoras[j]++;
                 betterDelta = delta;
                 posI = i + k;
                 posJ = nodePos;
@@ -90,6 +95,7 @@ void swap(vector<int> &solution, double &cost, int n, double &swapTime, vector<i
             {
               if (delta < betterDelta)
               {
+                melhoras[j]++;
                 betterDelta = delta;
                 posI = i + k;
                 posJ = nodePos;
@@ -163,6 +169,7 @@ void reInsertion(vector<int> &solution, double &cost, int n, double &reinsertion
 
           if (delta < betterDelta)
           {
+           
             betterDelta = delta;
             posI = i;
             posJ = nodePos;
@@ -176,6 +183,7 @@ void reInsertion(vector<int> &solution, double &cost, int n, double &reinsertion
         {
           if (delta < betterDelta)
           {
+            
             betterDelta = delta;
             posI = nodePos;
             posJ = i;
@@ -240,6 +248,7 @@ void twoOptN(vector<int> &solution, double &cost, int n, double &twoOptTime, vec
           {
             if (delta < betterDelta)
             {
+              
               betterDelta = delta;
               posI = i + 1;
               posJ = nodePos;
@@ -252,6 +261,7 @@ void twoOptN(vector<int> &solution, double &cost, int n, double &twoOptTime, vec
           //cout << "delta2:" << delta << endl;
           if (delta < betterDelta)
           {
+            
             betterDelta = delta;
             posI = nodePos + 1;
             posJ = i;
@@ -309,6 +319,7 @@ void orOpt2(vector<int> &solution, double &cost, int n, double &orOpt2Time, vect
         {
           if (delta < betterDelta)
           {
+            
             betterDelta = delta;
             posI = i;
             posJ = j;
@@ -367,6 +378,7 @@ void orOpt3(vector<int> &solution, double &cost, int n, double &orOpt3Time, vect
         {
           if (delta < betterDelta)
           {
+            
             betterDelta = delta;
             posI = i;
             posJ = j;
@@ -446,6 +458,7 @@ void orOptN(vector<int> &v, double &cost, int quantidade, int n, double &orOpt2T
         }
         if (delta <= betterDelta && abs((i - nodePos)) > quantidade)
         {
+          
           betterDelta = delta;
           posI = i;
           posJ = nodePos;

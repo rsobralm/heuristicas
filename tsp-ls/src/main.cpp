@@ -82,6 +82,11 @@ int main(int argc, char **argv)
   
   double tempo_total = after - before;
   cout << "Tempo de Execucao: " << tempo_total << endl;
+
+
+  for(int i = 0; i< 20 ; i++){
+    cout << melhoras[i] << " ";
+  }
   
   return 0;
 }

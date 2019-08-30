@@ -9,6 +9,8 @@
 #include <sys/resource.h>
 #include "CustoIn.h"
 
+extern std::vector<int> melhoras;
+
 using namespace std;
 
 void printData(int dimension, double **adjMatrix);
