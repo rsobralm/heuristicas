@@ -9,15 +9,19 @@
 #include <sys/resource.h>
 #include "CustoIn.h"
 
+extern std::vector<int> melhoras;
+extern double totalmelhoras;
+
 using namespace std;
 
-void printData(int dimension, double **matrizAdj);
+void printData(int dimension, double **adjMatrix);
 void printSolution(vector<int> anyVector);
-double custoTotal(vector<int> &solucao, double **matrizAdj);
+double totalCost(vector<int> &solution, double **adjMatrix);
 double cpuTime();
-void printTime(double &tempo_construction, double &tempo_swap, double &tempo_reinsertion, double &tempo_2opt, double &tempo_orOpt2, double &tempo_orOpt3 );
-void organizaMatriz(int dimension, int &contador , double ** matrizAdj, vector<vector<int>> &matrizOrg);
-bool compMatriz(const int &a, const int &b, int &contador, double ** matrizAdj);
+void printTime(double &constructionTime, double &swapTime, double &reinsertionTime, double &twoOptTime, double &orOpt2Time, double &orOpt3Time);
+void arrangeMatrix(int dimension, double **adjMatrix, vector<vector<int>> &arrangedMatrix);
+int defineMaxIterator(int n, vector<int> melhoras, double totalmelhoras);
+
 
 
 #endif

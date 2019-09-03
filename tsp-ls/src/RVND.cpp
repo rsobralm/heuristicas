@@ -1,59 +1,77 @@
 
 #include "RVND.h"
 
-void rvnd(vector<int> &solucao, double &custo, int dimension,  double &tempo_swap, double &tempo_reinsertion, double &tempo_2opt, double &tempo_orOpt2, double &tempo_orOpt3,
-vector<int> &solucaoInvertida, double** matrizAdj, vector<vector<int>> &matrizOrg)
+void rvnd(int ils, int maxIter, vector<int> &melhoras, double &totalmelhoras,vector<int> &solution, double &cost, int n, double &swapTime, double &reinsertionTime, double &twoOptTime, double &orOpt2Time, double &orOpt3Time,
+          vector<int> &positionList, double **adjMatrix, vector<vector<int>> &arrangedMatrix)
 {
-  vector<int> s = solucao;
-  vector<int> nLista = {0, 1, 2, 3, 4}; // lista de estruturas
-  double custoMod = custo;
+  vector<int> s = solution;
+  vector<int> nbList = {0, 1, 2, 3, 4}; // lista de estruturas
+  double auxCost = cost;
   int sel, pos;
 
-  while (!nLista.empty())
+  while (!nbList.empty())
   { // roda enquanto existirem estruturas de vizinhança na lista
 
-    int k = rand() % nLista.size();
+    int k = rand() % nbList.size();
 
-    switch (nLista[k])
+    switch (nbList[k])
     {
     case 0:
-      swap(solucao, custoMod, dimension, tempo_swap, solucaoInvertida, matrizAdj, matrizOrg);
+    {
+      double begin = cpuTime();
+      swap(ils, maxIter, melhoras, totalmelhoras, solution, auxCost, n, positionList, adjMatrix, arrangedMatrix);
+      double end = cpuTime();
+      swapTime += (end - begin);
+    }
       break;
 
     case 1:
     {
-      //temp1 = std::chrono::system_clock::now();
-      reInsertion(solucao, custoMod, dimension, tempo_reinsertion, solucaoInvertida, matrizAdj, matrizOrg);
-      //temp2 = std::chrono::system_clock::now();
-      //totalTempo = totalTempo + std::chrono::duration_cast<std::chrono::microseconds>(temp2 - temp1).count();
+      double begin = cpuTime();
+      reInsertion(ils, maxIter, melhoras, totalmelhoras,solution, auxCost, n, positionList, adjMatrix, arrangedMatrix);
+      double end = cpuTime();
+      reinsertionTime += (end - begin);
     }
     break;
 
     case 2:
-      twoOptN(solucao, custoMod, dimension, tempo_2opt, solucaoInvertida, matrizAdj, matrizOrg);
+    {
+      double begin = cpuTime();
+      twoOptN(ils, maxIter, melhoras, totalmelhoras,solution, auxCost, n, positionList, adjMatrix, arrangedMatrix);
+      double end = cpuTime();
+      twoOptTime += (end - begin);
+    }
       break;
 
     case 3:
-      orOptN(solucao, custoMod, 2, dimension, tempo_orOpt2, solucaoInvertida, matrizAdj, matrizOrg);
+    {
+      double begin = cpuTime();
+      orOptN(ils, maxIter, melhoras, totalmelhoras,solution, auxCost, 2, n, positionList, adjMatrix, arrangedMatrix);
+      double end = cpuTime();
+      orOpt2Time += (end - begin);
+    }
       break;
 
     case 4:
-      orOptN(solucao, custoMod, 3, dimension, tempo_orOpt3, solucaoInvertida, matrizAdj, matrizOrg);
+    {
+      double begin = cpuTime();
+      orOptN(ils, maxIter, melhoras, totalmelhoras,solution, auxCost, 3, n, positionList, adjMatrix, arrangedMatrix);
+      double end = cpuTime();
+      orOpt3Time += (end - begin);
+    }
       break;
-    }
+  }
 
-    //custoMod = custoTotal(solucao); // calcula o custo do Movimento
-
-    if (custo > custoMod)
-    { // movimento melhorou o custo
-      custo = custoMod;
-      s = solucao;
+    if (cost > auxCost)   // movimento melhorou o custo
+    {
+      cost = auxCost;
+      s = solution;
     }
-    else
-    { // nao melhorou, exclui o movimento da lista
-      solucao = s;
-      nLista.erase(nLista.begin() + k);
-      custoMod = custo;
+    else    // nao melhorou, exclui o movimento da lista de vizinhança
+    { 
+      solution = s;
+      nbList.erase(nbList.begin() + k);
+      auxCost = cost;
     }
   }
 }

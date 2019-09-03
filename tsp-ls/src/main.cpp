@@ -21,37 +21,9 @@
 
 using namespace std;
 
-  /*struct Compara
-  {
-    int contador;
-    double **matrizAdj;
- 
-    bool Compare(const int &a, const int &b){
-       return (matrizAdj[contador][a] < matrizAdj[contador][b]);
-       }
-
-    void azar(int i, vector<vector<int>> &matrizOrg){
-        sort(matrizOrg[i].begin(), matrizOrg[i].end(),Compare);
-    }
-  }comparacao;*/
-
-
-  struct istorado
-{
-    int contador;
-    double **matrizAdj;
-    bool operator()(const int& a, const int& b) const
-    {
-        return matrizAdj[contador][a] <  matrizAdj[contador][b]; 
-    }
-}tora;
-
-
-bool compMatriz(const int &a, const int &b, double **matrizAdj, int contador);
 
 int main(int argc, char **argv)
 {
-
 
   double **matrizAdj;  // matriz de adjacencia
   double **matrizDist; // matriz reorganizada;
@@ -61,8 +33,6 @@ int main(int argc, char **argv)
   vector<int> candidatos;
   vector<vector<int>> matrizOrg;
   vector<int> solucaoInvertida;
-
-  int contador = 1;
 
   std::chrono::time_point<std::chrono::system_clock> temp1, temp2;
   double totalTempo = 0;
@@ -85,7 +55,15 @@ int main(int argc, char **argv)
   readData(argc, argv, &dimension, &matrizAdj);
   vector<int> temporarioInvertido(dimension + 1);
   solucaoInvertida = temporarioInvertido;
-  srand((unsigned)time(0));
+  //srand((unsigned)time(0));
+
+  vector<int> melhoras(dimension, 0);
+  double totalmelhoras = 0;
+
+  long long semente = time(0);
+	srand(semente);
+	cout << "\nSemente: " << semente << endl;
+
 
   if (dimension >= 150)
   {
@@ -98,73 +76,22 @@ int main(int argc, char **argv)
 
   double before = cpuTime();
 
-  //organizaMatriz();
+  arrangeMatrix(dimension, matrizAdj, matrizOrg);
 
-  tora.contador = 1;
-  tora.matrizAdj = matrizAdj;
 
-  vector<int> optimal;
-
-  for (int i = 1; i <= dimension; i++)
-  {
-    optimal.push_back(i);
-  }
-
-  for (int i = 0; i < dimension; i++)
-  {
-    matrizOrg.push_back(optimal);
-    sort(matrizOrg[i].begin(), matrizOrg[i].end(),tora);
-    //comparacao.azar(i, matrizOrg);
-    tora.contador++;
-  }
-
-  /*for (int i = 0; i < dimension; i++)
-  {
-    for (int j = 0; j < dimension; j++)
-    {
-      cout << matrizOrg[i][j] << " ";
-    }
-    cout << endl;
-  }*/
-    /*double custo = 0;
-    candidatos = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,1};
-    cout << matrizOrg[7][13] <<"\n";
-    printSolution(candidatos);
-    twoOptN(candidatos, custo);
-    printSolution(candidatos);*/
- 
-  //rvnd(cidades);
-  //printSolution(cidades);
-  //printSolution(candidatos);
-  //perturb(candidatos);
-
-  cidades = gils_rvnd(i_max, i_ils, dimension, tempo_construction, tempo_swap, tempo_reinsertion, tempo_2opt, tempo_orOpt2, tempo_orOpt3, solucaoInvertida, matrizAdj, matrizOrg);
+  cidades = gils_rvnd(i_max, i_ils, melhoras, totalmelhoras, dimension, tempo_construction, tempo_swap, tempo_reinsertion, tempo_2opt, tempo_orOpt2, tempo_orOpt3, solucaoInvertida, matrizAdj, matrizOrg);
 
   printSolution(cidades);
 
-  valor = custoTotal(cidades, matrizAdj);
-  cout << "\n\ncusto: " << custoTotal(cidades, matrizAdj) <<"\n\n";
+  valor = totalCost(cidades, matrizAdj);
+  cout << "\n\ncusto: " << totalCost(cidades, matrizAdj) <<"\n\n";
   printTime(tempo_construction, tempo_swap, tempo_reinsertion, tempo_2opt, tempo_orOpt2, tempo_orOpt3);
 
   double after = cpuTime();
-  //cidades = construction(0.5);
-  //swap(cidades);
-  //printData();
+  
   double tempo_total = after - before;
   cout << "Tempo de Execucao: " << tempo_total << endl;
-  // somaTempos += tempo_total;
-  // somaValores += valor;
-  //printTime();
-  //cout << "Valor Medio da Solucao: " << (somaValores/10) << endl;
-  //cout << "Tempo Medio de Execucao: " << (somaTempos/10) << " (s)" << endl;
-  //printTime();
+
+  
   return 0;
 }
-
-
-/*bool compMatriz(const int &a, const int &b) // comparação dos custos utilizada para ordenar os objetos
-{
-  return matrizAdj[contador][a] < matrizAdj[contador][b];
-}*/
-
-

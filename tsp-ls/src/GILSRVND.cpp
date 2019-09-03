@@ -1,41 +1,43 @@
-
 #include "GILSRVND.h"
 
-vector<int> gils_rvnd(int i_max, int i_ils,  int dimension, double &tempo_construction , double &tempo_swap, double &tempo_reinsertion, double &tempo_2opt, double &tempo_orOpt2, double &tempo_orOpt3,
-vector<int> &solucaoInvertida, double** matrizAdj, vector<vector<int>> &matrizOrg)
+vector<int> gils_rvnd(int iMax, int iIls,  vector<int> &melhoras, double &totalmelhoras,  int n, double &constructionTime, double &swapTime, double &reinsertionT, double &twoOptTime, double &orOpt2Time, double &orOpt3Time,
+vector<int> &positionList, double** adjMatrix, vector<vector<int>> &arrangedMatrix)
 {
 
-  double ff = numeric_limits<double>::infinity(); // custo final
-  vector<int> s, s1, sf;                          // s, s', s*
-  double fs, fs1;
-  for (int i = 0; i < i_max; i++)
+  int maxIter = 0;
+  double finalCost = numeric_limits<double>::infinity(); // custo final
+  vector<int> solution, auxSolution, bestSolution;        // s, s', s*
+  double firstCost, auxCost;
+  for (int i = 0; i < iMax; i++)
   {
 
     double alfa = (double)rand() / RAND_MAX; // gera aleatorio entre 0 e 1
-    s = construction(alfa, fs, dimension, tempo_construction, solucaoInvertida, matrizAdj); // constroi solucao inicial
-    s1 = s;
-    fs1 = fs;
+    solution = construction(alfa, firstCost, n, constructionTime, positionList, adjMatrix); // constroi solucao inicial
+    auxSolution = solution;
+    auxCost = firstCost;
     int iter_ILS = 0;
-    while (iter_ILS < i_ils)
-    {
-      //cout << "RVND " << i << endl;
-      rvnd(s, fs, dimension, tempo_swap, tempo_reinsertion, tempo_2opt, tempo_orOpt2, tempo_orOpt3, solucaoInvertida, matrizAdj, matrizOrg); // explora as estruturas de vizinhança
-      if (fs < fs1)
-      {
-        s1 = s;
-        fs1 = fs;
-        iter_ILS = 0;
-      }
-      s = perturb(s1, dimension, solucaoInvertida); // perturba a solução evitando resultado ótimo local
-      fs = custoTotal(s, matrizAdj);
-      iter_ILS++;
-    }
-    if (fs1 < ff)
+    while (iter_ILS < iIls)
     {
 
-      sf = s1;
-      ff = fs1;
+      rvnd(i, maxIter, melhoras, totalmelhoras, solution, firstCost, n, swapTime, reinsertionT, twoOptTime, orOpt2Time, orOpt3Time, positionList, adjMatrix, arrangedMatrix); // explora as estruturas de vizinhança
+      if (firstCost < auxCost)
+      {
+        auxSolution = solution;
+        auxCost = firstCost;
+        iter_ILS = 0;
+      }
+      solution = perturb(auxSolution, n, positionList); // perturba a solução evitando resultado ótimo local
+      firstCost = totalCost(solution, adjMatrix);
+      iter_ILS++;
+    }
+    if (auxCost < finalCost)
+    {
+      bestSolution = auxSolution;
+      finalCost = auxCost;
+    }
+    if(i == 0){
+      maxIter = defineMaxIterator(n, melhoras, totalmelhoras); 
     }
   }
-  return sf; // retorna a melhor solucao
+  return bestSolution; // retorna a melhor solucao
 }

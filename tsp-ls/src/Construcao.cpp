@@ -1,6 +1,7 @@
 
 #include "Construcao.h"
 #include "Funcoes.h"
+#include <cmath>
 
 vector<int> construction(double alfa, double &custo, int dimension, double &tempo_construction, vector<int> &solucaoInvertida, double **matrizAdj)
 {
@@ -30,6 +31,7 @@ vector<int> construction(double alfa, double &custo, int dimension, double &temp
     if (alfa == 0)
     {
       sel = 0;
+      
     }
     else
     {
@@ -69,7 +71,7 @@ vector<int> construction(double alfa, double &custo, int dimension, double &temp
   double fimConstruction = cpuTime();
   tempo_construction += (fimConstruction - inicioconstruction);
 
-  custo = custoTotal(s, matrizAdj);
+  custo = totalCost(s, matrizAdj);
   return s;
 }
 

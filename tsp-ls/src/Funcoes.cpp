@@ -2,21 +2,23 @@
 #include "Funcoes.h"
 #include "CustoIn.h"
 
-void printData(int dimension, double**matrizAdj)
+//Printa a matriz de adjacência.
+void printData(int dimension, double **adjMatrix)
 {
   cout << "dimension: " << dimension << endl;
   for (size_t i = 1; i <= dimension; i++)
   {
     for (size_t j = 1; j <= dimension; j++)
     {
-      cout << matrizAdj[i][j] << " ";
+      cout << adjMatrix[i][j] << " ";
     }
     cout << endl;
   }
 }
 
+//Printa um vetor qualquer;
 void printSolution(vector<int> anyVector)
-{ // printa um vetor qualquer
+{
   vector<int>::iterator v = anyVector.begin();
   cout << "\n";
   while (v != anyVector.end())
@@ -26,17 +28,16 @@ void printSolution(vector<int> anyVector)
   }
 }
 
-
-double custoTotal(vector<int> &solucao, double**matrizAdj)
-{ // explora a matriz e retorna o custo de uma solucao
-  double custo = 0;
-  for (int i = 0, j = 1; i < solucao.size() - 1; i++, j++)
+//Itera sobre a solução e retorna seu cost baseado na matriz de adjacência.
+double totalCost(vector<int> &solution, double **adjMatrix)
+{
+  double cost = 0;
+  for (int i = 0, j = 1; i < solution.size() - 1; i++, j++)
   {
-    custo = custo + matrizAdj[solucao[i]][solucao[j]];
+    cost = cost + adjMatrix[solution[i]][solution[j]];
   }
-  return custo;
+  return cost;
 }
-
 
 
 double cpuTime()
@@ -46,25 +47,39 @@ double cpuTime()
   return ((double)usage.ru_utime.tv_sec) + (((double)usage.ru_utime.tv_usec) / ((double)1000000));
 }
 
-void printTime(double &tempo_construction, double &tempo_swap, double &tempo_reinsertion, double &tempo_2opt, double &tempo_orOpt2, double &tempo_orOpt3 )
+
+void printTime(double &constructionTime, double &swapTime, double &reinsertionTime, double &twoOptTime, double &orOpt2Time, double &orOpt3Time)
 {
-  cout << "Tempo medio de execucao da SI: " << (tempo_construction) << " (s)";
+  cout << "Tempo medio de execucao da SI: " << (constructionTime) << " (s)";
   cout << "\n"
-       << "Tempo medio de execucao da troca: " << (tempo_swap) << " (s)";
+       << "Tempo medio de execucao da troca: " << (swapTime) << " (s)";
   cout << "\n"
-       << "Tempo medio de execucao do Or-opt: " << (tempo_reinsertion) << " (s)";
+       << "Tempo medio de execucao do Or-opt: " << (reinsertionTime) << " (s)";
   cout << "\n"
-       << "Tempo medio de execucao do Or-opt2: " << (tempo_orOpt2) << " (s)";
+       << "Tempo medio de execucao do Or-opt2: " << (orOpt2Time) << " (s)";
   cout << "\n"
-       << "Tempo medio de execucao do Or-opt3: " << (tempo_orOpt3) << " (s)";
+       << "Tempo medio de execucao do Or-opt3: " << (orOpt3Time) << " (s)";
   cout << "\n"
-       << "Tempo medio de execucao do 2-opt: " << (tempo_2opt) << " (s)";
+       << "Tempo medio de execucao do 2-opt: " << (twoOptTime) << " (s)";
 
   cout << "\n\n";
 }
 
-/*void organizaMatriz(int dimension, int &contador, int** matrizAdj ,vector<vector<int>> &matrizOrg)
+//Retorna uma matriz em que toda linha possui nós ordenados em relação a sua distância ao elemento da primeira coluna.
+void arrangeMatrix(int dimension, double **adjMatrix, vector<vector<int>> &arrangedMatrix)
 {
+  struct istorado
+  {
+    int counter;
+    double **adjMatrix;
+    bool operator()(const int &a, const int &b) const
+    {
+      return adjMatrix[counter][a] < adjMatrix[counter][b];
+    }
+  } tora;
+
+  tora.counter = 1;
+  tora.adjMatrix = adjMatrix;
 
   vector<int> optimal;
 
@@ -75,13 +90,30 @@ void printTime(double &tempo_construction, double &tempo_swap, double &tempo_rei
 
   for (int i = 0; i < dimension; i++)
   {
-    matrizOrg.push_back(optimal);
-    sort(matrizOrg[i].begin(), matrizOrg[i].end(), compMatriz);
-    contador++;
+    arrangedMatrix.push_back(optimal);
+    sort(arrangedMatrix[i].begin(), arrangedMatrix[i].end(), tora);
+    tora.counter++;
   }
 }
 
-bool compMatriz(const int &a, const int &b, int contador, double**matrizAdj) // comparação dos custos utilizada para ordenar os objetos
-{
-  return matrizAdj[contador][a] < matrizAdj[contador][b];
-}*/
+int defineMaxIterator(int n, vector<int> melhoras, double totalmelhoras){
+  
+  //double soma = 0;
+  double soma2 = 0;
+  int e;
+
+  /*for(int i = 0; i < n ; i++){
+    //cout << melhoras[i] << " ";
+    soma+= melhoras[i];
+  }
+  cout << endl << soma << endl;
+  */
+
+  for(e = 0; e < n; e++){
+    soma2 += melhoras[e];
+    if(soma2 > totalmelhoras*0.95)
+      break;
+  }
+    return e;
+
+}
