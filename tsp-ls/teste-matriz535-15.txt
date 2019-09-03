@@ -1,0 +1,31 @@
+instances/ali535.tsp
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+custo: 202591 
+
+Tempo medio de execucao da SI: 98.241 (s)
+Tempo medio de execucao da troca: 37.4328 (s)
+Tempo medio de execucao do Or-opt: 29.3948 (s)
+Tempo medio de execucao do Or-opt2: 12.253 (s)
+Tempo medio de execucao do Or-opt3: 8.29431 (s)
+Tempo medio de execucao do 2-opt: 20.5537 (s)
+
+Tempo de Execucao: 209.08

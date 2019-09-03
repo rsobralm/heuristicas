@@ -1,10 +1,9 @@
 #include "GILSRVND.h"
 
-vector<int> gils_rvnd(int iMax, int iIls,  vector<int> &melhoras, double &totalmelhoras,  int n, double &constructionTime, double &swapTime, double &reinsertionT, double &twoOptTime, double &orOpt2Time, double &orOpt3Time,
-vector<int> &positionList, double** adjMatrix, vector<vector<int>> &arrangedMatrix)
+vector<int> gils_rvnd(int iMax, int iIls,  int n, double &constructionTime, double &swapTime, double &reinsertionT, double &twoOptTime, double &orOpt2Time, double &orOpt3Time,
+vector<int> &positionList, double** adjMatrix, vector<vector<int>> &organizedMatrix)
 {
 
-  int maxIter = 0;
   double finalCost = numeric_limits<double>::infinity(); // custo final
   vector<int> solution, auxSolution, bestSolution;        // s, s', s*
   double firstCost, auxCost;
@@ -18,8 +17,8 @@ vector<int> &positionList, double** adjMatrix, vector<vector<int>> &arrangedMatr
     int iter_ILS = 0;
     while (iter_ILS < iIls)
     {
-
-      rvnd(i, maxIter, melhoras, totalmelhoras, solution, firstCost, n, swapTime, reinsertionT, twoOptTime, orOpt2Time, orOpt3Time, positionList, adjMatrix, arrangedMatrix); // explora as estruturas de vizinhança
+      //cout << "RVND " << i << endl;
+      rvnd(solution, firstCost, n, swapTime, reinsertionT, twoOptTime, orOpt2Time, orOpt3Time, positionList, adjMatrix, organizedMatrix); // explora as estruturas de vizinhança
       if (firstCost < auxCost)
       {
         auxSolution = solution;
@@ -32,11 +31,9 @@ vector<int> &positionList, double** adjMatrix, vector<vector<int>> &arrangedMatr
     }
     if (auxCost < finalCost)
     {
+
       bestSolution = auxSolution;
       finalCost = auxCost;
-    }
-    if(i == 0){
-      maxIter = defineMaxIterator(n, melhoras, totalmelhoras); 
     }
   }
   return bestSolution; // retorna a melhor solucao

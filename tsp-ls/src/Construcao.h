@@ -7,8 +7,8 @@
 
 using namespace std;
 
-vector<int> construction(double alfa, double &custo, int dimension, double &tempo_construction, vector<int> &solucaoInvertida, double ** matrizAdj);
-vector<CustoIn> calculaCusto(vector<int> listaCandidatos, vector<int> &s, double **matrizAdj);
+vector<int> construction(double alpha, double &cost, int n, double &constructionTime, vector<int> &positionList, double **adjMatrix);
+vector<CustoIn> getCost(vector<int> candidateList, vector<int> &s, double **adjMatrix);
 bool comp(const CustoIn &a, const CustoIn &b);
 
 #endif

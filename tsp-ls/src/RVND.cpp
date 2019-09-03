@@ -1,12 +1,12 @@
 
 #include "RVND.h"
 
-void rvnd(int ils, int maxIter, vector<int> &melhoras, double &totalmelhoras,vector<int> &solution, double &cost, int n, double &swapTime, double &reinsertionTime, double &twoOptTime, double &orOpt2Time, double &orOpt3Time,
-          vector<int> &positionList, double **adjMatrix, vector<vector<int>> &arrangedMatrix)
+void rvnd(vector<int> &solution, double &cost, int n,  double &swapTime, double &reinsertionTime, double &twoOptTime, double &orOpt2Time, double &orOpt3Time,
+vector<int> &positionList, double** adjMatrix, vector<vector<int>> &orgMatrix)
 {
   vector<int> s = solution;
   vector<int> nbList = {0, 1, 2, 3, 4}; // lista de estruturas
-  double auxCost = cost;
+  double mCost = cost;
   int sel, pos;
 
   while (!nbList.empty())
@@ -19,7 +19,7 @@ void rvnd(int ils, int maxIter, vector<int> &melhoras, double &totalmelhoras,vec
     case 0:
     {
       double begin = cpuTime();
-      swap(ils, maxIter, melhoras, totalmelhoras, solution, auxCost, n, positionList, adjMatrix, arrangedMatrix);
+      swap(solution, mCost, n, swapTime, positionList, adjMatrix, orgMatrix);
       double end = cpuTime();
       swapTime += (end - begin);
     }
@@ -28,7 +28,7 @@ void rvnd(int ils, int maxIter, vector<int> &melhoras, double &totalmelhoras,vec
     case 1:
     {
       double begin = cpuTime();
-      reInsertion(ils, maxIter, melhoras, totalmelhoras,solution, auxCost, n, positionList, adjMatrix, arrangedMatrix);
+      reInsertion(solution, mCost, n, reinsertionTime, positionList, adjMatrix, orgMatrix);
       double end = cpuTime();
       reinsertionTime += (end - begin);
     }
@@ -37,7 +37,7 @@ void rvnd(int ils, int maxIter, vector<int> &melhoras, double &totalmelhoras,vec
     case 2:
     {
       double begin = cpuTime();
-      twoOptN(ils, maxIter, melhoras, totalmelhoras,solution, auxCost, n, positionList, adjMatrix, arrangedMatrix);
+      twoOptN(solution, mCost, n, twoOptTime, positionList, adjMatrix, orgMatrix);
       double end = cpuTime();
       twoOptTime += (end - begin);
     }
@@ -46,7 +46,7 @@ void rvnd(int ils, int maxIter, vector<int> &melhoras, double &totalmelhoras,vec
     case 3:
     {
       double begin = cpuTime();
-      orOptN(ils, maxIter, melhoras, totalmelhoras,solution, auxCost, 2, n, positionList, adjMatrix, arrangedMatrix);
+      orOptN(solution, mCost, 2, n, orOpt2Time, positionList, adjMatrix, orgMatrix);
       double end = cpuTime();
       orOpt2Time += (end - begin);
     }
@@ -55,23 +55,25 @@ void rvnd(int ils, int maxIter, vector<int> &melhoras, double &totalmelhoras,vec
     case 4:
     {
       double begin = cpuTime();
-      orOptN(ils, maxIter, melhoras, totalmelhoras,solution, auxCost, 3, n, positionList, adjMatrix, arrangedMatrix);
+      orOptN(solution, mCost, 3, n, orOpt3Time, positionList, adjMatrix, orgMatrix);
       double end = cpuTime();
       orOpt3Time += (end - begin);
     }
       break;
   }
 
-    if (cost > auxCost)   // movimento melhorou o custo
-    {
-      cost = auxCost;
+    //mCost = costTotal(solution); // calcula o cost do Movimento
+
+    if (cost > mCost)
+    { // movimento melhorou o cost
+      cost = mCost;
       s = solution;
     }
-    else    // nao melhorou, exclui o movimento da lista de vizinhança
-    { 
+    else
+    { // nao melhorou, exclui o movimento da lista
       solution = s;
       nbList.erase(nbList.begin() + k);
-      auxCost = cost;
+      mCost = cost;
     }
   }
 }

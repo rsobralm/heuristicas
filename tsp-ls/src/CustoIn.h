@@ -4,8 +4,8 @@
 class CustoIn
 {
     public:
-        int noIn, arestaOut;
-        double custo; 
+        int nodeIn, edgeOut;
+        double cost; 
         CustoIn();
 
 };

@@ -6,6 +6,6 @@
 
 using namespace std;
 
-vector<int> perturb(vector<int> &solucao, int dimension, vector<int> &solucaoInvertida);
+vector<int> perturb(vector<int> &solution, int n, vector<int> &positionList);
 
 #endif

@@ -17,7 +17,8 @@
 #include "RVND.h"
 #include "Construcao.h"
 #include "Perturbacao.h"
-
+#include "MinSpanningTree.h"
+#include "CandidateList.h"
 
 using namespace std;
 
@@ -25,73 +26,76 @@ using namespace std;
 int main(int argc, char **argv)
 {
 
-  double **matrizAdj;  // matriz de adjacencia
+  double **adjMatrix;  // matriz de adjacencia
   double **matrizDist; // matriz reorganizada;
-  int dimension;       // quantidade total de vertices
+  int n;       // quantidade total de vertices
   vector<int> cidades;
   vector<int> solucaum;
   vector<int> candidatos;
-  vector<vector<int>> matrizOrg;
-  vector<int> solucaoInvertida;
+  vector<vector<int>> orgMatrix;
+  vector<int> positionList;
 
   std::chrono::time_point<std::chrono::system_clock> temp1, temp2;
-  double totalTempo = 0;
+  double execTime = 0;
+  double somacustos = 0;
+  double constructionTime = 0;
+  double swapTime = 0;
+  double reinsertionTime = 0;
+  double TwoOptTime = 0;
+  double orOpt2Time = 0;
+  double orOpt3Time = 0;
 
-  double tempo_construction = 0;
-  double tempo_swap = 0;
-  double tempo_reinsertion = 0;
-  double tempo_2opt = 0;
-  double tempo_orOpt2 = 0;
-  double tempo_orOpt3 = 0;
 
-
-  double somaTempos;
-  double somaValores;
   std::string arg1(argv[1]);
   cout << arg1 << endl;
-  double valor;
   int i_max = 50;
   int i_ils;
-  readData(argc, argv, &dimension, &matrizAdj);
-  vector<int> temporarioInvertido(dimension + 1);
-  solucaoInvertida = temporarioInvertido;
-  //srand((unsigned)time(0));
+  readData(argc, argv, &n, &adjMatrix);
+  vector<int> tempPositionList(n + 1);
+  positionList = tempPositionList;
+  srand((unsigned)time(0));
 
-  vector<int> melhoras(dimension, 0);
-  double totalmelhoras = 0;
-
-  long long semente = time(0);
-	srand(semente);
-	cout << "\nSemente: " << semente << endl;
-
-
-  if (dimension >= 150)
+  if (n >= 150)
   {
-    i_ils = dimension / 2;
+    i_ils = n / 2;
   }
   else
   {
-    i_ils = dimension;
+    i_ils = n;
   }
 
+  for(int i =0; i < 10; i++){
   double before = cpuTime();
 
-  arrangeMatrix(dimension, matrizAdj, matrizOrg);
+  //organizaMatriz(n, adjMatrix, orgMatrix);
+  
+  generateCandidateList(orgMatrix, adjMatrix, n);
 
 
-  cidades = gils_rvnd(i_max, i_ils, melhoras, totalmelhoras, dimension, tempo_construction, tempo_swap, tempo_reinsertion, tempo_2opt, tempo_orOpt2, tempo_orOpt3, solucaoInvertida, matrizAdj, matrizOrg);
+  cidades = gils_rvnd(i_max, i_ils, n, constructionTime, swapTime, reinsertionTime, TwoOptTime, orOpt2Time, orOpt3Time, positionList, adjMatrix, orgMatrix);
 
-  printSolution(cidades);
+  //printSolution(cidades);
+  somacustos += totalCost(cidades, adjMatrix);
 
-  valor = totalCost(cidades, matrizAdj);
-  cout << "\n\ncusto: " << totalCost(cidades, matrizAdj) <<"\n\n";
-  printTime(tempo_construction, tempo_swap, tempo_reinsertion, tempo_2opt, tempo_orOpt2, tempo_orOpt3);
+  //cout << "\n\ncusto: " << totalCost(cidades, adjMatrix) <<"\n\n";
+  //printTime(constructionTime, swapTime, reinsertionTime, TwoOptTime, orOpt2Time, orOpt3Time);
 
   double after = cpuTime();
-  
-  double tempo_total = after - before;
-  cout << "Tempo de Execucao: " << tempo_total << endl;
+  execTime += (after - before);
+  }
 
+  cout << "custo: " << (somacustos/10) << " \n\n";
+  cout << "Tempo medio de execucao da SI: " << (constructionTime/10) << " (s)";
+  cout << "\n" << "Tempo medio de execucao da troca: " << (swapTime/10)<< " (s)";
+  cout << "\n" << "Tempo medio de execucao do Or-opt: " << (reinsertionTime/10)<< " (s)";
+  cout << "\n" << "Tempo medio de execucao do Or-opt2: " << (orOpt2Time/10)<< " (s)";
+  cout << "\n" << "Tempo medio de execucao do Or-opt3: " << (orOpt3Time/10)<< " (s)";
+  cout << "\n" << "Tempo medio de execucao do 2-opt: " << (TwoOptTime/10)<< " (s)";
+
+  cout << "\n\n";
+
+  cout << "Tempo de Execucao: " << (execTime/10) << endl;
   
   return 0;
 }
+

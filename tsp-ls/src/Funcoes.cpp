@@ -95,25 +95,3 @@ void arrangeMatrix(int dimension, double **adjMatrix, vector<vector<int>> &arran
     tora.counter++;
   }
 }
-
-int defineMaxIterator(int n, vector<int> melhoras, double totalmelhoras){
-  
-  //double soma = 0;
-  double soma2 = 0;
-  int e;
-
-  /*for(int i = 0; i < n ; i++){
-    //cout << melhoras[i] << " ";
-    soma+= melhoras[i];
-  }
-  cout << endl << soma << endl;
-  */
-
-  for(e = 0; e < n; e++){
-    soma2 += melhoras[e];
-    if(soma2 > totalmelhoras*0.95)
-      break;
-  }
-    return e;
-
-}
