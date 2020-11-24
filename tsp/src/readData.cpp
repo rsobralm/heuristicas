@@ -349,6 +349,7 @@ void readData( int argc, char** argv, int* Dimension, double ***Mdist )
 
     *Dimension = N;
     *Mdist = dist;
+    
 }
 
 double CalcDistEuc ( double *X, double *Y, int I, int J )

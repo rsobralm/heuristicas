@@ -64,12 +64,14 @@ int main(int argc, char **argv)
     i_ils = n;
   }
 
+  //initializePhiMatrix(n);
   for(int i =0; i < 10; i++){
   double before = cpuTime();
 
   //organizaMatriz(n, adjMatrix, orgMatrix);
   
   generateCandidateList(orgMatrix, adjMatrix, n);
+  
 
 
   cidades = gils_rvnd(i_max, i_ils, n, constructionTime, swapTime, reinsertionTime, TwoOptTime, orOpt2Time, orOpt3Time, positionList, adjMatrix, orgMatrix);

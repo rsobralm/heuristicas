@@ -60,6 +60,15 @@ vector<int> &positionList, double** adjMatrix, vector<vector<int>> &orgMatrix)
       orOpt3Time += (end - begin);
     }
       break;
+
+   case 5:
+    {
+      double begin = cpuTime();
+      fourOpt(solution, mCost, n, positionList, adjMatrix);
+      double end = cpuTime();
+      //fourOptTime += (end - begin);
+    }
+      break;
   }
 
     //mCost = costTotal(solution); // calcula o cost do Movimento

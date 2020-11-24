@@ -489,3 +489,168 @@ void orOptN(vector<int> &v, double &cost, int quantidade, int n, double &orOpt2T
   //double fimOropt2 = cpuTime();
   //orOpt2Time += (fimOropt2 - orOpt2Begin);
 }
+
+phiData ***phi;
+phiData ***phiSub;
+
+void initializePhiMatrix(int n){
+
+  phiSub = new phiData**[2];
+  phi = new phiData**[2];
+  for(int x = 0; x < 2; ++x) {
+    phiSub[x] = new phiData*[n];
+    phi[x] = new phiData*[n];
+    for(int y = 0; y < n; ++y) {
+      phiSub[x][y] = new phiData[n];
+      phi[x][y] = new phiData[n];
+      for(int z = 0; z < n; ++z) { // initialize the values to whatever you want the default to be
+          phiSub[x][y][z] = {0, 0 ,0.0};
+          phi[x][y][z] = {0, 0, 0.0};
+      }
+    }
+  }
+}
+
+
+double deltaX(vector<int> &s, int x, int i, int j, double**matrizAdj){
+
+  double delta;
+  if(x == 0)
+    delta = matrizAdj[s[i]][s[j]] + matrizAdj[s[i+1]][s[j+1]];
+  else
+    delta = matrizAdj[s[i]][s[j+1]] + matrizAdj[s[i+1]][s[j]];
+
+  return delta - matrizAdj[s[i]][s[i+1]] - matrizAdj[s[j]][s[j+1]];
+}
+
+void movefourOpt(vector<int> &s, double &cost, FourOptMoveData d){
+
+  vector<int> newSolution;
+  int dimension = s.size()-1;
+  vector<int> pi1;
+  vector<int> pi2;
+  vector<int> pi3;
+  vector<int> pi4;
+  vector<int> pi5;
+
+  pi1.assign(&s[0], &s[d.i1+1]);
+  pi2.assign(&s[d.i1+1], &s[d.i2+1]);
+  pi3.assign(&s[d.i2+1], &s[d.j1+1]);
+  pi4.assign(&s[d.j1+1], &s[d.j2+1]);
+  pi5.assign(&s[d.j2+1], &s[dimension+1]);
+
+  if(d.x1 == 1 && d.x2 == 1){
+    //vector1.insert(vector1.end(), vector2.begin(), vector2.end());
+    newSolution.insert(newSolution.end(), pi1.begin(), pi1.end());
+    newSolution.insert(newSolution.end(), pi4.begin(), pi4.end());
+    newSolution.insert(newSolution.end(), pi3.begin(), pi3.end());
+    newSolution.insert(newSolution.end(), pi2.begin(), pi2.end());
+    newSolution.insert(newSolution.end(), pi5.begin(), pi5.end());
+  }
+  if(d.x1 == 0 && d.x2 == 1){
+    newSolution.insert(newSolution.end(), pi1.begin(), pi1.end());
+    newSolution.insert(newSolution.end(), pi3.rbegin(), pi3.rend());
+    newSolution.insert(newSolution.end(), pi4.rbegin(), pi4.rend());
+    newSolution.insert(newSolution.end(), pi2.begin(), pi2.end());
+    newSolution.insert(newSolution.end(), pi5.begin(), pi5.end());
+  }
+  if(d.x1 == 1 && d.x2 == 0){
+    newSolution.insert(newSolution.end(), pi1.begin(), pi1.end());
+    newSolution.insert(newSolution.end(), pi4.begin(), pi4.end());
+    newSolution.insert(newSolution.end(), pi2.rbegin(), pi2.rend());
+    newSolution.insert(newSolution.end(), pi3.rbegin(), pi3.rend());
+    newSolution.insert(newSolution.end(), pi5.begin(), pi5.end());
+  }
+
+
+  s = newSolution;
+  cost += d.costVar;
+}
+
+void fourOpt(vector<int> &s, double &cost, int dimension, vector<int> &positionList, double**matrizAdj){
+
+  int n = s.size();
+  double inicio4opt = cpuTime();
+  double fim4opt;
+
+  double deltaBest = 0;
+  //int i2, j1, j2;
+  double delta_type1, delta_type2A, delta_type2B;
+  FourOptMoveData delta_best;
+  double best_cost_var;
+
+  delta_best = (FourOptMoveData ){0, 0, -1, -1, -1, -1, 0.0};
+
+    for(int j1 = 2; j1 <= n-2; j1++){
+      for(int i2 = 1; i2 <= j1-1; i2++){
+        for(int x = 0; x <= 1; x++){
+          if(i2 == 1){
+            phiSub[x][i2][j1].i = 0;
+            phiSub[x][i2][j1].j = j1;
+            phiSub[x][i2][j1].cost = deltaX(s,x,0,j1, matrizAdj);
+          }
+          else{
+            if(phiSub[x][i2 - 1][j1].cost < deltaX(s,x,i2-1,j1, matrizAdj))
+              phiSub[x][i2][j1] = phiSub[x][i2-1][j1];
+            else{
+              phiSub[x][i2][j1].i = i2-1;
+              phiSub[x][i2][j1].j = j1;
+              phiSub[x][i2][j1].cost = deltaX(s,x,i2-1,j1, matrizAdj);
+            }
+          }
+        }
+      }
+    }
+  for(int i2 = 1; i2 < n-2; i2++){
+    for(int j2 = i2+2; j2 <= n-2; j2++){
+      for(int x = 0; x <= 1; x++){
+        if(j2 == i2+2){
+          phi[x][i2][j2] = phiSub[x][i2][i2+1];
+        }
+        else{
+          if(phi[x][i2][j2-1].cost < phiSub[x][i2][j2-1].cost)
+            phi[x][i2][j2] = phi[x][i2][j2-1];
+          else
+            phi[x][i2][j2] = phiSub[x][i2][j2-1];
+        }
+      }
+      delta_type1 = deltaX(s, 1, i2, j2, matrizAdj) + phi[1][i2][j2].cost; // Two disconnecting 2-opts.
+      delta_type2A = deltaX(s, 1, i2, j2, matrizAdj) + phi[0][i2][j2].cost; // A connecting and a disconnecting 2-opt;
+      delta_type2B = deltaX(s, 0, i2, j2, matrizAdj) + phi[1][i2][j2].cost; // A connecting and a disconnecting 2-opt.
+
+      
+     // cout  << " i2: " << i2 << " j2: " << j2 << endl;
+      //cout << delta_type1 << " " << delta_type2A << " " << delta_type2B << endl;
+
+      best_cost_var = min({ delta_best.costVar, delta_type1, delta_type2A, delta_type2B });
+      //cout << "best " << best_cost_var << endl;
+      if (best_cost_var == delta_type1)
+          delta_best = (FourOptMoveData){1, 1, phi[1][i2][j2].i, phi[1][i2][j2].j, i2, j2, delta_type1};
+      else if (best_cost_var == delta_type2A)
+          delta_best = (FourOptMoveData){0, 1, phi[0][i2][j2].i, phi[0][i2][j2].j, i2, j2, delta_type2A};
+      else if (best_cost_var == delta_type2B)
+          delta_best = (FourOptMoveData){1, 0, phi[1][i2][j2].i, phi[1][i2][j2].j, i2, j2, delta_type2B};
+
+      //cout << phi[0][i2][j2].i << " "<< phi[1][i2][j2].i << " " << phi[0][i2][j2].j << " "<< phi[1][i2][j2].j << " " << i2 << " " << j2 << endl;
+      //cout << delta_type1 << " " << delta_type2A << " "<< delta_type2B <<endl;
+    }
+  }
+
+  if(delta_best.costVar < 0.0){
+    //cout << delta_best.i1 <<" " <<delta_best.i2<<" " << delta_best.j1<<" " << delta_best.j2 << " " << delta_best.costVar <<" type: " << delta_best.x1 <<" " << delta_best.x2<< endl;
+    movefourOpt(s, cost, delta_best);
+    fim4opt = cpuTime();
+    //tempo_4opt += (fim4opt - inicio4opt);
+    //melhoras4opt++;
+
+    for (int i = 0; i < positionList.size(); i++)
+    {
+      positionList[s[i]] = i;
+    }
+
+    return;
+  }
+  fim4opt = cpuTime();
+  //tempo_4opt += (fim4opt - inicio4opt);
+
+}

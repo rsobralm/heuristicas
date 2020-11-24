@@ -4,6 +4,7 @@
 #include "CustoIn.h"
 #include <vector>
 #include "Funcoes.h"
+#include <cmath>
 
 using namespace std;
 
